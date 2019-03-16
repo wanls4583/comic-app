@@ -1,0 +1,32 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "tabBar": {
+    "color": "#8a8a8a",
+    "selectedColor": "#fff",
+    "borderStyle": "black",
+    "backgroundColor": "#584d42",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "image/icon_home.png",
+        "selectedIconPath": "image/icon_home_h.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/logs/logs",
+        "iconPath": "image/icon_category.png",
+        "selectedIconPath": "image/icon_category_h.png",
+        "text": "分类"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#7e6353",
+    "navigationBarTitleText": "漫画",
+    "navigationBarTextStyle": "white"
+  }
+}
