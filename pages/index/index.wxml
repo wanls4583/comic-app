@@ -1,35 +1,38 @@
 <!--index.wxml-->
-<view class="container">
+<scroll-view class="container" scroll-y>
     <!-- <view class="userinfo">
     <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
   </view> -->
-    <view class='search_w'>
-        <image src='/image/icon_search.png'></image>漫画名 作者</view>
+    <view class='search_w'><image src='/image/icon_search.png'></image>漫画名 作者</view>
     <view class='category_w'>
         <scroll-view scroll-x class='scroll_w'>
-            <button class='item' plain='{{true}}'>推荐</button>
-            <button class='item' plain='{{true}}'>推荐</button>
-            <button class='item' plain='{{true}}'>推荐</button>
-            <button class='item' plain='{{true}}'>推荐</button>
-            <button class='item' plain='{{true}}'>推荐</button>
-            <button class='item' plain='{{true}}'>推荐</button>
-            <button class='item' plain='{{true}}'>推荐</button>
-            <button class='item' plain='{{true}}'>推荐</button>
-            <button class='item' plain='{{true}}'>推荐</button>
+            <button class='item' plain='{{true}}' wx:for='{{category}}'>{{item.name}}</button>
         </scroll-view>
         <view class='fixed_menu'>分类</view>
     </view>
-    <view class='banner_w' style='background:url(http://manhua1021-61-174-50-99.cdndm5.com/7/6746/111888/12_1730.png?cid=111888&key=41b867569104b3c6aedbd31ae4f48bed&uk=) no-repeat center'>
+    <view class='banner_w' style='background:url(http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg) no-repeat center;background-size:cover'>
         <view class='banner_bottom'>
             <view>这是标题，这是标题</view>
             <view><text class='banner_now'>1</text> / 4</view>
         </view>
     </view>
-    <view class='category_title_w'>
-        <view class='left_w'>
-            <view class='vertical_line'></view>
-            <text class='category_title'>分类名称</text>
+    <block wx:for="{{recommend}}">
+        <view class='category_title_w'>
+            <view class='left_w'>
+                <view class='vertical_line'></view>
+                <text class='category_title'>{{item.category.name}}</text>
+            </view>
+            <button class='read_more' plain='{{true}}'></button>
         </view>
-        <button class='read_more' plain='{{true}}'></button>
-    </view>
-</view>
+        <view class='hot_item_w'>
+            <scroll-view class='hot_scroll' scroll-x>
+                <view class='hot_item' wx:for="{{item.list}}" wx:for-item='listItem'>
+                    <view class='hot_img' style='background:url({{listItem.showconver}}) no-repeat center;background-size:cover'></view>
+                    <view class='hot_title'>{{listItem.title}}</view>
+                    <view class='hot_time'>{{listItem.lastupdatetime}}</view>
+                </view>
+            </scroll-view>
+            <view class='hot_bottom_line'></view>
+        </view>
+    </block>
+</scroll-view>

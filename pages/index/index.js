@@ -6,7 +6,9 @@ Page({
   data: {
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    category: [],
+    recommend: [],
   },
   //事件处理函数
   bindViewTap: function() {
@@ -41,6 +43,8 @@ Page({
         }
       })
     }
+    this.getCategory();
+    this.getRecommend();
   },
   getUserInfo: function(e) {
     console.log(e)
@@ -49,5 +53,33 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  //获取所有分类
+  getCategory() {
+      var self = this;
+      wx.request({
+          url: 'https://lisong.hn.cn/category',
+          success(res) {
+              if (res.statusCode == 200 && res.data && res.data.length) {
+                  self.setData({
+                      category: res.data
+                  })
+              }
+          }
+      });
+  },
+  //获取推荐列表
+  getRecommend() {
+      var self = this;
+      wx.request({
+          url: 'https://lisong.hn.cn/recommend',
+          success(res) {
+              if (res.statusCode == 200 && res.data && res.data.length) {
+                self.setData({
+                    recommend: res.data
+                })
+            }
+          }
+      })
   }
 })

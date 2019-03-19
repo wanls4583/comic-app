@@ -3,7 +3,8 @@
 .search_w {
     width: 710rpx;
     height: 72rpx;
-    margin: 16rpx 20rpx;
+    margin: 0 20rpx;
+    padding: 16rpx 0;
     border-radius: 8rpx;
     background: rgba(256, 256, 256, 0.3);
     display: flex;
@@ -35,6 +36,8 @@
 }
 
 .category_w .scroll_w .item {
+    height: 90rpx;
+    line-height: 90rpx;
     margin-left: 50rpx;
     padding: 0;
     display: inline-block;
@@ -58,11 +61,6 @@ button.button-hover {
     position: relative;
     height: 345rpx;
     background-size: cover;
-}
-
-.banner_w image {
-    width: 100%;
-    height: 100%;
 }
 
 .banner_bottom {
@@ -120,4 +118,68 @@ button.read_more {
 
 .read_more:before {
     content: '•••';
+}
+
+.hot_item_w {
+    position: relative;
+}
+
+.hot_item_w .hot_bottom_line {
+    margin: 20rpx 20rpx 0 20rpx;
+    height: 1rpx;
+    background-color: rgba(256, 256, 256, 0.2);
+}
+
+.hot_item_w:last-child {
+    margin-bottom: 20rpx;
+}
+
+.hot_item_w:last-child .hot_bottom_line {
+    display: none;
+}
+
+.hot_scroll {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+.hot_item {
+    display: inline-block;
+    margin-left: 40rpx;
+    width: 180rpx;
+    height: 210rpx;
+}
+
+.hot_item:first-child {
+    margin-left: 20rpx;
+}
+
+.hot_item:last-child {
+    margin-right: 20rpx;
+}
+
+.hot_img {
+    width: 180rpx;
+    height: 210rpx;
+}
+
+.hot_title {
+    width: 180rpx;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-top: 20rpx;
+    line-height: 30rpx;
+    font-size: 30rpx;
+    color: #d8d8d8;
+    text-align: center;
+}
+
+.hot_time {
+    width: 180rpx;
+    margin-top: 15rpx;
+    line-height: 30rpx;
+    font-size: 24rpx;
+    color: #38ffff;
+    text-align: center;
 }

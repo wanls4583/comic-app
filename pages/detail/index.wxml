@@ -1,0 +1,15 @@
+<!--index.wxml-->
+<view class="container" scroll-y>
+    <view class='menu_btn_w'>
+        <button plain='{{true}}' class='active'>简介</button>
+        <button plain='{{true}}'>目录</button>
+    </view>
+    <view class='detail_w' style='background:url(http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg) no-repeat center;background-size:cover'>
+        <view class='head_w'>
+            <view class='title'>动漫标题</view>
+            <view class='category_w'><text>分类</text><text>分类</text></view>
+            <view class='last_num'>第120话</view>
+        </view>
+        <view class='foot_w'>简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介简介</view>
+    </view>
+</view>

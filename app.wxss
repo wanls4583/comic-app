@@ -1,13 +1,17 @@
 /**app.wxss**/
+
 page {
-  height: 100%;
-  background: linear-gradient(#7e6353, #584d42);
+    height: 100%;
+    overflow: hidden;
+    background: linear-gradient(#7e6353, #584d42);
 }
+
 .container {
-  overflow: auto;
-  height: 100%;
-  box-sizing: border-box;
+    overflow: auto;
+    height: 100%;
+    box-sizing: border-box;
 }
+
 view {
     box-sizing: border-box;
 }

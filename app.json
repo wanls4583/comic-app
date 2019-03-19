@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/detail/index",
+    "pages/index/index"
   ],
   "tabBar": {
     "color": "#8a8a8a",
@@ -16,7 +16,7 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/logs/logs",
+        "pagePath": "pages/detail/index",
         "iconPath": "image/icon_category.png",
         "selectedIconPath": "image/icon_category_h.png",
         "text": "分类"
