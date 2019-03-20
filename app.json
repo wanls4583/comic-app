@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/detail/index",
-    "pages/index/index"
+    "pages/index/index",
+    "pages/detail/index"
   ],
   "tabBar": {
     "color": "#8a8a8a",

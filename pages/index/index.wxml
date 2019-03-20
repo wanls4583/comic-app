@@ -1,38 +1,75 @@
 <!--index.wxml-->
-<scroll-view class="container" scroll-y>
-    <!-- <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-  </view> -->
-    <view class='search_w'><image src='/image/icon_search.png'></image>漫画名 作者</view>
-    <view class='category_w'>
-        <scroll-view scroll-x class='scroll_w'>
-            <button class='item' plain='{{true}}' wx:for='{{category}}'>{{item.name}}</button>
-        </scroll-view>
-        <view class='fixed_menu'>分类</view>
+<view class='container'>
+    <view class='home_bg'>
+        <image src='/image/bg.jpg'></image>
     </view>
-    <view class='banner_w' style='background:url(http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg) no-repeat center;background-size:cover'>
-        <view class='banner_bottom'>
-            <view>这是标题，这是标题</view>
-            <view><text class='banner_now'>1</text> / 4</view>
-        </view>
-    </view>
-    <block wx:for="{{recommend}}">
-        <view class='category_title_w'>
-            <view class='left_w'>
-                <view class='vertical_line'></view>
-                <text class='category_title'>{{item.category.name}}</text>
+    <scroll-view class="home_scroll" scroll-y>
+        <!-- <view class="userinfo">
+            <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+        </view> -->
+        <block wx:if="{{!category}}">
+            <view class='search_w'>
+                <image src='/image/icon_search.png'></image>
+                <text>漫画名 作者</text>
             </view>
-            <button class='read_more' plain='{{true}}'></button>
-        </view>
-        <view class='hot_item_w'>
-            <scroll-view class='hot_scroll' scroll-x>
-                <view class='hot_item' wx:for="{{item.list}}" wx:for-item='listItem'>
-                    <view class='hot_img' style='background:url({{listItem.showconver}}) no-repeat center;background-size:cover'></view>
-                    <view class='hot_title'>{{listItem.title}}</view>
-                    <view class='hot_time'>{{listItem.lastupdatetime}}</view>
+            <view class='category_w'>
+                <scroll-view scroll-x class='scroll_w'>
+                    <button class='item' plain='{{true}}' wx:for='{{category}}'>{{item.name}}</button>
+                </scroll-view>
+                <view class='fixed_menu'>分类</view>
+            </view>
+            <view class='banner_w' style='background:url({{testImg}}) no-repeat center;background-size:cover'>
+                <view class='banner_bottom'>
+                    <view>这是标题，这是标题</view>
+                    <view>
+                        <text class='banner_now'>1</text> / 4</view>
                 </view>
-            </scroll-view>
-            <view class='hot_bottom_line'></view>
-        </view>
-    </block>
-</scroll-view>
+            </view>
+            <block wx:for="{{recommend}}">
+                <view class='category_title_w'>
+                    <view class='left_w'>
+                        <view class='vertical_line'></view>
+                        <text class='category_title'>{{item.category.name}}</text>
+                    </view>
+                    <button class='read_more' plain='{{true}}'></button>
+                </view>
+                <view class='hot_item_w'>
+                    <scroll-view class='hot_scroll' scroll-x>
+                        <view class='hot_item' wx:for="{{item.list}}" wx:for-item='listItem'>
+                            <view class='hot_img' style='background:url({{listItem.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                            <view class='hot_title'>{{listItem.title}}</view>
+                            <view class='hot_time'>{{listItem.lastupdatetime}}</view>
+                        </view>
+                    </scroll-view>
+                    <view class='hot_bottom_line'></view>
+                </view>
+            </block>
+        </block>
+        <block v-else>
+            <view class='category_item'>
+                <view class='category_item_img' style='background:url({{testImg}}) no-repeat center;background-size:cover'></view>
+                <view class='category_item_title'>这是标题</view>
+                <view class='category_item_bottom_w'>
+                    <view class='category_item_new'>120话120话120话</view>
+                    <view class='category_item_time'>12.02.02</view>
+                </view>
+            </view>
+            <view class='category_item'>
+                <view class='category_item_img' style='background:url({{testImg}}) no-repeat center;background-size:cover'></view>
+                <view class='category_item_title'>这是标题</view>
+                <view class='category_item_bottom_w'>
+                    <view class='category_item_new'>120话120话120话</view>
+                    <view class='category_item_time'>12.02.02</view>
+                </view>
+            </view>
+            <view class='category_item'>
+                <view class='category_item_img' style='background:url({{testImg}}) no-repeat center;background-size:cover'></view>
+                <view class='category_item_title'>这是标题</view>
+                <view class='category_item_bottom_w'>
+                    <view class='category_item_new'>120话120话120话</view>
+                    <view class='category_item_time'>12.02.02</view>
+                </view>
+            </view>
+        </block>
+    </scroll-view>
+</view>

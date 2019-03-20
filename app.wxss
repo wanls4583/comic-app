@@ -15,3 +15,7 @@ page {
 view {
     box-sizing: border-box;
 }
+
+scroll-view {
+    box-sizing: border-box;
+}

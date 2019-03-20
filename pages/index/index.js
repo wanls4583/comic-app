@@ -9,6 +9,8 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     category: [],
     recommend: [],
+    category: null,
+    testImg: 'http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg'
   },
   //事件处理函数
   bindViewTap: function() {
