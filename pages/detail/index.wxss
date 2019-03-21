@@ -175,6 +175,7 @@ button.button-hover {
     top: 250rpx;
     bottom: 0;
     width: 100%;
+    padding-bottom: 30rpx;
 }
 
 .catalog_item {
@@ -193,8 +194,4 @@ button.button-hover {
 
 .catalog_item:first-child {
     margin-top: 30rpx;
-}
-
-.catalog_item:last-child {
-    margin-bottom: 30rpx;
 }

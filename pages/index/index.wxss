@@ -7,6 +7,7 @@
     width: 100%;
     filter: blur(50rpx);
     overflow: hidden;
+    z-index: 0;
 }
 
 .home_bg image {
@@ -16,14 +17,68 @@
     opacity: 0.2;
 }
 
-.home_scroll {
+.category_dialog_w {
     position: absolute;
     top: 0;
     bottom: 0;
+    z-index: 2;
+    width: 100%;
+    background: linear-gradient(#7e6353, #584d42);
+    opacity: 0.96;
+}
+
+.category_dialog_icon_close {
+    position: absolute;
+    top: 20rpx;
+    left: 43rpx;
+}
+
+.category_dialog_icon_close:active {
+    background-color: rgba(256, 256, 256, 0.1);
+}
+
+.category_dialog_icon_close image{
+    width: 40rpx;
+    height: 40rpx;
+}
+
+.category_dialog_list_w {
+    padding-left: 43rpx;
+    margin-top: 120rpx;
+    text-align: justify;
+}
+
+.category_dialog_list_w .item {
+    display: inline-block;
+    width: 136rpx;
+    height: 60rpx;
+    padding: 0 20rpx;
+    margin-right: 40rpx;
+    margin-bottom: 40rpx;
+    background-color: rgba(256, 256, 256, 0.2);
+    border-radius: 4rpx;
+    font-size: 24rpx;
+    color: #fff;
+    text-align: center;
+    line-height: 60rpx;
+}
+
+.category_dialog_list_w .item:active {
+    background-color: rgba(256, 256, 256, 0.1);
+    color: #38ffff;
+}
+
+.home_scroll {
+    position: absolute;
+    top: 162rpx;
+    bottom: 0;
+    z-index: 1;
     width: 100;
 }
 
 .search_w {
+    position: relative;
+    z-index: 1;
     width: 710rpx;
     height: 72rpx;
     margin: 0 20rpx;
@@ -44,6 +99,8 @@
 }
 
 .category_w {
+    position: relative;
+    z-index: 1;
     height: 90rpx;
     line-height: 90rpx;
     display: flex;
@@ -56,28 +113,33 @@
     overflow: auto;
     flex-grow: 1;
     white-space: nowrap;
+    margin-left: 20rpx;
 }
 
 .category_w .scroll_w .item {
     height: 90rpx;
     line-height: 90rpx;
-    margin-left: 50rpx;
-    padding: 0;
+    margin-left: 40rpx;
     display: inline-block;
     color: #fff;
     font-size: 34rpx;
-    border-style: none;
 }
 
-button.button-hover {
-    background-color: transparent;
-    color: #38ffff !important;
+.category_w .scroll_w .item.active {
+    color: #38ffff;
 }
 
-.category_w .fixed_menu {
+.fixed_menu {
     flex-shrink: 0;
     flex-grow: 0;
-    margin: 0 50rpx;
+    margin: 0 40rpx 0 20rpx;
+}
+
+.fixed_menu image{
+    width: 40rpx;
+    height: 34rpx;
+    vertical-align: top;
+    margin-top: 28rpx;
 }
 
 .banner_w {
@@ -184,6 +246,10 @@ button.read_more {
     width: 180rpx;
     height: 230rpx;
     border: 4rpx solid #fff;
+}
+
+.hot_img:active {
+    border-color: #38ffff;
 }
 
 .hot_title {

@@ -1,0 +1,17 @@
+<!--index.wxml-->
+<view class='container'>
+    <!-- 模糊背景 -->
+    <view class='center_bg'>
+        <image src='/image/bg.jpg'></image>
+    </view>
+    <view class='top_w'>
+        <button class='head_btn' wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+        <view class='head_name_w' wx:else>
+            <image class='head' src='{{userInfo.avatarUrl}}'></image>
+            <view class='name'>{{userInfo.nickName}}</view>
+        </view>
+    </view>
+    <scroll-view class='menu_w'>
+        <view class='menu_item'><text>本地历史记录</text><image src='/image/icon_right_arrow.png'></image></view>
+    </scroll-view>
+</view>
