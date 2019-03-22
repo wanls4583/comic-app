@@ -68,7 +68,7 @@
     color: #38ffff;
 }
 
-.home_scroll {
+.recommend_comic_scroll, .category_comic_scroll {
     position: absolute;
     top: 162rpx;
     bottom: 0;
@@ -125,7 +125,7 @@
     font-size: 34rpx;
 }
 
-.category_w .scroll_w .item.active {
+.category_w .scroll_w .item.active, .category_w .scroll_w .item:active {
     color: #38ffff;
 }
 
@@ -288,12 +288,15 @@ button.read_more {
 
 .category_item_title {
     position: absolute;
-    bottom: 60rpx;
+    bottom: 70rpx;
     height: 50rpx;
     width: 100%;
     padding-left: 10rpx;
     line-height: 50rpx;
     background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     font-size: 24rpx;
     color: #fff;
 }
@@ -302,7 +305,7 @@ button.read_more {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60rpx;
+    height: 70rpx;
     font-size: 24rpx;
 }
 
@@ -311,7 +314,7 @@ button.read_more {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #fff;
+    color: #d8d8d8;
 }
 
 .category_item_time {

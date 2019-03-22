@@ -12,7 +12,7 @@
     <!-- 分类列表 -->
     <view class='category_w'>
         <scroll-view scroll-x class='scroll_w' scroll-into-view="{{toCategory}}" scroll-with-animation="{{true}}">
-            <view id='category_{{item.cid}}' class='item {{nowCategory.cid == item.cid && "active"}}' wx:for='{{category}}' wx:key='{{item.cid}}' data-category='{{item}}' bindtap='slectCategory'>{{item.name}}</view>
+            <view id='category_{{item.cid}}' class='item {{nowCategory.cid == item.cid && "active"}}' wx:for='{{categoryList}}' wx:key='{{item.cid}}' data-category='{{item}}' bindtap='slectCategory'>{{item.name}}</view>
         </scroll-view>
         <view class='fixed_menu' bindtap='toggleCategory'>
             <image src='/image/icon_menu.png'></image>
@@ -24,68 +24,50 @@
             <image src='/image/icon_close.png'></image>
         </view>
         <view class='category_dialog_list_w'>
-            <block wx:for='{{category}}' wx:key='dialog_{{item.cid}}'>
+            <block wx:for='{{categoryList}}' wx:key='{{item.cid}}'>
                 <view class='item' data-category='{{item}}' bindtap='slectCategory'>{{item.name}}</view>
             </block>
         </view>
     </view>
-    <scroll-view class="home_scroll" scroll-y>
+    <scroll-view wx:if='{{!nowCategory.cid}}' class="recommend_comic_scroll" scroll-y>
         <!-- 各分类推荐列表 -->
-        <view hidden="{{nowCategory.cid}}">
-            <view class='banner_w' style='background:url({{testImg}}) no-repeat center;background-size:cover'>
-                <view class='banner_bottom'>
-                    <view>这是标题，这是标题</view>
-                    <view>
-                        <text class='banner_now'>1</text>
-                        <text>/4</text>
-                    </view>
+        <view class='banner_w' style='background:url({{testImg}}) no-repeat center;background-size:cover'>
+            <view class='banner_bottom'>
+                <view>这是标题，这是标题</view>
+                <view>
+                    <text class='banner_now'>1</text>
+                    <text>/4</text>
                 </view>
             </view>
-            <block wx:for="{{recommend}}" wx:key='rec_{{item.cid}}' wx:if='{{item.category.cid}}'>
-                <view class='category_title_w'>
-                    <view class='left_w'>
-                        <view class='vertical_line'></view>
-                        <text class='category_title'>{{item.category.name}}</text>
-                    </view>
-                    <button class='read_more' plain='{{true}}' data-category='{{item.category}}' bindtap='slectCategory'></button>
-                </view>
-                <view class='hot_item_w'>
-                    <scroll-view class='hot_scroll' scroll-x>
-                        <view class='hot_item' wx:for="{{item.list}}" wx:for-item='listItem' wx:key='rec_item_{{listItem.comicid}}'>
-                            <view class='hot_img' style='background:url({{listItem.showpicurlb}}) no-repeat center;background-size:cover'></view>
-                            <view class='hot_title'>{{listItem.title}}</view>
-                            <view class='hot_time'>{{listItem.lastupdatetime}}</view>
-                        </view>
-                    </scroll-view>
-                    <view class='hot_bottom_line'></view>
-                </view>
-            </block>
         </view>
+        <block wx:if='{{item.category.cid}}' wx:for="{{recommend}}" wx:key='{{item.cid}}'>
+            <view class='category_title_w'>
+                <view class='left_w'>
+                    <view class='vertical_line'></view>
+                    <text class='category_title'>{{item.category.name}}</text>
+                </view>
+                <button class='read_more' plain='{{true}}' data-category='{{item.category}}' bindtap='slectCategory'></button>
+            </view>
+            <view class='hot_item_w'>
+                <scroll-view class='hot_scroll' scroll-x>
+                    <view class='hot_item' wx:for="{{item.list}}" wx:for-item='listItem' wx:key='{{listItem.comicid}}' data-comic='{{listItem}}' bindtap='gotoDetail'>
+                        <view class='hot_img' style='background:url({{listItem.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                        <view class='hot_title'>{{listItem.title}}</view>
+                        <view class='hot_time'>{{listItem.lastupdatetime}}</view>
+                    </view>
+                </scroll-view>
+                <view class='hot_bottom_line'></view>
+            </view>
+        </block>
+    </scroll-view>
+    <scroll-view wx:else class='category_comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx'>
         <!-- 某分类下的漫画列表 -->
-        <view hidden="{{!nowCategory.cid}}">
-            <view class='category_item'>
-                <view class='category_item_img' style='background:url({{testImg}}) no-repeat center;background-size:cover'></view>
-                <view class='category_item_title'>这是标题</view>
-                <view class='category_item_bottom_w'>
-                    <view class='category_item_new'>120话120话120话</view>
-                    <view class='category_item_time'>12.02.02</view>
-                </view>
-            </view>
-            <view class='category_item'>
-                <view class='category_item_img' style='background:url({{testImg}}) no-repeat center;background-size:cover'></view>
-                <view class='category_item_title'>这是标题</view>
-                <view class='category_item_bottom_w'>
-                    <view class='category_item_new'>120话120话120话</view>
-                    <view class='category_item_time'>12.02.02</view>
-                </view>
-            </view>
-            <view class='category_item'>
-                <view class='category_item_img' style='background:url({{testImg}}) no-repeat center;background-size:cover'></view>
-                <view class='category_item_title'>这是标题</view>
-                <view class='category_item_bottom_w'>
-                    <view class='category_item_new'>120话120话120话</view>
-                    <view class='category_item_time'>12.02.02</view>
-                </view>
+        <view class='category_item' wx:for='{{comicListByCategory}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
+            <view class='category_item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
+            <view class='category_item_title'>{{item.title}}</view>
+            <view class='category_item_bottom_w'>
+                <view class='category_item_new'>{{item.showlastpartname}}</view>
+                <view class='category_item_time'>{{item.lastupdatetime}}</view>
             </view>
         </view>
     </scroll-view>

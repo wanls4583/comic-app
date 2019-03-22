@@ -78,8 +78,18 @@ button.button-hover {
     color: #fff;
 }
 
+.detail_head_right view{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .detail_title {
     color: #ff933f;
+}
+
+.detail_new {
+    color: #999;
 }
 
 .detail_author_category_w {
@@ -194,4 +204,14 @@ button.button-hover {
 
 .catalog_item:first-child {
     margin-top: 30rpx;
+}
+
+.empty_tip {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -20rpx;
+    font-size: 30rpx;
+    color: #999;
+    text-align: center;
 }

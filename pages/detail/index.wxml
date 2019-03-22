@@ -5,33 +5,34 @@
         <button plain='{{true}}' class='{{!showDes && "active"}}'  data-tab='2' bindtap='toggleTab'>目录</button>
     </view>
     <view class='detail_w' wx:if='{{showDes}}'>
-        <view class='detail_bg' style='background:url(http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg) no-repeat center;background-size:cover'></view>
+        <view class='detail_bg' style='background:url({{comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
         <view class='detail_layer'>
             <view class='detail_head_w'>
-                <view class='detail_cover' style='background:url(http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg) no-repeat center;background-size:cover'></view>
+                <view class='detail_cover' style='background:url({{comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
                 <view class='detail_head_right'>
-                    <view class='detail_title'>漫画标题</view>
-                    <view class='detail_area'>日本</view>
-                    <view class='detail_status'>连载中</view>
-                    <view class='detail_publish'>2013年发布</view>
-                    <view class='detail_new'>103话 最新</view>
+                    <view class='detail_title'>{{comic.title}}</view>
+                    <view class='detail_area'>{{comic.area.name || '暂无'}}</view>
+                    <view class='detail_status'>{{comic.status}}</view>
+                    <view class='detail_publish'>{{comic.shelvestime}}</view>
+                    <view class='detail_new'>最新：{{comic.comicpart}}</view>
                 </view>
             </view>
             <view class='detail_author_category_w'>
                 <view class='detail_author_w'>
                     <view class='label'>作者:</view>
-                    <view class='detail_author'>名称</view>
-                    <view class='detail_author'>名称</view>
+                    <view class='detail_author' wx:for='{{comic.author}}' wx:key='{{index}}'>{{item}}</view>
                 </view>
                 <view class='detail_category_w'>
                     <view class='label'>分类:</view>
-                    <view class='detail_category'>分类</view>
-                    <view class='detail_category'>分类</view>
+                    <block wx:if='{{comic.categorys.length}}'>
+                        <view class='detail_category' wx:for='{{comic.categorys}}' wx:key='{{index}}'>{{item.name}}</view>
+                    </block>
+                    <view wx:else class='detail_category'>暂无</view>
                 </view>
             </view>
             <view class='detail_des_w'>
                 <view class='detail_des_title'>故事简介</view>    
-                <view class='detail_des'>故事简介故事简介故事简介故事简介故事简介故事简介故事简介</view>
+                <view class='detail_des'>{{comic.content}}</view>
             </view>
         </view>
     </view>
@@ -40,28 +41,21 @@
         <view class='catalog_layer'>
             <view class='catalog_head_w'>
                 <view class='catalog_num_w'>
-                    <view class='catalog_num'>99</view>
+                    <view class='catalog_num'>{{comic.count}}</view>
                     <view class='catalog_new'>最近更新</view>
-                    <view class='catalog_name'>100话</view>
+                    <view class='catalog_name'>{{comic.count && comic.showlastpartname || '敬请期待'}}</view>
                 </view>
                 <view class='catalog_num_w'>
-                    <view class='catalog_num'>10</view>
+                    <view class='catalog_num'>0</view>
                     <view class='catalog_new'>上次看到</view>
                     <view class='catalog_continue'>继续浏览</view>
                 </view>
             </view>
             <scroll-view scroll-y class='catalog_list_w'>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
-                <view class='catalog_item'>第一话沙发的斯蒂芬</view>
+                <block wx:if='{{chapterList.length}}'>
+                    <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}'>{{item.name}}</view>
+                </block>
+                <view wx:else class='empty_tip'>暂无章节~</view>
             </scroll-view>  
         </view>
     </view>
