@@ -12,7 +12,7 @@ Page({
         if(!option.comic) {
             return;
         }
-        var comic = JSON.parse(option.comic);
+        var comic = JSON.parse(decodeURIComponent(option.comic));
         if(comic.status == 1) {
             comic.status = '完结';
         } else if(comic.status == 0) {

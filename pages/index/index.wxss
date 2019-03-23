@@ -145,7 +145,10 @@
 .banner_w {
     position: relative;
     height: 345rpx;
-    background-size: cover;
+}
+
+.banner_item {
+    height: 100%;
 }
 
 .banner_bottom {

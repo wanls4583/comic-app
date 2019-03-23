@@ -2,7 +2,7 @@
 <view class="container" scroll-y>
     <view class='menu_btn_w'>
         <button plain='{{true}}' class='{{showDes && "active"}}' data-tab='1' bindtap='toggleTab'>简介</button>
-        <button plain='{{true}}' class='{{!showDes && "active"}}'  data-tab='2' bindtap='toggleTab'>目录</button>
+        <button plain='{{true}}' class='{{!showDes && "active"}}' data-tab='2' bindtap='toggleTab'>目录</button>
     </view>
     <view class='detail_w' wx:if='{{showDes}}'>
         <view class='detail_bg' style='background:url({{comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
@@ -31,7 +31,7 @@
                 </view>
             </view>
             <view class='detail_des_w'>
-                <view class='detail_des_title'>故事简介</view>    
+                <view class='detail_des_title'>故事简介</view>
                 <view class='detail_des'>{{comic.content}}</view>
             </view>
         </view>
@@ -53,10 +53,10 @@
             </view>
             <scroll-view scroll-y class='catalog_list_w'>
                 <block wx:if='{{chapterList.length}}'>
-                    <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}'>{{item.name}}</view>
+                    <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
                 </block>
                 <view wx:else class='empty_tip'>暂无章节~</view>
-            </scroll-view>  
+            </scroll-view>
         </view>
     </view>
 </view>

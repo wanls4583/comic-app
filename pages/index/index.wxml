@@ -30,16 +30,22 @@
         </view>
     </view>
     <scroll-view wx:if='{{!nowCategory.cid}}' class="recommend_comic_scroll" scroll-y>
-        <!-- 各分类推荐列表 -->
-        <view class='banner_w' style='background:url({{testImg}}) no-repeat center;background-size:cover'>
-            <view class='banner_bottom'>
-                <view>这是标题，这是标题</view>
-                <view>
-                    <text class='banner_now'>1</text>
-                    <text>/4</text>
+        <!-- 轮播图 -->
+        <swiper class='banner_w' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
+            <swiper-item wx:for="{{banner}}" wx:key='{{item.comicid}}'>
+                <view class='banner_item' style='background:url({{item.showconver}}) no-repeat center;background-size:cover' data-comic='{{item}}' bindtap='gotoDetail'>
+                    <view class='banner_bottom'>
+                        <view>{{item.title}}</view>
+                        <view>
+                            <text class='banner_now'>{{currentBannerIndex+1}}</text>
+                            <text>/{{banner.length}}</text>
+                        </view>
+                    </view>
                 </view>
-            </view>
-        </view>
+            </swiper-item>
+        </swiper>
+
+        <!-- 各分类推荐列表 -->
         <block wx:if='{{item.category.cid}}' wx:for="{{recommend}}" wx:key='{{item.cid}}'>
             <view class='category_title_w'>
                 <view class='left_w'>

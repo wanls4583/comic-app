@@ -19,7 +19,14 @@ Page({
         size: 20,
         toCategory: 'category_0',
         testImg: 'http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg',
-        showCategoryDialog: false
+        showCategoryDialog: false,
+        currentBannerIndex: 0,
+        banner: []
+    },
+    bannerChang(e) {
+        this.setData({
+            currentBannerIndex: e.detail.current
+        })
     },
     //显隐分类弹出框
     toggleCategory(e) {
@@ -60,7 +67,7 @@ Page({
     gotoDetail(e) {
         var comic = e.currentTarget.dataset.comic;
         wx.navigateTo({
-            url: '/pages/detail/index?comic='+JSON.stringify(comic)
+            url: '/pages/detail/index?comic=' + encodeURIComponent(JSON.stringify(comic))
         });
     },
     //加载漫画列表
@@ -153,7 +160,23 @@ Page({
                     self.setData({
                         recommend: res.data
                     })
+                    var allRec = [];
+                    var banner = [];
+                    res.data.map((item)=>{
+                        allRec = allRec.concat(item.list);
+                    });
+                    //随机生成四个banner图
+                    while (banner.length < 5 && banner.length < allRec.length) {
+                        var item = allRec[Math.floor(Math.random()*allRec.length)];
+                        if(banner.indexOf(item) == -1) {
+                            banner.push(item);
+                        }
+                    }
+                    self.setData({
+                        banner: banner
+                    });
                 }
+
             }
         })
     }
