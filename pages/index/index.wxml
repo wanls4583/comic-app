@@ -60,7 +60,7 @@
             </view>
         </block>
     </scroll-view>
-    <scroll-view wx:else class='category_comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx' scroll-top='{{scrollTop}}'>
+    <scroll-view wx:else class='category_comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx'>
         <!-- 某分类下的漫画列表 -->
         <view class='category_item' wx:for='{{comicListByCategory}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
             <view class='category_item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>

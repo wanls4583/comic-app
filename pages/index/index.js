@@ -19,8 +19,7 @@ Page({
         size: 20,
         toCategory: 'category_0',
         testImg: 'http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg',
-        showCategoryDialog: false,
-        scrollTop: 0
+        showCategoryDialog: false
     },
     //显隐分类弹出框
     toggleCategory(e) {
@@ -36,10 +35,11 @@ Page({
             return;
         }
         this.setData({
+            comicListByCategory: [],
+            total: 0,
             nowCategory: category,
             showCategoryDialog: false,
-            page: 1,
-            scrollTop: 0 //更换列表时将滚动条滚动到顶部
+            page: 1
         });
         //目录滚动到当前按钮的前两个按钮的位置
         for (var i = 0; i < this.data.categoryList.length; i++) {
