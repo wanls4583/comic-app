@@ -62,6 +62,7 @@ button.button-hover {
 }
 
 .detail_cover {
+    flex-shrink: 0;
     width: 200rpx;
     height: 230rpx;
     border-radius: 8rpx;

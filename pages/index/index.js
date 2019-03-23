@@ -2,6 +2,7 @@
 //获取应用实例
 const app = getApp()
 const util = require('../../utils/util.js');
+const host = require('../../config/index.js').httpHost;
 Page({
     data: {
         userInfo: {},
@@ -18,7 +19,8 @@ Page({
         size: 20,
         toCategory: 'category_0',
         testImg: 'http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg',
-        showCategoryDialog: false
+        showCategoryDialog: false,
+        scrollTop: 0
     },
     //显隐分类弹出框
     toggleCategory(e) {
@@ -36,7 +38,8 @@ Page({
         this.setData({
             nowCategory: category,
             showCategoryDialog: false,
-            page: 1
+            page: 1,
+            scrollTop: 0 //更换列表时将滚动条滚动到顶部
         });
         //目录滚动到当前按钮的前两个按钮的位置
         for (var i = 0; i < this.data.categoryList.length; i++) {
@@ -63,8 +66,11 @@ Page({
     //加载漫画列表
     getComicListByCategory() {
         var self = this;
+        if (this.data.comicListByCategory.length && this.data.comicListByCategory.length >= this.data.total) {
+            return;
+        }
         wx.request({
-            url: 'https://lisong.hn.cn/comic?cid='+this.data.nowCategory.cid+'&page='+this.data.page+'&size='+this.data.size,
+            url: host + '/comic?cid='+this.data.nowCategory.cid+'&page='+this.data.page+'&size='+this.data.size,
             success(res) {
                 if (res.statusCode == 200 && res.data.list && res.data.list.length) {
                     res.data.list.map((item) => {
@@ -127,7 +133,7 @@ Page({
     getCategory() {
         var self = this;
         wx.request({
-            url: 'https://lisong.hn.cn/category',
+            url: host + '/category',
             success(res) {
                 if (res.statusCode == 200 && res.data && res.data.length) {
                     self.setData({
@@ -141,7 +147,7 @@ Page({
     getRecommend() {
         var self = this;
         wx.request({
-            url: 'https://lisong.hn.cn/recommend',
+            url: host + '/recommend',
             success(res) {
                 if (res.statusCode == 200 && res.data && res.data.length) {
                     self.setData({

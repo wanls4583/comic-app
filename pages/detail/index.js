@@ -1,6 +1,6 @@
 //获取应用实例
 const app = getApp()
-
+const host = require('../../config/index.js').httpHost;
 Page({
     data: {
         showDes: true,
@@ -41,7 +41,7 @@ Page({
     getCategoryAndArea() {
         var self = this;
         wx.request({
-            url: 'https://lisong.hn.cn/comic/' + this.data.comic.comicid,
+            url: host + '/comic/' + this.data.comic.comicid,
             success(res) {
                 if (res.statusCode == 200) {
                     self.setData({
@@ -55,7 +55,7 @@ Page({
     getChpater() {
         var self = this;
         wx.request({
-            url: 'https://lisong.hn.cn/chapter/' + this.data.comic.comicid,
+            url: host + '/chapter/' + this.data.comic.comicid,
             success(res) {
                 if (res.statusCode == 200) {
                     self.setData({
