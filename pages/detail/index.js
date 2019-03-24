@@ -19,14 +19,17 @@ Page({
             comic.status = '连载中';
         }
         comic.author = comic.author.split(',');
-        comic.area = 'heh';
+        comic.area = '';
         comic.categorys = [];
         this.setData({
             comic: comic
         });
         this.getCategoryAndArea();
         this.getChpater();
-        
+        //设置标题
+        wx.setNavigationBarTitle({
+            title: comic.title
+        });
     },
     onPullDownRefresh() {
         this.getCategoryAndArea();

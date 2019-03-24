@@ -324,3 +324,18 @@ button.read_more {
     flex-shrink: 0;
     color: #38ffff;
 }
+/* 没有更多了 */
+.no_more {
+    width: 100%;
+    height: 80rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cdcdcd;
+    font-size: 24rpx;
+}
+
+.no_more image {
+    width: 30rpx;
+    margin-right: 10rpx;
+}

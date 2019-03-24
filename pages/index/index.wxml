@@ -76,5 +76,9 @@
                 <view class='category_item_time'>{{item.lastupdatetime}}</view>
             </view>
         </view>
+        <view wx:if='{{total > -1 && total==comicListByCategory.length}}' class='no_more'>
+            <image mode='widthFix' src="/image/icon_end.png"></image>
+            <text>没有更多了~</text>
+        </view>
     </scroll-view>
 </view>

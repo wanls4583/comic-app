@@ -11,7 +11,7 @@ Page({
         categoryList: [],
         recommend: [],
         comicListByCategory: [],
-        total: 0,
+        total: -1,
         nowCategory: {
             cid: 0
         },
@@ -22,85 +22,6 @@ Page({
         showCategoryDialog: false,
         currentBannerIndex: 0,
         banner: []
-    },
-    onPullDownRefresh() {
-        this.getCategory();
-        this.getRecommend();
-    },
-    bannerChang(e) {
-        this.setData({
-            currentBannerIndex: e.detail.current
-        })
-    },
-    //显隐分类弹出框
-    toggleCategory(e) {
-        this.setData({
-            showCategoryDialog: !this.data.showCategoryDialog
-        });
-    },
-    //选择某个分类
-    slectCategory(e) {
-        var category = e.currentTarget.dataset.category;
-        //防止重复点击
-        if(this.data.nowCategory.cid == category.cid) {
-            return;
-        }
-        this.setData({
-            comicListByCategory: [],
-            total: 0,
-            nowCategory: category,
-            showCategoryDialog: false,
-            page: 1
-        });
-        //目录滚动到当前按钮的前两个按钮的位置
-        for (var i = 0; i < this.data.categoryList.length; i++) {
-            var item = this.data.categoryList[i];
-            if (item.cid == category.cid) {
-                var index = i - 2 > 0 ? i - 2 : 0;
-                this.setData({
-                    toCategory: 'category_' + this.data.categoryList[index].cid
-                });
-                break;
-            }
-        }
-        if (!this.data.comicListByCategory.length || this.data.comicListByCategory.length < this.data.total) {
-            this.getComicListByCategory();
-        }
-    },
-    //跳转到动漫详情页
-    gotoDetail(e) {
-        var comic = e.currentTarget.dataset.comic;
-        wx.navigateTo({
-            url: '/pages/detail/index?comic=' + encodeURIComponent(JSON.stringify(comic))
-        });
-    },
-    //加载漫画列表
-    getComicListByCategory() {
-        var self = this;
-        if (this.data.comicListByCategory.length && this.data.comicListByCategory.length >= this.data.total) {
-            return;
-        }
-        wx.request({
-            url: host + '/comic?cid='+this.data.nowCategory.cid+'&page='+this.data.page+'&size='+this.data.size,
-            success(res) {
-                if (res.statusCode == 200 && res.data.list && res.data.list.length) {
-                    res.data.list.map((item) => {
-                        item.lastupdatetime = util.formatTime(item.lastupdatets, 'yyyy/MM/dd').slice(2);
-                    });
-                    self.setData({
-                        comicListByCategory: self.data.page == 1 ? res.data.list : self.data.comicListByCategory.concat(res.data.list),
-                        total: res.data.size
-                    });
-                }
-            }
-        })
-    },
-    //加载更多漫画列表
-    loadMore() {
-        this.setData({
-            page: this.data.page+1
-        });
-        this.getComicListByCategory();
     },
     onLoad: function() {
         if (app.globalData.userInfo) {
@@ -132,12 +53,24 @@ Page({
         this.getCategory();
         this.getRecommend();
     },
-    getUserInfo: function(e) {
-        console.log(e)
-        app.globalData.userInfo = e.detail.userInfo
+    onPullDownRefresh() {
+        if (this.data.nowCategory) {
+            this.refreshCategory();
+        } else {
+            this.getCategory();
+            this.getRecommend();
+        }
+    },
+    //跳转到动漫详情页
+    gotoDetail(e) {
+        var comic = e.currentTarget.dataset.comic;
+        wx.navigateTo({
+            url: '/pages/detail/index?comic=' + encodeURIComponent(JSON.stringify(comic))
+        });
+    },
+    bannerChang(e) {
         this.setData({
-            userInfo: e.detail.userInfo,
-            hasUserInfo: true
+            currentBannerIndex: e.detail.current
         })
     },
     //获取所有分类
@@ -167,13 +100,13 @@ Page({
                     })
                     var allRec = [];
                     var banner = [];
-                    res.data.map((item)=>{
+                    res.data.map((item) => {
                         allRec = allRec.concat(item.list);
                     });
                     //随机生成四个banner图
                     while (banner.length < 5 && banner.length < allRec.length) {
-                        var item = allRec[Math.floor(Math.random()*allRec.length)];
-                        if(banner.indexOf(item) == -1) {
+                        var item = allRec[Math.floor(Math.random() * allRec.length)];
+                        if (banner.indexOf(item) == -1) {
                             banner.push(item);
                         }
                     }
@@ -184,5 +117,76 @@ Page({
 
             }
         })
+    },
+    //显隐分类弹出框
+    toggleCategory(e) {
+        this.setData({
+            showCategoryDialog: !this.data.showCategoryDialog
+        });
+    },
+    //选择某个分类
+    slectCategory(e) {
+        var category = e.currentTarget.dataset.category;
+        //防止重复点击
+        if (this.data.nowCategory.cid == category.cid) {
+            return;
+        }
+        this.setData({
+            comicListByCategory: [],
+            total: -1,
+            nowCategory: category,
+            showCategoryDialog: false,
+            page: 1
+        });
+        //目录滚动到当前按钮的前两个按钮的位置
+        for (var i = 0; i < this.data.categoryList.length; i++) {
+            var item = this.data.categoryList[i];
+            if (item.cid == category.cid) {
+                var index = i - 2 > 0 ? i - 2 : 0;
+                this.setData({
+                    toCategory: 'category_' + this.data.categoryList[index].cid
+                });
+                break;
+            }
+        }
+        this.getComicListByCategory();
+    },
+    //刷新分类列表
+    refreshCategory() {
+        this.setData({
+            comicListByCategory: [],
+            total: -1,
+            page: 1
+        });
+        this.getComicListByCategory();
+    },
+    //加载漫画列表
+    getComicListByCategory() {
+        var self = this;
+        if (this.data.comicListByCategory.length && this.data.comicListByCategory.length >= this.data.total) {
+            return;
+        }
+        wx.request({
+            url: host + '/comic?cid=' + this.data.nowCategory.cid + '&page=' + this.data.page + '&size=' + this.data.size,
+            success(res) {
+                wx.stopPullDownRefresh();
+                if (res.statusCode == 200 && res.data.list && res.data.list.length) {
+                    res.data.list.map((item) => {
+                        item.lastupdatetime = util.formatTime(item.lastupdatets, 'yyyy/MM/dd').slice(2);
+                    });
+                    self.setData({
+                        comicListByCategory: self.data.page == 1 ? res.data.list : self.data.comicListByCategory.concat(res.data.list),
+                        total: res.data.size
+                    });
+                }
+            }
+        })
+    },
+    //加载更多分类下的漫画列表
+    loadMore() {
+        this.setData({
+            page: this.data.page + 1
+        });
+        this.getComicListByCategory();
     }
 })
