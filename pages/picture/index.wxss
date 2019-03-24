@@ -6,9 +6,12 @@
     height: 100%;
 }
 
+.image_w {
+    overflow: auto;
+}
+
 .scroll_w image {
     display: block;
-    width: 100%;
 }
 
 .next_chapter:active {

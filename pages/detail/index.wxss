@@ -216,7 +216,7 @@ button.button-hover {
     margin-top: 30rpx;
 }
 
-.empty_tip {
+.loading_tip {
     position: absolute;
     top: 50%;
     width: 100%;

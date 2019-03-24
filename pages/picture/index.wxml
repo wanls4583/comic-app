@@ -1,6 +1,8 @@
 <!--index.wxml-->
 <view class='container'>
     <scroll-view class='scroll_w' scroll-y lower-threshold='2000rpx' bindscrolltolower='loadMore' bindscroll='scroll'>
-        <image src='{{item.url}}' class='{{item.showId && "chapter_"+item.chapterid}}' mode='widthFix' wx:for='{{pics}}' wx:key='{{index}}' data-pic='{{item.url}}' bindtap='preview'></image>
+        <view class='image_w' bindtouchstart='touchStartHandle' bindtouchmove='touchMoveHandle'>
+            <image wx:for='{{pics}}' wx:key='{{index}}' src='{{item.url}}' style='width:{{imgScale*100+"%"}}' class='{{item.showId && "chapter_"+item.chapterid}}' mode='widthFix' data-pic='{{item.url}}' bindtap='preview'></image>
+        </view>
     </scroll-view>
 </view>

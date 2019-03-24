@@ -6,7 +6,7 @@ Page({
         showDes: true,
         comic: {},
         chapterList: [],
-        hasChapter: true
+        loadingStatus: 0
     },
     onLoad: function(option) {
         if (!option.comic) {
@@ -76,11 +76,11 @@ Page({
                         chapterList: res.data.sort((arg1, arg2) => {
                             return arg1.c_order - arg2.c_order;
                         }),
-                        hasChapter: res.data.length > 0
+                        loadingStatus: 1
                     })
                 } else {
                     self.setData({
-                        hasChapter: false
+                        loadingStatus: -1
                     })
                 }
             }

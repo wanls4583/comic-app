@@ -5,7 +5,8 @@ const host = require('../../config/index.js').httpHost;
 Page({
     data: {
         allPic: [],
-        pics: []
+        pics: [],
+        imgScale: 1, //图片缩放比例
     },
     init() {
         var chapterList = wx.getStorageSync('chapterList');
@@ -22,7 +23,7 @@ Page({
         this.getPics();
     },
     onLoad: function(option) {
-        this.init();  
+        this.init();
     },
     preview(e) {
         var url = e.currentTarget.dataset.pic;
@@ -58,6 +59,7 @@ Page({
         var chapterList = this.originChapterList.concat([]);
         var title = chapterList[0].name;
         setTitle();
+
         function setTitle() {
             if (!chapterList.length) {
                 //设置标题
@@ -84,7 +86,7 @@ Page({
         }
     },
     getPics() {
-        if(!this.chapterList.length) {
+        if (!this.chapterList.length) {
             return;
         }
         var self = this;
@@ -111,5 +113,35 @@ Page({
                 }
             }
         })
+    },
+    touchStartHandle(e) {
+        // 单手指缩放开始，也不做任何处理 
+        if (e.touches.length == 1) {
+            return
+        }
+        var xMove = e.touches[1].clientX - e.touches[0].clientX;
+        var yMove = e.touches[1].clientY - e.touches[0].clientY;
+        this.distance = Math.sqrt(xMove * xMove + yMove * yMove);
+    },
+    touchMoveHandle(e) {
+        // 单手指缩放我们不做任何操作 
+        if (e.touches.length == 1) {
+            return
+        }
+        var xMove = e.touches[1].clientX - e.touches[0].clientX;
+        var yMove = e.touches[1].clientY - e.touches[0].clientY;
+        var distance = Math.sqrt(xMove * xMove + yMove * yMove);
+        var distanceDiff = distance - this.distance;
+        var newScale = this.data.imgScale + 0.00005 * distanceDiff
+        if (newScale >= 2) {
+            newScale = 2;
+        } else if (newScale <= 1) {
+            newScale = 1;
+            //小于1以后，以该距离为初始距离
+            this.distance = distance;
+        }
+        this.setData({
+            imgScale: newScale
+        });
     }
 })
