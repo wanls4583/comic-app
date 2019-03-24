@@ -1,5 +1,5 @@
 <!--index.wxml-->
-<view class="container" scroll-y>
+<view class="container">
     <view class='menu_btn_w'>
         <button plain='{{true}}' class='{{showDes && "active"}}' data-tab='1' bindtap='toggleTab'>简介</button>
         <button plain='{{true}}' class='{{!showDes && "active"}}' data-tab='2' bindtap='toggleTab'>目录</button>
@@ -53,7 +53,7 @@
             </view>
             <scroll-view scroll-y class='catalog_list_w'>
                 <block wx:if='{{chapterList.length}}'>
-                    <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
+                    <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' bindtap='gotoPicture'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
                 </block>
                 <view wx:else class='empty_tip'>暂无章节~</view>
             </scroll-view>

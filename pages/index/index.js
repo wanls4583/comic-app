@@ -23,6 +23,10 @@ Page({
         currentBannerIndex: 0,
         banner: []
     },
+    onPullDownRefresh() {
+        this.getCategory();
+        this.getRecommend();
+    },
     bannerChang(e) {
         this.setData({
             currentBannerIndex: e.detail.current
@@ -156,6 +160,7 @@ Page({
         wx.request({
             url: host + '/recommend',
             success(res) {
+                wx.stopPullDownRefresh();
                 if (res.statusCode == 200 && res.data && res.data.length) {
                     self.setData({
                         recommend: res.data

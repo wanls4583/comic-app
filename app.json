@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/center/index",
-    "pages/detail/index"
+    "pages/detail/index",
+    "pages/picture/index"
   ],
   "tabBar": {
     "color": "#8a8a8a",
@@ -27,7 +28,6 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#7e6353",
-    "navigationBarTitleText": "漫画",
     "navigationBarTextStyle": "white"
   }
 }

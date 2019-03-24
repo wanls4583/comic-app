@@ -2,7 +2,7 @@
 <view class='container'>
     <!-- 模糊背景 -->
     <view class='home_bg'>
-        <image src='/image/bg.jpg'></image>
+        <image src='{{banner.length && banner[0].showpicurlb || "/image/bg.jpg"}}'></image>
     </view>
     <!-- 搜索框 -->
     <view class='search_w'>

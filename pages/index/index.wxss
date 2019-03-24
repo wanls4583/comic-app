@@ -5,7 +5,7 @@
     top: 0;
     bottom: 0;
     width: 100%;
-    filter: blur(50rpx);
+    filter: blur(40rpx);
     overflow: hidden;
     z-index: 0;
 }
@@ -24,7 +24,7 @@
     z-index: 2;
     width: 100%;
     background: linear-gradient(#7e6353, #584d42);
-    opacity: 0.96;
+    opacity: 0.98;
 }
 
 .category_dialog_icon_close {
@@ -55,7 +55,7 @@
     padding: 0 20rpx;
     margin-right: 40rpx;
     margin-bottom: 40rpx;
-    background-color: rgba(256, 256, 256, 0.2);
+    background-color: rgba(256, 256, 256, 0.35);
     border-radius: 4rpx;
     font-size: 24rpx;
     color: #fff;
@@ -70,7 +70,7 @@
 
 .recommend_comic_scroll, .category_comic_scroll {
     position: absolute;
-    top: 162rpx;
+    top: 172rpx;
     bottom: 0;
     z-index: 1;
     width: 100;
@@ -101,8 +101,8 @@
 .category_w {
     position: relative;
     z-index: 1;
-    height: 90rpx;
-    line-height: 90rpx;
+    height: 100rpx;
+    line-height: 100rpx;
     display: flex;
     justify-content: space-between;
     color: #fff;
@@ -117,8 +117,8 @@
 }
 
 .category_w .scroll_w .item {
-    height: 90rpx;
-    line-height: 90rpx;
+    height: 100rpx;
+    line-height: 100rpx;
     margin-left: 40rpx;
     display: inline-block;
     color: #fff;
@@ -139,7 +139,7 @@
     width: 40rpx;
     height: 34rpx;
     vertical-align: top;
-    margin-top: 28rpx;
+    margin-top: 33rpx;
 }
 
 .banner_w {

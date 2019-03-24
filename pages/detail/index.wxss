@@ -156,6 +156,8 @@ button.button-hover {
 }
 
 .catalog_num_w {
+    width: 50%;
+    overflow: hidden;
     text-align: center;
 }
 
@@ -176,6 +178,9 @@ button.button-hover {
     font-size: 24rpx;
     line-height: 54rpx;
     color: #999;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .catalog_name:active, .catalog_continue:active {
@@ -198,6 +203,9 @@ button.button-hover {
     font-size: 24rpx;
     line-height: 60rpx;
     padding: 0 20rpx;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .catalog_item:active {

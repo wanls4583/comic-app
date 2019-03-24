@@ -1,0 +1,6 @@
+<!--index.wxml-->
+<view class='container'>
+    <scroll-view class='scroll_w' scroll-y lower-threshold='2000rpx' bindscrolltolower='loadMore' bindscroll='scroll'>
+        <image src='{{item.url}}' class='{{item.showId && "chapter_"+item.chapterid}}' mode='widthFix' wx:for='{{pics}}' wx:key='{{index}}' data-pic='{{item.url}}' bindtap='preview'></image>
+    </scroll-view>
+</view>
