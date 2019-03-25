@@ -1,0 +1,33 @@
+<!--index.wxml-->
+<view class='container'>
+    <!-- 模糊背景 -->
+    <view class='home_bg'>
+        <image src='{{dataList.length && dataList[0].showpicurlb || "/image/bg.jpg"}}'></image>
+    </view>
+    <!-- 搜索框 -->
+    <view class='search_w'>
+        <view class='search_input_w' bindtap='clickSearch'>
+            <view wx:if='{{showPlace}}' class='placeholder'>
+                <image src='/image/icon_search.png'></image>
+                <text>漫画名 作者</text>
+            </view>
+            <input class='search_input' value='{{searchKey}}' bindconfirm='searchConfirm' bindblur='searchBlur'></input>
+        </view>
+        <view wx:if='{{showCancel}}' class='cancel_search' bindtap='searchCancel'>取消</view>
+    </view>
+    <scroll-view class='comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx'>
+        <!-- 某分类下的漫画列表 -->
+        <view class='item' wx:for='{{comicList}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
+            <view class='item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
+            <view class='item_title'>{{item.title}}</view>
+            <view class='item_bottom_w'>
+                <view class='item_new'>{{item.showlastpartname}}</view>
+                <view class='item_time'>{{item.lastupdatetime}}</view>
+            </view>
+        </view>
+        <view wx:if='{{total > -1 && total==comicList.length}}' class='no_more'>
+            <image mode='widthFix' src="/image/icon_end.png"></image>
+            <text>没有更多了~</text>
+        </view>
+    </scroll-view>
+</view>

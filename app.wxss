@@ -13,7 +13,7 @@ page {
     box-sizing: border-box;
 }
 
-view {
+view, input {
     box-sizing: border-box;
 }
 

@@ -61,6 +61,12 @@ Page({
             this.getRecommend();
         }
     },
+    //跳到搜索页
+    gotoSearch() {
+        wx.navigateTo({
+            url: '/pages/search/index'
+        });
+    },
     //跳转到动漫详情页
     gotoDetail(e) {
         var comic = e.currentTarget.dataset.comic;

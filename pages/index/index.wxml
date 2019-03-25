@@ -5,7 +5,7 @@
         <image src='{{banner.length && banner[0].showpicurlb || "/image/bg.jpg"}}'></image>
     </view>
     <!-- 搜索框 -->
-    <view class='search_w'>
+    <view class='search_w' bindtap='gotoSearch'>
         <image src='/image/icon_search.png'></image>
         <text>漫画名 作者</text>
     </view>
