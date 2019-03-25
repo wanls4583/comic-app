@@ -43,5 +43,10 @@ Page({
             userInfo: e.detail.userInfo,
             hasUserInfo: true
         })
+    },
+    gotoHistory() {
+        wx.navigateTo({
+            url: '/pages/history/index'
+        })
     }
 })

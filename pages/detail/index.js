@@ -6,12 +6,14 @@ Page({
         showDes: true,
         comic: {},
         chapterList: [],
-        loadingStatus: 0
+        loadingStatus: 0,
+        historyNum: 0
     },
     onLoad: function(option) {
         if (!option.comic) {
             return;
         }
+        var self = this;
         var comic = JSON.parse(decodeURIComponent(option.comic));
         if (comic.status == 1) {
             comic.status = '完结';
@@ -30,15 +32,104 @@ Page({
         wx.setNavigationBarTitle({
             title: comic.title
         });
+        //存储漫画打开记录
+        wx.getStorage({
+            key: 'comic_history',
+            complete: function (res) {
+                var list = [];
+                var _comic = JSON.parse(decodeURIComponent(option.comic));
+                if (res.data) {
+                    list = JSON.parse(res.data);
+                }
+                for (var i = 0; i < list.length; i++) {
+                    var obj = list[i];
+                    //已经有记录了则将该记录移除
+                    if (obj.comicid == _comic.comicid) {
+                        list.splice(i, 1);
+                        break;
+                    }
+                }
+                //添加新纪录
+                list.unshift(_comic);
+                wx.setStorage({
+                    key: 'comic_history',
+                    data: JSON.stringify(list),
+                });
+            }
+        });
+    },
+    onShow() {
+        var self = this;
+        //获取章节观看记录
+        wx.getStorage({
+            key: 'chapter_history',
+            success: function (res) {
+                var list = JSON.parse(res.data);
+                for (var i = 0; i < list.length; i++) {
+                    var obj = list[i];
+                    //已经有记录了则将该记录移除
+                    if (obj.comicid == self.data.comic.comicid) {
+                        self.setData({
+                            historyNum: obj.chapter.c_order
+                        });
+                    }
+                }
+            }
+        })
     },
     onPullDownRefresh() {
         this.getCategoryAndArea();
         this.getChpater();
     },
+    continueRead() {
+        if (!this.data.historyNum) {
+            return;
+        }
+        var chapterList = this.data.chapterList.slice(this.data.historyNum - 1);
+        wx.setStorageSync('chapterList', JSON.stringify(chapterList));
+        wx.navigateTo({
+            url: '/pages/picture/index'
+        });
+    },
     gotoPicture(e) {
         var index = e.currentTarget.dataset.index;
+        this.gotoPictureByIndex(index);
+    },
+    gotoLast() {
+        if(this.data.chapterList.length) {
+            this.gotoPictureByIndex(this.data.chapterList.length - 1);
+        }
+    },
+    gotoPictureByIndex(index) {
+        var self = this;
         var chapterList = this.data.chapterList.slice(index);
         wx.setStorageSync('chapterList', JSON.stringify(chapterList));
+        wx.getStorage({
+            key: 'chapter_history',
+            complete: function(res) {
+                var list = [];
+                if (res.data) {
+                    list = JSON.parse(res.data);
+                }
+                for (var i = 0; i < list.length; i++) {
+                    var obj = list[i];
+                    //已经有记录了则将该记录移除
+                    if (obj.comicid == self.data.comic.comicid) {
+                        list.splice(i, 1);
+                        break;
+                    }
+                }
+                //添加新纪录
+                list.unshift({
+                    comicid: self.data.comic.comicid,
+                    chapter: self.data.chapterList[index]
+                });
+                wx.setStorage({
+                    key: 'chapter_history',
+                    data: JSON.stringify(list),
+                });
+            },
+        });
         wx.navigateTo({
             url: '/pages/picture/index'
         });

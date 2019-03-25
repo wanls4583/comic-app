@@ -1,8 +1,8 @@
 <!--index.wxml-->
 <view class='container'>
     <!-- 模糊背景 -->
-    <view class='home_bg'>
-        <image src='{{dataList.length && dataList[0].showpicurlb || "/image/bg.jpg"}}'></image>
+    <view class='blur_bg'>
+        <image src='{{comicList.length && comicList[0].showpicurlb || "/image/bg.jpg"}}'></image>
     </view>
     <!-- 搜索框 -->
     <view class='search_w'>

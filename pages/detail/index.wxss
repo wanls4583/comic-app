@@ -175,6 +175,7 @@ button.button-hover {
 }
 
 .catalog_name,.catalog_continue {
+    padding: 0 40rpx;
     font-size: 24rpx;
     line-height: 54rpx;
     color: #999;
@@ -184,7 +185,7 @@ button.button-hover {
 }
 
 .catalog_name:active, .catalog_continue:active {
-    background-color: rgba(256, 256, 256, 0.1);
+    color: #38ffff;
 }
 
 .catalog_list_w {

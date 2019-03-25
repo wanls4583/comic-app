@@ -1,0 +1,19 @@
+<!--index.wxml-->
+<view class='container'>
+    <!-- 模糊背景 -->
+    <view class='blur_bg'>
+        <image src='{{comicHistory.length && comicHistory[0].showpicurlb || "/image/bg.jpg"}}'></image>
+    </view>
+    <scroll-view wx:if='{{comicHistory.length}}' class='comic_scroll' scroll-y>
+        <!-- 某分类下的漫画列表 -->
+        <view class='item' wx:for='{{comicHistory}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
+            <view class='item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
+            <view class='item_title'>{{item.title}}</view>
+            <view class='item_bottom_w'>
+                <view class='item_new'>{{item.showlastpartname}}</view>
+                <view class='item_time'>{{item.lastupdatetime}}</view>
+            </view>
+        </view>
+    </scroll-view>
+    <view wx:else class='empty_list'>暂无历史记录~</view>
+</view>

@@ -4,7 +4,8 @@
     "pages/search/index",
     "pages/center/index",
     "pages/detail/index",
-    "pages/picture/index"
+    "pages/picture/index",
+    "pages/history/index"
   ],
   "tabBar": {
     "color": "#8a8a8a",

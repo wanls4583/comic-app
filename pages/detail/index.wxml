@@ -43,12 +43,12 @@
                 <view class='catalog_num_w'>
                     <view class='catalog_num'>{{comic.count}}</view>
                     <view class='catalog_new'>最近更新</view>
-                    <view class='catalog_name'>{{comic.count && comic.showlastpartname || '敬请期待'}}</view>
+                    <view class='catalog_name' bindtap='gotoLast'>{{comic.showlastpartname}}</view>
                 </view>
                 <view class='catalog_num_w'>
-                    <view class='catalog_num'>0</view>
+                    <view class='catalog_num'>{{historyNum}}</view>
                     <view class='catalog_new'>上次看到</view>
-                    <view class='catalog_continue'>继续浏览</view>
+                    <view class='catalog_continue' bindtap='continueRead'>{{historyNum ? '继续浏览' : '无浏览记录'}}</view>
                 </view>
             </view>
             <scroll-view scroll-y class='catalog_list_w'>
