@@ -11,7 +11,7 @@
                 <image src='/image/icon_search.png'></image>
                 <text>漫画名 作者</text>
             </view>
-            <input class='search_input' value='{{searchKey}}' bindconfirm='searchConfirm' bindblur='searchBlur'></input>
+            <input class='search_input' focus='{{focus}}' auto-focus='{{focus}}' value='{{searchKey}}' bindconfirm='searchConfirm' bindblur='searchBlur'></input>
         </view>
         <view wx:if='{{showCancel}}' class='cancel_search' bindtap='searchCancel'>取消</view>
     </view>

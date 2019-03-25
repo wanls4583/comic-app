@@ -10,10 +10,22 @@ Page({
         total: -1,
         page: 1,
         size: 20,
-        showPlace: true,
-        showCancel: false
+        showPlace: false,
+        showCancel: false,
+        focus: false
     },
-    onLoad: function() {},
+    onLoad: function() {
+        this.setData({
+            focus: true
+        });
+    },
+    //跳转到动漫详情页
+    gotoDetail(e) {
+        var comic = e.currentTarget.dataset.comic;
+        wx.navigateTo({
+            url: '/pages/detail/index?comic=' + encodeURIComponent(JSON.stringify(comic))
+        });
+    },
     clickSearch() {
         this.setData({
             showPlace: false
@@ -63,7 +75,7 @@ Page({
             url: host + '/comic?search=' + this.data.searchKey + '&page=' + this.data.page + '&size=' + this.data.size,
             success(res) {
                 wx.stopPullDownRefresh();
-                if (res.statusCode == 200 && res.data.list && res.data.list.length) {
+                if (res.statusCode == 200 && res.data.list) {
                     res.data.list.map((item) => {
                         item.lastupdatetime = util.formatTime(item.lastupdatets, 'yyyy/MM/dd').slice(2);
                     });
