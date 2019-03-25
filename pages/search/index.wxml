@@ -11,11 +11,19 @@
                 <image src='/image/icon_search.png'></image>
                 <text>漫画名 作者</text>
             </view>
-            <input class='search_input' focus='{{focus}}' auto-focus='{{focus}}' value='{{searchKey}}' bindconfirm='searchConfirm' bindblur='searchBlur'></input>
+            <input class='search_input' focus='{{autoFocus}}' auto-focus='{{autoFocus}}' value='{{searchKey}}' bindconfirm='searchConfirm' bindblur='searchBlur' bindfocus='searchFocus' bindinput='searchInput'></input>
         </view>
         <view wx:if='{{showCancel}}' class='cancel_search' bindtap='searchCancel'>取消</view>
     </view>
-    <scroll-view class='comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx'>
+    <view wx:if='{{showHistory}}'  class='search_history_w'>
+        <view class='history_title'>搜索历史</view>
+        <view wx:if='{{history.length}}' class='history_item_w'>
+            <view wx:for='{{history}}' wx:key='{{index}}' class='history_item' data-text='{{item}}' bindtap='selectHistory'>{{item}}</view>
+        </view>
+        <view wx:else class='no_history'>暂无历史记录~</view>
+        <view wx:if='{{history.length}}' class='clear_history' bindtap='clearHistory'>清除历史记录</view>
+    </view>
+    <scroll-view hidden='{{showHistory}}' class='comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx'>
         <!-- 某分类下的漫画列表 -->
         <view class='item' wx:for='{{comicList}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
             <view class='item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
