@@ -32,7 +32,7 @@
             </view>
             <view class='detail_des_w'>
                 <view class='detail_des_title'>故事简介</view>
-                <view class='detail_des'>{{comic.content}}</view>
+                <scroll-view class='detail_des'>{{comic.content}}</scroll-view>
             </view>
         </view>
     </view>

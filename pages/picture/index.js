@@ -7,6 +7,7 @@ Page({
         allPic: [],
         pics: [],
         imgScale: 1, //图片缩放比例
+        picIndex: ''
     },
     init() {
         var chapterList = wx.getStorageSync('chapterList');
@@ -25,22 +26,6 @@ Page({
     onLoad: function(option) {
         this.init();
     },
-    preview(e) {
-        var url = e.currentTarget.dataset.pic;
-        // wx.request({
-        //     url: url,
-        //     method: 'GET',
-        //     responseType: 'arraybuffer',
-        //     success: function (res) {
-        //         let base64 = wx.arrayBufferToBase64(res.data);
-        //         var url = 'data:image/jpg;base64,' + base64;
-        //         wx.previewImage({
-        //             current: url,
-        //             urls: [url]
-        //         })
-        //     }
-        // });
-    },
     loadMore() {
         if (this.data.pics.length < this.data.allPic.length) {
             var pics = this.data.pics.concat(this.data.allPic.slice(this.data.pics.length, this.data.pics.length + 20));
@@ -51,15 +36,11 @@ Page({
             this.getPics();
         }
     },
-    nextChapter() {
-        this.getPics();
-    },
     scroll(e) {
         var scrollTop = e.detail.scrollTop;
         var chapterList = this.originChapterList.concat([]);
         var title = chapterList[0].name;
         setTitle();
-
         function setTitle() {
             if (!chapterList.length) {
                 //设置标题
@@ -114,17 +95,42 @@ Page({
             }
         })
     },
+    //双击缩放
+    clickToScale(e) {
+        var index = e.currentTarget.dataset.index
+        var scale = this.data.imgScale;
+        if (Date.now() - this.startTs < 300) {
+            if ([1, 1.5, 2].indexOf(scale) != -1) {
+                scale += 0.5;
+                if (scale > 2) {
+                    scale = 1;
+                }
+            } else {
+                scale = 1;
+            }
+            this.setData({
+                imgScale: scale,
+            });
+            setTimeout(() => {
+                this.setData({
+                    picIndex: 'pic_' + index
+                });
+            }, 0);
+        }
+        this.startTs = Date.now();
+    },
     touchStartHandle(e) {
-        // 单手指缩放开始，也不做任何处理 
         if (e.touches.length == 1) {
+            //单手双击缩放
             return
         }
+        //双手拉伸缩放
+        var index = e.currentTarget.dataset.index;
         var xMove = e.touches[1].clientX - e.touches[0].clientX;
         var yMove = e.touches[1].clientY - e.touches[0].clientY;
         this.distance = Math.sqrt(xMove * xMove + yMove * yMove);
     },
     touchMoveHandle(e) {
-        // 单手指缩放我们不做任何操作 
         if (e.touches.length == 1) {
             return
         }

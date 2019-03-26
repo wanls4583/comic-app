@@ -145,6 +145,7 @@
 .banner_w {
     position: relative;
     height: 345rpx;
+    box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.5);
 }
 
 .banner_item {

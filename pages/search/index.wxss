@@ -1,6 +1,6 @@
 /**index.wxss**/
 
-blur_bg {
+.blur_bg {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -10,7 +10,7 @@ blur_bg {
     z-index: -1;
 }
 
-blur_bg image {
+.blur_bg image {
     width: 100%;
     height: 90%;
     margin-top: 10%;
