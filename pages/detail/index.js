@@ -37,24 +37,23 @@ Page({
             key: 'comic_history',
             complete: function (res) {
                 var list = [];
-                var _comic = JSON.parse(decodeURIComponent(option.comic));
                 if (res.data) {
                     list = JSON.parse(res.data);
                 }
                 for (var i = 0; i < list.length; i++) {
                     var obj = list[i];
-                    //已经有记录了则将该记录移除
-                    if (obj.comicid == _comic.comicid) {
+                    //已经有记录了则更新该记录，并且移动到第一个位置
+                    if (obj.comic.comicid == self.data.comic.comicid) {
+                        obj.comic = self.data.comic;
                         list.splice(i, 1);
+                        list.unshift(obj);
+                        wx.setStorage({
+                            key: 'comic_history',
+                            data: JSON.stringify(list),
+                        });
                         break;
                     }
                 }
-                //添加新纪录
-                list.unshift(_comic);
-                wx.setStorage({
-                    key: 'comic_history',
-                    data: JSON.stringify(list),
-                });
             }
         });
     },
@@ -62,13 +61,13 @@ Page({
         var self = this;
         //获取章节观看记录
         wx.getStorage({
-            key: 'chapter_history',
+            key: 'comic_history',
             success: function (res) {
                 var list = JSON.parse(res.data);
                 for (var i = 0; i < list.length; i++) {
                     var obj = list[i];
                     //已经有记录了则将该记录移除
-                    if (obj.comicid == self.data.comic.comicid) {
+                    if (obj.comic.comicid == self.data.comic.comicid) {
                         self.setData({
                             historyNum: obj.chapter.c_order
                         });
@@ -105,7 +104,7 @@ Page({
         var chapterList = this.data.chapterList.slice(index);
         wx.setStorageSync('chapterList', JSON.stringify(chapterList));
         wx.getStorage({
-            key: 'chapter_history',
+            key: 'comic_history',
             complete: function(res) {
                 var list = [];
                 if (res.data) {
@@ -114,18 +113,18 @@ Page({
                 for (var i = 0; i < list.length; i++) {
                     var obj = list[i];
                     //已经有记录了则将该记录移除
-                    if (obj.comicid == self.data.comic.comicid) {
+                    if (obj.comic.comicid == self.data.comic.comicid) {
                         list.splice(i, 1);
                         break;
                     }
                 }
                 //添加新纪录
                 list.unshift({
-                    comicid: self.data.comic.comicid,
+                    comic: self.data.comic,
                     chapter: self.data.chapterList[index]
                 });
                 wx.setStorage({
-                    key: 'chapter_history',
+                    key: 'comic_history',
                     data: JSON.stringify(list),
                 });
             },

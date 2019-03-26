@@ -20,10 +20,10 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/center/index",
-        "iconPath": "image/icon_category.png",
-        "selectedIconPath": "image/icon_category_h.png",
-        "text": "我的"
+        "pagePath": "pages/history/index",
+        "iconPath": "image/icon_book.png",
+        "selectedIconPath": "image/icon_book_h.png",
+        "text": "书架"
       }
     ]
   },

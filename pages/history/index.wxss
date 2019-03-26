@@ -17,9 +17,48 @@
     opacity: 0.2;
 }
 
+.tab_w {
+    height: 100rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20rpx;
+}
+
+.tab_item_w {
+    display: flex;
+}
+
+.tab_item {
+    width:100rpx;
+    font-size: 30rpx;
+    line-height: 80rpx;
+    color: #fff;
+    border-bottom: 4rpx solid rgba(256, 256, 256, 0.3);
+    text-align: center;
+}
+
+.tab_item.active {
+    border-bottom: 4rpx solid rgba(256, 256, 256, 1);
+}
+
+.delete {
+    padding: 10rpx;
+    display: flex;
+    align-items: center;
+}
+
+.delete image{
+    width: 34rpx;
+}
+
+.delete:active {
+    background-color: rgba(256, 256, 256, 0.1)
+}
+
 .comic_scroll {
     position: absolute;
-    top: 20rpx;
+    top: 120rpx;
     bottom: 0;
     z-index: 1;
     width: 100;

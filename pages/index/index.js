@@ -101,14 +101,17 @@ Page({
             success(res) {
                 wx.stopPullDownRefresh();
                 if (res.statusCode == 200 && res.data && res.data.length) {
-                    self.setData({
-                        recommend: res.data
-                    })
                     var allRec = [];
                     var banner = [];
                     res.data.map((item) => {
                         allRec = allRec.concat(item.list);
                     });
+                    allRec.map((item)=>{
+                        item.lastupdatetime = util.passTime(item.lastupdatets);
+                    });
+                    self.setData({
+                        recommend: res.data
+                    })
                     //随机生成四个banner图
                     while (banner.length < 5 && banner.length < allRec.length) {
                         var item = allRec[Math.floor(Math.random() * allRec.length)];
