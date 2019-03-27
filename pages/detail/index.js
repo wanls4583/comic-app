@@ -84,8 +84,10 @@ Page({
         if (!this.data.historyNum) {
             return;
         }
-        var chapterList = this.data.chapterList.slice(this.data.historyNum - 1);
-        wx.setStorageSync('chapterList', JSON.stringify(chapterList));
+        var obj = {}
+        obj.chapterList = this.data.chapterList;
+        obj.startChapterIndex = this.data.historyNum - 1;
+        wx.setStorageSync('chapterList', JSON.stringify(obj));
         wx.navigateTo({
             url: '/pages/picture/index'
         });
@@ -101,8 +103,10 @@ Page({
     },
     gotoPictureByIndex(index) {
         var self = this;
-        var chapterList = this.data.chapterList.slice(index);
-        wx.setStorageSync('chapterList', JSON.stringify(chapterList));
+        var obj = {};
+        obj.chapterList = this.data.chapterList;
+        obj.startChapterIndex = index;
+        wx.setStorageSync('chapterList', JSON.stringify(obj));
         wx.getStorage({
             key: 'comic_history',
             complete: function(res) {

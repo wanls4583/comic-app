@@ -124,11 +124,8 @@ button.button-hover {
     margin-right: 10rpx;
 }
 
-.detail_des_w {
-    margin-top: 30rpx;
-}
-
 .detail_des_title {
+    margin-top: 30rpx;
     height: 80rpx;
     line-height: 80rpx;
     padding-left: 30rpx;

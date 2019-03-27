@@ -30,10 +30,9 @@
                     <view wx:else class='detail_category'>--</view>
                 </view>
             </view>
-            <view class='detail_des_w'>
-                <view class='detail_des_title'>故事简介</view>
-                <scroll-view class='detail_des'>{{comic.content}}</scroll-view>
-            </view>
+            <view class='detail_des_title'>故事简介</view>
+            <!-- 1rpx边距可以触发回弹效果 -->
+            <scroll-view scroll-y class='detail_des'><view style='margin-top:1rpx'>{{comic.content}}</view></scroll-view>
         </view>
     </view>
     <view class='catalog_w' wx:else>
