@@ -52,13 +52,15 @@ Page({
             //顶部加载
         } else {
             if (this.startPicIndex > 0) {
-                //一次最多显示20条
-                var begin = this.startPicIndex - 20 > 0 ? this.startPicIndex - 20 : 0;
-                var addPic = this.allPic.slice(begin, this.startPicIndex);
+                var addPic = this.allPic.slice(0, this.startPicIndex);
                 var pics = addPic.concat(this.data.pics);
                 this.startPicIndex -= addPic.length;
                 this.setData({
                     pics: pics
+                });
+                //设置标题
+                wx.setNavigationBarTitle({
+                    title: this.chapterList[this.startChapterIndex].name.replace(/\s/g, '')
                 });
                 // this.setPicIndex = 'pic_' + addPic.length;
                 // setTimeout(() => {
@@ -78,8 +80,7 @@ Page({
     scroll(e) {
         var self = this;
         var scrollTop = e.detail.scrollTop;
-        var startChapterIndex = this.startChapterIndex >= 0 ? this.startChapterIndex : 0;
-        var chapterList = this.chapterList.slice(startChapterIndex, this.endChapterIndex);
+        var chapterList = this.chapterList.slice(this.startChapterIndex, this.endChapterIndex);
         var title = chapterList[0].name;
         this.scrollTop = scrollTop;
         if (!this.setTitleTimer) {
