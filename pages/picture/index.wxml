@@ -1,8 +1,12 @@
 <!--index.wxml-->
 <view class='container'>
-    <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' lower-threshold='2000rpx' bindscrolltolower='onLolower' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{false}}">
+    <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' upper-threshold='2000rpx' lower-threshold='2000rpx' bindscrolltolower='onLolower' bindscrolltoupper='onUpper' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{true}}">
         <view class='image_w' bindtouchstart='touchStartHandle' bindtouchmove='touchMoveHandle' bindtouchend='touchEndHandle'>
-            <image wx:for='{{pics}}' wx:key='{{index}}' src='{{item.url}}' style='width:{{imgScale*100+"%"}};height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{"pic_"+index}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
+            <view class='top_loading' wx:if='{{topLoading}}'>正在加载上一章节</view>
+            <block wx:for='{{pics}}' wx:key='{{index}}'>
+                <image src='{{item.url}}' style='width:{{imgScale*100+"%"}};height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{"pic_"+index}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
+            </block>
+            <view class='bottom_loading' wx:if='{{bottomLoading}}'>正在加载下一章节</view>
         </view>
     </scroll-view>
 </view>

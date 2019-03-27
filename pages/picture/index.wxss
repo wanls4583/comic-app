@@ -17,3 +17,11 @@
 .next_chapter:active {
     background-color: rgba(0, 0, 0, 0.1);
 }
+
+.top_loading, .bottom_loading {
+    text-align: center;
+    background: #fff;
+    color: #333;
+    font-size: 24rpx;
+    line-height: 80rpx;
+}
