@@ -67,7 +67,9 @@ Page({
                     pics: pics,
                     topLoading: false
                 }, () => {
-                    this.canLoadTop = true;
+                    setTimeout(() => {
+                        this.canLoadTop = true;
+                    }, 500);
                     //设置标题
                     wx.setNavigationBarTitle({
                         title: this.chapterList[this.startChapterIndex].name.replace(/\s/g, '')
@@ -112,14 +114,12 @@ Page({
                 this.setTitleTimer = null;
             }, 100);
         }
-        if (this.canLoadTop && scrollTop < -4 && this.startChapterIndex > 0) {
+        if (this.canLoadTop && scrollTop < -20 && this.startChapterIndex > 0) {
             this.setData({
                 topLoading: true
             });
         }
-
-        if (scrollTop == 0 && this.waiteToLoadTop) {
-            this.waiteToLoadTop = false;
+        if (scrollTop == 0 && this.canLoadTop && this.data.topLoading) {
             this.loadMore(true);
         }
 
@@ -271,8 +271,6 @@ Page({
         });
     },
     touchEndHandle(e) {
-        if(this.data.topLoading) {
-            this.waiteToLoadTop = true;
-        }
+        //touchEndHandle太快的时候偶尔会不触发
     }
 })

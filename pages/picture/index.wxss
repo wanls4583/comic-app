@@ -7,6 +7,7 @@
 }
 
 .image_w {
+    position: relative;
     overflow: auto;
 }
 
@@ -18,10 +19,30 @@
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.top_loading, .bottom_loading {
+.bottom_loading {
     text-align: center;
     background: #fff;
     color: #333;
     font-size: 24rpx;
     line-height: 80rpx;
+}
+
+.top_loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    font-size: 24rpx;
+    line-height: 80rpx;
+    color: #fff;
+    text-align: center;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.top_loading.active {
+    height: 80rpx;
 }
