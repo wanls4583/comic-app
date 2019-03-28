@@ -6,11 +6,6 @@
     height: 100%;
 }
 
-.image_w {
-    position: relative;
-    overflow: auto;
-}
-
 .scroll_w image {
     display: block;
 }

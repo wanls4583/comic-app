@@ -8,12 +8,12 @@ Page({
         imgScale: 1, //图片缩放比例
         picIndex: '',
         scrollTop: 0,
-        width: wx.getSystemInfoSync().screenWidth,
         topLoading: false,
-        bottomLoading: false
+        bottomLoading: false,
+        systemInfo: wx.getSystemInfoSync()
     },
     init() {
-        console.log(this.data.width);
+        console.log('systemInfo', this.data.systemInfo);
         var objStr = wx.getStorageSync('chapterList');
         if (!objStr) {
             return;
@@ -69,32 +69,14 @@ Page({
                 }, () => {
                     setTimeout(() => {
                         this.canLoadTop = true;
-                    }, 500);
-                    //设置标题
-                    wx.setNavigationBarTitle({
-                        title: this.chapterList[this.startChapterIndex].name.replace(/\s/g, '')
-                    });
-                    // this.setData({
-                    //     picIndex: 'pic_' + addPic.length
-                    // }, () => {
-                    //     //避免频繁加载顶部数据导致滚动闪烁
-                    //     setTimeout(() => {
-                    //         this.canLoadTop = true;
-                    //     }, 2000);
-                    // });
-                    // var query = wx.createSelectorQuery();
-                    // query.select('#pic_' + addPic.length).boundingClientRect();
-                    // query.selectViewport().scrollOffset();
-                    // query.exec(function(res) {
-                    //     self.setData({
-                    //         scrollTop: res[0].top + res[1].scrollTop - self.data.width / 750 * 80
-                    //     }, () => {
-                    //         setTimeout(() => {
-                    //             self.canLoadTop = true;
-                    //         }, 2000);
-                    //     });
-                    // });
-                    // query.exec();
+                    }, 800);
+                    //scroll事件里有延迟设置标题，这里也需要延迟，防止标题栏闪动
+                    setTimeout(()=>{
+                        //设置标题
+                        wx.setNavigationBarTitle({
+                            title: this.chapterList[this.startChapterIndex].name.replace(/\s/g, '')
+                        });
+                    }, 200);
                 });
             } else {
                 this.getPics(true);
@@ -108,19 +90,23 @@ Page({
         var chapterList = this.chapterList.slice(this.startChapterIndex, this.endChapterIndex);
         var title = chapterList[0].name;
         this.scrollTop = scrollTop;
+        //节流处理
         if (!this.setTitleTimer) {
             this.setTitleTimer = setTimeout(() => {
                 setTitle();
                 this.setTitleTimer = null;
-            }, 100);
+            }, 200);
         }
-        if (this.canLoadTop && scrollTop < -20 && this.startChapterIndex > 0) {
-            this.setData({
-                topLoading: true
-            });
-        }
-        if (scrollTop == 0 && this.canLoadTop && this.data.topLoading) {
-            this.loadMore(true);
+        //ios端下拉加载
+        if (this.data.systemInfo.platform.toLowerCase() == 'ios') {
+            if (this.canLoadTop && scrollTop < -20 && this.startChapterIndex > 0) {
+                this.setData({
+                    topLoading: true
+                });
+            }
+            if (scrollTop == 0 && this.canLoadTop && this.data.topLoading) {
+                this.loadMore(true);
+            }
         }
 
         function setTitle() {

@@ -2,11 +2,9 @@
 <view class='container' bindtouchstart='touchStartHandle' bindtouchmove='touchMoveHandle' bindtouchend='touchEndHandle'>
     <view class='top_loading {{topLoading ? "active" : ""}}'>正在加载上一章节</view>
     <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' upper-threshold='2000rpx' lower-threshold='2000rpx' bindscrolltolower='onLolower' bindscrolltoupper='onUpper' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{false}}">
-        <view class='image_w'>
-            <block wx:for='{{pics}}' wx:key='{{index}}'>
-                <image src='{{item.url}}' style='width:{{imgScale*100+"%"}};height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{"pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
-            </block>
-            <view class='bottom_loading' wx:if='{{bottomLoading}}'>正在加载下一章节</view>
-        </view>
+        <block wx:for='{{pics}}' wx:key='{{index}}'>
+            <image src='{{item.url}}' style='width:{{imgScale*100+"%"}};height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{"pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
+        </block>
+        <view class='bottom_loading' wx:if='{{bottomLoading}}'>正在加载下一章节</view>
     </scroll-view>
 </view>
