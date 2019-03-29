@@ -10,7 +10,10 @@ Page({
         scrollTop: 0,
         topLoading: false,
         bottomLoading: false,
-        systemInfo: wx.getSystemInfoSync()
+        topLoadingTip: '',
+        bottomLoadingTip: '',
+        systemInfo: wx.getSystemInfoSync(),
+        showBootomBtn: false
     },
     init() {
         console.log('systemInfo', this.data.systemInfo);
@@ -20,17 +23,27 @@ Page({
         }
         var obj = JSON.parse(objStr);
         this.chapterList = obj.chapterList;
+        this.nowChapterIndex = obj.startChapterIndex;
         this.startChapterIndex = obj.startChapterIndex; //已请求章节的开始索引
         this.endChapterIndex = obj.startChapterIndex; //已请求章节的结束(不包含)索引
         this.startPicIndex = 0; //在页面上显示的图片的开始索引
         this.endPicIndex = 0; //在页面上显示的图片的结束(不包含)索引
         this.allPic = []; //存储已经从网络获取到的图片链接
         this.canLoadTop = true; //是否可以加载上一个章节
+        if (this.chapterList.length > 1) {
+            this.setData({
+                topLoadingTip: '点击加加载上一章'
+            });
+        } else {
+            this.setData({
+                topLoadingTip: '已经是第一章了'
+            });
+        }
         //设置标题
         wx.setNavigationBarTitle({
             title: this.chapterList[obj.startChapterIndex].name.replace(/\s/g, '')
         });
-        this.getPics();
+        this.loadNextChapter(0);
     },
     onLoad: function(option) {
         this.init();
@@ -41,78 +54,193 @@ Page({
     onLolower() {
         this.loadMore();
     },
-    //加载更多图片
-    loadMore(topLoad) {
-        var self = this;
-        //底部加载
-        if (!topLoad) {
-            if (this.allPic.length > this.endPicIndex) {
-                //一次最多显示20条
-                var addPic = this.allPic.slice(this.endPicIndex, this.endPicIndex + 20);
-                var pics = this.data.pics.concat(addPic);
-                this.endPicIndex += addPic.length;
-                this.setData({
-                    pics: pics,
-                });
-            } else {
-                this.getPics();
-            }
-            //顶部加载
+    //安卓机顶部点击加载上一章
+    onTopPreChapter() {
+        this.loadPreChapter(-Infinity);
+    },
+    //底部菜单点击加载上一章
+    onPreChapter() {
+        if (this.nowChapterIndex < 1) {
+            return;
+        }
+        var chapter = this.chapterList[this.nowChapterIndex - 1];
+        var index = this.findPicIndexByChapterId(chapter.id);
+        if (index > -1) {
+            this.nowChapterIndex--;
+        }
+        this.loadPreChapter(index);
+    },
+    //底部菜单点击加载下一章
+    onNextChapter() {
+        if (this.nowChapterIndex >= this.chapterList.length) {
+            return;
+        }
+        var chapter = this.chapterList[this.nowChapterIndex + 1];
+        var index = this.findPicIndexByChapterId(chapter.id);
+        if (index > -1) {
+            this.nowChapterIndex++;
         } else {
-            if (this.startPicIndex > 0) {
-                var addPic = this.allPic.slice(0, this.startPicIndex);
-                var pics = addPic.concat(this.data.pics);
-                this.startPicIndex -= addPic.length;
-                this.setData({
-                    pics: pics,
-                    topLoading: false
-                }, () => {
-                    setTimeout(() => {
-                        this.canLoadTop = true;
-                    }, 800);
-                    //scroll事件里有延迟设置标题，这里也需要延迟，防止标题栏闪动
-                    setTimeout(()=>{
-                        //设置标题
-                        wx.setNavigationBarTitle({
-                            title: this.chapterList[this.startChapterIndex].name.replace(/\s/g, '')
-                        });
-                    }, 200);
-                });
-            } else {
-                this.getPics(true);
+            index = Infinity;
+        }
+        this.loadNextChapter(index);
+    },
+    //根据章节id查询该章节图片链接的开始索引位置
+    findPicIndexByChapterId(chapterid) {
+        for (var i = 0; i < this.allPic.length; i++) {
+            if (this.allPic[i].chapterid == chapterid) {
+                return i;
             }
+        }
+        return -1;
+    },
+    /**
+     * 加载或回到上一章
+     * preChapterstartPicIndex Number 上一章的起始索引
+     */
+    loadPreChapter(preChapterstartPicIndex) {
+        if (preChapterstartPicIndex >= 0) {
+            var addPic = this.allPic.slice(preChapterstartPicIndex, this.startPicIndex);
+            var pics = addPic.concat(this.data.pics);
+            this.startPicIndex -= addPic.length;
+            this.setData({
+                pics: pics,
+                topLoading: false
+            }, () => {
+                //防止频繁加载，画面闪动
+                setTimeout(() => {
+                    this.canLoadTop = true;
+                }, 800);
+                this.setTitle(this.nowChapterIndex);
+                this.setData({
+                    scrollTop: this.data.systemInfo.screenWidth / 750 * 80
+                });
+                this.setTopLoadingTip();
+            });
+        } else if (this.startChapterIndex > 0) {
+            var chapter = this.chapterList[this.startChapterIndex - 1];
+            this.requestTask && this.requestTask.abort();
+            this.getPics(chapter.id).then((res) => {
+                this.allPic = res.data.concat(this.allPic);
+                this.startChapterIndex--;
+                this.nowChapterIndex = this.startChapterIndex;
+                this.startPicIndex += res.data.length;
+                this.endPicIndex += res.data.length;
+                this.loadPreChapter(0);
+            });
         }
     },
-    //滚动事件
-    scroll(e) {
-        var self = this;
-        var scrollTop = e.detail.scrollTop;
-        var chapterList = this.chapterList.slice(this.startChapterIndex, this.endChapterIndex);
-        var title = chapterList[0].name;
-        this.scrollTop = scrollTop;
-        //节流处理
-        if (!this.setTitleTimer) {
-            this.setTitleTimer = setTimeout(() => {
-                setTitle();
-                this.setTitleTimer = null;
-            }, 200);
-        }
-        //ios端下拉加载
-        if (this.data.systemInfo.platform.toLowerCase() == 'ios') {
-            if (this.canLoadTop && scrollTop < -20 && this.startChapterIndex > 0) {
+    /**
+     * 去到下一章
+     * preChapterstartPicIndex Number 下一章的起始索引
+     */
+    loadNextChapter(nextChapterstartPicIndex) {
+        if (nextChapterstartPicIndex < this.allPic.length) {
+            var addPic = this.allPic.slice(nextChapterstartPicIndex);
+            var pics = addPic;
+            this.startPicIndex = nextChapterstartPicIndex;
+            this.endPicIndex = this.allPic.length;
+            this.setData({
+                pics: pics
+            }, () => {
+                this.setTitle(this.nowChapterIndex);
                 this.setData({
-                    topLoading: true
+                    scrollTop: this.data.systemInfo.screenWidth / 750 * 80
                 });
-            }
-            if (scrollTop == 0 && this.canLoadTop && this.data.topLoading) {
-                this.loadMore(true);
-            }
+                this.setBottomLoadingTip();
+            });
+        } else {
+            var chapter = this.chapterList[this.endChapterIndex];
+            nextChapterstartPicIndex = this.allPic.length;
+            this.requestTask && this.requestTask.abort();
+            this.getPics(chapter.id).then((res) => {
+                this.allPic = this.allPic.concat(res.data);
+                this.nowChapterIndex = this.endChapterIndex;
+                this.endChapterIndex++;
+                this.loadNextChapter(nextChapterstartPicIndex);
+            });
+        }
+    },
+    //底部自动加载
+    loadMore() {
+        if (this.endChapterIndex < this.chapterList.length && !this.laoding) {
+            var chapter = this.chapterList[this.endChapterIndex];
+            this.getPics(chapter.id).then((res) => {
+                this.allPic = this.allPic.concat(res.data);
+                this.endChapterIndex++;
+                this.endPicIndex += res.data.length;
+                this.setData({
+                    pics: this.data.pics.concat(res.data)
+                });
+                this.setBottomLoadingTip();
+            });
+        }
+    },
+    /**
+     * 加载图片请求
+     * chapterId Nunber 章节id
+     */
+    getPics(chapterId) {
+        var self = this;
+        self.laoding = true;
+        return new Promise((resolve) => {
+            self.requestTask = wx.request({
+                url: host + '/pic/' + chapterId,
+                success(res) {
+                    resolve(res);
+                    self.laoding = false;
+                },
+                fail(err) {
+                    reject(err);
+                    self.laoding = false;
+                }
+            })
+        });
+    },
+    //为安卓机设置顶部加载提示语
+    setTopLoadingTip() {
+        if (this.startChapterIndex > 0) {
+            this.setData({
+                topLoadingTip: '点击加载上一章'
+            });
+        } else {
+            this.setData({
+                topLoadingTip: '已经是第一章了'
+            });
+        }
+    },
+    //设置底部加载提示语
+    setBottomLoadingTip() {
+        if (this.endChapterIndex < this.chapterList.length) {
+            this.setData({
+                bottomLoadingTip: '正在加载下一章'
+            });
+        } else {
+            this.setData({
+                bottomLoadingTip: '已经是最后一章了'
+            });
+        }
+    },
+    //设置标题栏名称
+    setTitle(nowChapterIndex) {
+        var self = this;
+        var chapterList = this.chapterList.slice(this.startChapterIndex, this.endChapterIndex);
+        var title = '';
+        var nowChapter = null;
+        //直接指定章节名称
+        if (typeof nowChapterIndex != 'undefined') {
+            setTimeout(()=>{
+                wx.setNavigationBarTitle({
+                    title: this.chapterList[nowChapterIndex].name.replace(/\s/g, '')
+                });
+            }, 100);
+        } else { //通过计算得出当前章节名称
+            _setTitle();
         }
 
-        function setTitle() {
+        function _setTitle() {
             if (!chapterList.length) {
                 //设置标题
-                wx.setNavigationBarTitle({
+                title && wx.setNavigationBarTitle({
                     title: title.replace(/\s/g, '')
                 });
                 return;
@@ -122,90 +250,49 @@ Page({
             query.select('.chapter_' + chapter.id).boundingClientRect(function(rect) {
                 if (rect && rect.top <= 100) {
                     title = chapter.name;
-                    setTitle();
-                } else {
+                    nowChapter = chapter;
+                } else if (title) {
                     //设置标题
                     wx.setNavigationBarTitle({
                         title: title.replace(/\s/g, '')
                     });
+                    for (var i = 0; i < self.chapterList.length; i++) {
+                        if (self.chapterList[i].id == nowChapter.id) {
+                            self.nowChapterIndex = i;
+                            break;
+                        }
+                    }
+                    return;
                 }
+                _setTitle();
             });
             query.exec();
         }
     },
-    /**
-     * 加载图片请求
-     * topLoad Boolean 是否加载上一章
-     */
-    getPics(topLoad) {
-        if (this.loading) {
-            return;
-        }
-        if (!this.chapterList.length || topLoad && !this.chapterList[this.startChapterIndex - 1] || !topLoad && !this.chapterList[this.endChapterIndex]) {
-            return;
-        }
+    //滚动事件
+    scroll(e) {
         var self = this;
-        var chapter = null;
-        if (topLoad) {
-            this.canLoadTop = false;
-            chapter = this.chapterList[this.startChapterIndex - 1];
-            this.startChapterIndex--;
-        } else {
-            chapter = this.chapterList[this.endChapterIndex];
-            this.endChapterIndex++;
-            this.setData({
-                bottomLoading: true
-            });
+        var chapterList = this.chapterList.slice(this.startChapterIndex, this.endChapterIndex);
+        var title = chapterList[0].name;
+        //节流处理
+        if (!this.setTitleTimer) {
+            this.setTitleTimer = setTimeout(() => {
+                this.setTitle();
+                this.setTitleTimer = null;
+            }, 30);
         }
-        this.loading = true;
-        wx.request({
-            url: host + '/pic/' + chapter.id,
-            success(res) {
-                self.loading = false;
-                if (res.statusCode == 200 && res.data.length) {
-                    var preStartPicIndex = self.startPicIndex;
-                    var preTotal = self.allPic.length;
-                    res.data[0].showId = true;
-                    if (!topLoad) {
-                        self.allPic = self.allPic.concat(res.data);
-                        self.setData({
-                            bottomLoading: false
-                        });
-                    } else {
-                        self.allPic = res.data.concat(self.allPic);
-                        self.startPicIndex += res.data.length;
-                        self.endPicIndex += res.data.length;
-                    }
-                    //已经到底部了，需要立即加载图片到页面
-                    if (!topLoad && (!self.endPicIndex || self.endPicIndex == preTotal)) {
-                        self.loadMore();
-                        //已经到顶部了，需要立即加载
-                    } else if (topLoad && preStartPicIndex == 0) {
-                        self.loadMore(topLoad);
-                    }
-                    self.next = (self.next || 0) + res.data.length;
-                    //至少加载20条
-                    if (self.next < 20 && !topLoad) {
-                        self.getPics();
-                    } else {
-                        self.next = 0;
-                    }
-                }
-            },
-            error(err) {
-                this.canLoadTop = true;
-                self.loading = false;
-                this.startChapterIndex++;
-                this.endChapterIndex--;
-                console.log('加载失败', err);
-            }
-        })
+    },
+    //回到顶部
+    scrollToTop() {
+        this.setData({
+            scrollTop: 0
+        });
     },
     //双击缩放
     clickToScale(e) {
         var index = e.currentTarget.dataset.index
         var scale = this.data.imgScale;
-        if (Date.now() - this.startTs < 300) {
+        if (Date.now() - this.startTs < 250) {
             if ([1, 1.5, 2].indexOf(scale) != -1) {
                 scale += 0.5;
                 if (scale > 2) {
@@ -222,11 +309,20 @@ Page({
                     picIndex: 'pic_' + index
                 });
             }, 0);
+            clearTimeout(this.tapTimer);
+        } else {
+            this.tapTimer = setTimeout(()=>{
+                this.setData({
+                    showBootomBtn: !this.data.showBootomBtn
+                });
+                this.startTs = 0;
+            }, 300);
         }
         this.startTs = Date.now();
     },
     touchStartHandle(e) {
         if (e.touches.length == 1) {
+            this.startY = e.touches[0].clientY;
             //单手双击缩放
             return
         }
@@ -256,7 +352,5 @@ Page({
             imgScale: newScale
         });
     },
-    touchEndHandle(e) {
-        //touchEndHandle太快的时候偶尔会不触发
-    }
+    touchEndHandle(e) {}
 })

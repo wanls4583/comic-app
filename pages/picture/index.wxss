@@ -6,12 +6,12 @@
     height: 100%;
 }
 
-.scroll_w image {
-    display: block;
+.image_w {
+    min-height: 100%;
 }
 
-.next_chapter:active {
-    background-color: rgba(0, 0, 0, 0.1);
+.scroll_w image {
+    display: block;
 }
 
 .bottom_loading {
@@ -23,21 +23,50 @@
 }
 
 .top_loading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    width: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: #7e6353;
     font-size: 24rpx;
     line-height: 80rpx;
-    color: #fff;
+    color: #d8d8d8;
     text-align: center;
-    height: 0;
-    overflow: hidden;
-    transition: all 0.3s;
 }
 
-.top_loading.active {
-    height: 80rpx;
+.top_loading:active {
+    background: #584d42;
+}
+
+.bottom_btn_w {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 30rpx;
+    overflow: hidden;
+    transition: height 0.1s;
+}
+
+.bottom_btn_w.ios.active {
+    height: 140rpx;
+    padding: 0 40rpx 40rpx 40rpx;
+}
+
+.bottom_btn_w.android.active {
+    height: 120rpx;
+    padding: 0 40rpx;
+}
+
+.pre_chapter, .next_chapter, .scroll_to_top {
+    padding: 0 40rpx;
+    line-height: 80rpx;
+    border-radius: 60rpx;
+}
+
+.pre_chapter:active , .next_chapter:active, .scroll_to_top:active {
+    color: #38ffff;
+    background: rgba(256, 256, 256, 0.5);
 }

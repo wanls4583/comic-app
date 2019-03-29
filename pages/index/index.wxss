@@ -63,7 +63,7 @@
     line-height: 60rpx;
 }
 
-.category_dialog_list_w .item:active {
+.category_dialog_list_w .item:active, .scroll_to_top {
     background-color: rgba(256, 256, 256, 0.1);
     color: #38ffff;
 }
@@ -139,7 +139,7 @@
     width: 40rpx;
     height: 34rpx;
     vertical-align: top;
-    margin-top: 33rpx;
+    margin-top: 36rpx;
 }
 
 .banner_w {
