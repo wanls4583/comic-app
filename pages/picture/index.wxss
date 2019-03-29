@@ -8,6 +8,7 @@
 
 .image_w {
     min-height: 100%;
+    overflow: auto;
 }
 
 .scroll_w image {

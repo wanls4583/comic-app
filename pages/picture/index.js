@@ -321,36 +321,36 @@ Page({
         this.startTs = Date.now();
     },
     touchStartHandle(e) {
-        if (e.touches.length == 1) {
-            this.startY = e.touches[0].clientY;
-            //单手双击缩放
-            return
-        }
-        //双手拉伸缩放
-        var index = e.currentTarget.dataset.index;
-        var xMove = e.touches[1].clientX - e.touches[0].clientX;
-        var yMove = e.touches[1].clientY - e.touches[0].clientY;
-        this.distance = Math.sqrt(xMove * xMove + yMove * yMove);
+        // if (e.touches.length == 1) {
+        //     this.startY = e.touches[0].clientY;
+        //     //单手双击缩放
+        //     return
+        // }
+        // //双手拉伸缩放
+        // var index = e.currentTarget.dataset.index;
+        // var xMove = e.touches[1].clientX - e.touches[0].clientX;
+        // var yMove = e.touches[1].clientY - e.touches[0].clientY;
+        // this.distance = Math.sqrt(xMove * xMove + yMove * yMove);
     },
     touchMoveHandle(e) {
-        if (e.touches.length == 1) {
-            return
-        }
-        var xMove = e.touches[1].clientX - e.touches[0].clientX;
-        var yMove = e.touches[1].clientY - e.touches[0].clientY;
-        var distance = Math.sqrt(xMove * xMove + yMove * yMove);
-        var distanceDiff = distance - this.distance;
-        var newScale = this.data.imgScale + 0.00005 * distanceDiff
-        if (newScale >= 2) {
-            newScale = 2;
-        } else if (newScale <= 1) {
-            newScale = 1;
-            //小于1以后，以该距离为初始距离
-            this.distance = distance;
-        }
-        this.setData({
-            imgScale: newScale
-        });
+        // if (e.touches.length == 1) {
+        //     return
+        // }
+        // var xMove = e.touches[1].clientX - e.touches[0].clientX;
+        // var yMove = e.touches[1].clientY - e.touches[0].clientY;
+        // var distance = Math.sqrt(xMove * xMove + yMove * yMove);
+        // var distanceDiff = distance - this.distance;
+        // var newScale = this.data.imgScale + 0.00005 * distanceDiff
+        // if (newScale >= 2) {
+        //     newScale = 2;
+        // } else if (newScale <= 1) {
+        //     newScale = 1;
+        //     //小于1以后，以该距离为初始距离
+        //     this.distance = distance;
+        // }
+        // this.setData({
+        //     imgScale: newScale
+        // });
     },
     touchEndHandle(e) {}
 })
