@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <view class='container' bindtouchstart='touchStartHandle' bindtouchmove='touchMoveHandle' bindtouchend='touchEndHandle'>
-    <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' upper-threshold='2000rpx' lower-threshold='2000rpx' bindscrolltolower='onLolower' bindscrolltoupper='onUpper' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{false}}">
+    <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' upper-threshold='2000px' lower-threshold='2000px' bindscrolltolower='onLolower' bindscrolltoupper='onUpper' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{false}}">
         <view style='visibility:{{topLoadingTip ? "visible" : "hidden"}}' class='top_loading' bindtap='onPreChapter'>{{topLoadingTip}}</view>
         <view class='image_horizontal_scroll_w'>
             <view class='image_w' style='width:{{imgScale*100+"%"}};'>

@@ -7,7 +7,8 @@ Page({
         comic: {},
         chapterList: [],
         loadingStatus: 0,
-        historyNum: 0
+        historyNum: 0,
+        dirMenu: false
     },
     onLoad: function(option) {
         if (!option.comic) {
@@ -24,7 +25,8 @@ Page({
         comic.area = '';
         comic.categorys = [];
         this.setData({
-            comic: comic
+            comic: comic,
+            dirMenu: app.dirMenu
         });
         this.getCategoryAndArea();
         this.getChpater();

@@ -24,6 +24,7 @@ Page({
         banner: []
     },
     onLoad: function() {
+        wx.hideTabBar();
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,
@@ -52,8 +53,10 @@ Page({
         }
         this.getCategory();
         this.getRecommend();
+        this.getSwitch();
     },
     onPullDownRefresh() {
+        this.getSwitch();
         if (this.data.nowCategory) {
             this.refreshCategory();
         } else {
@@ -197,5 +200,19 @@ Page({
             page: this.data.page + 1
         });
         this.getComicListByCategory();
+    },
+    getSwitch() {
+        var self = this;
+        wx.request({
+            url: host + '/switch',
+            success(res) {
+                if (res.statusCode == 200) {
+                    app.dirMenu = res.data.switch;
+                    if(res.data.switch) {
+                        wx.showTabBar();
+                    }
+                }
+            }
+        })
     }
 })

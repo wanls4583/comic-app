@@ -326,7 +326,7 @@ button.read_more {
     color: #38ffff;
 }
 /* 没有更多了 */
-.no_more {
+.loading_tip {
     width: 100%;
     height: 100rpx;
     display: flex;
@@ -336,7 +336,7 @@ button.read_more {
     font-size: 24rpx;
 }
 
-.no_more image {
+.loading_tip image {
     width: 30rpx;
     margin-right: 10rpx;
 }

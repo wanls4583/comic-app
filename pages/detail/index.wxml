@@ -2,7 +2,7 @@
 <view class="container">
     <view class='menu_btn_w'>
         <button plain='{{true}}' class='{{showDes && "active"}}' data-tab='1' bindtap='toggleTab'>简介</button>
-        <button plain='{{true}}' class='{{!showDes && "active"}}' data-tab='2' bindtap='toggleTab'>目录</button>
+        <button wx:if='{{dirMenu}}' plain='{{true}}' class='{{!showDes && "active"}}' data-tab='2' bindtap='toggleTab'>目录</button>
     </view>
     <view class='detail_w' wx:if='{{showDes}}'>
         <view class='detail_bg' style='background:url({{comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
