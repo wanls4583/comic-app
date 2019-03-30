@@ -8,9 +8,8 @@ Page({
         imgScale: 1, //图片缩放比例
         picIndex: '',
         scrollTop: 0,
-        topLoading: false,
-        bottomLoading: false,
         topLoadingTip: '',
+        topLoadingHeight: 100,
         bottomLoadingTip: '',
         systemInfo: wx.getSystemInfoSync(),
         showBootomBtn: false
@@ -30,15 +29,7 @@ Page({
         this.endPicIndex = 0; //在页面上显示的图片的结束(不包含)索引
         this.allPic = []; //存储已经从网络获取到的图片链接
         this.canLoadTop = true; //是否可以加载上一个章节
-        if (this.chapterList.length > 1) {
-            this.setData({
-                topLoadingTip: '点击加加载上一章'
-            });
-        } else {
-            this.setData({
-                topLoadingTip: '已经是第一章了'
-            });
-        }
+        this.tipScrollTop = this.data.systemInfo.screenWidth / 750 * this.data.topLoadingHeight;
         //设置标题
         wx.setNavigationBarTitle({
             title: this.chapterList[obj.startChapterIndex].name.replace(/\s/g, '')
@@ -99,12 +90,10 @@ Page({
      */
     loadPreChapter(preChapterstartPicIndex) {
         if (preChapterstartPicIndex >= 0) {
-            var addPic = this.allPic.slice(preChapterstartPicIndex, this.startPicIndex);
-            var pics = addPic.concat(this.data.pics);
-            this.startPicIndex -= addPic.length;
+            var pics = this.allPic.slice(preChapterstartPicIndex);
+            this.startPicIndex = preChapterstartPicIndex;
             this.setData({
-                pics: pics,
-                topLoading: false
+                pics: pics
             }, () => {
                 //防止频繁加载，画面闪动
                 setTimeout(() => {
@@ -112,7 +101,7 @@ Page({
                 }, 800);
                 this.setTitle(this.nowChapterIndex);
                 this.setData({
-                    scrollTop: this.data.systemInfo.screenWidth / 750 * 80
+                    scrollTop: this.tipScrollTop
                 });
                 this.setTopLoadingTip();
             });
@@ -140,12 +129,13 @@ Page({
             this.startPicIndex = nextChapterstartPicIndex;
             this.endPicIndex = this.allPic.length;
             this.setData({
-                pics: pics
+                pics: pics,
             }, () => {
                 this.setTitle(this.nowChapterIndex);
                 this.setData({
-                    scrollTop: this.data.systemInfo.screenWidth / 750 * 80
+                    scrollTop: this.tipScrollTop
                 });
+                this.setTopLoadingTip();
                 this.setBottomLoadingTip();
             });
         } else {
@@ -285,7 +275,7 @@ Page({
     //回到顶部
     scrollToTop() {
         this.setData({
-            scrollTop: 0
+            scrollTop: this.tipScrollTop
         });
     },
     //双击缩放
