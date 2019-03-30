@@ -1,14 +1,16 @@
-.container {
-    background-color: #fff;
-}
-
 .scroll_w {
     height: 100%;
+    background-color: #7e6353;
+}
+
+.image_horizontal_scroll_w {
+    width: 100%;
+    min-height: 100%;
+    overflow: auto;
 }
 
 .image_w {
-    min-height: 100%;
-    overflow: auto;
+    width: 100%;
 }
 
 .scroll_w image {
@@ -25,7 +27,7 @@
 
 .top_loading {
     background: #7e6353;
-    font-size: 24rpx;
+    font-size: 30rpx;
     line-height: 100rpx;
     height: 100rpx;
     color: #d8d8d8;
@@ -33,6 +35,7 @@
 }
 
 .top_loading:active {
+    color: #38ffff;
     background: #584d42;
 }
 
@@ -58,19 +61,19 @@
 }
 
 .bottom_btn_w.ios.active {
-    height: 140rpx;
-    padding: 0 40rpx 30rpx 40rpx;
+    height: 120rpx;
+    padding: 0 40rpx 20rpx 40rpx;
 }
 
 .bottom_btn_w.android.active {
-    height: 120rpx;
+    height: 100rpx;
     padding: 0 40rpx;
 }
 
 .pre_chapter, .next_chapter, .scroll_to_top {
     padding: 0 40rpx;
     line-height: 80rpx;
-    border-radius: 60rpx;
+    border-radius: 50rpx;
 }
 
 .pre_chapter:active , .next_chapter:active, .scroll_to_top:active {

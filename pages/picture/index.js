@@ -218,7 +218,7 @@ Page({
         var nowChapter = null;
         //直接指定章节名称
         if (typeof nowChapterIndex != 'undefined') {
-            setTimeout(()=>{
+            setTimeout(() => {
                 wx.setNavigationBarTitle({
                     title: this.chapterList[nowChapterIndex].name.replace(/\s/g, '')
                 });
@@ -236,8 +236,7 @@ Page({
                 return;
             }
             var chapter = chapterList.shift();
-            var query = wx.createSelectorQuery();
-            query.select('.chapter_' + chapter.id).boundingClientRect(function(rect) {
+            self.getRect('.chapter_' + chapter.id).then((rect) => {
                 if (rect && rect.top <= 100) {
                     title = chapter.name;
                     nowChapter = chapter;
@@ -256,7 +255,6 @@ Page({
                 }
                 _setTitle();
             });
-            query.exec();
         }
     },
     //滚动事件
@@ -301,7 +299,7 @@ Page({
             }, 0);
             clearTimeout(this.tapTimer);
         } else {
-            this.tapTimer = setTimeout(()=>{
+            this.tapTimer = setTimeout(() => {
                 this.setData({
                     showBootomBtn: !this.data.showBootomBtn
                 });
@@ -311,36 +309,46 @@ Page({
         this.startTs = Date.now();
     },
     touchStartHandle(e) {
-        // if (e.touches.length == 1) {
-        //     this.startY = e.touches[0].clientY;
-        //     //单手双击缩放
-        //     return
-        // }
-        // //双手拉伸缩放
-        // var index = e.currentTarget.dataset.index;
-        // var xMove = e.touches[1].clientX - e.touches[0].clientX;
-        // var yMove = e.touches[1].clientY - e.touches[0].clientY;
-        // this.distance = Math.sqrt(xMove * xMove + yMove * yMove);
+        if (e.touches.length == 1) {
+            this.startY = e.touches[0].clientY;
+            //单手双击缩放
+            return
+        }
+        //双手拉伸缩放
+        var index = e.currentTarget.dataset.index;
+        var xMove = e.touches[1].clientX - e.touches[0].clientX;
+        var yMove = e.touches[1].clientY - e.touches[0].clientY;
+        this.distance = Math.sqrt(xMove * xMove + yMove * yMove);
     },
     touchMoveHandle(e) {
-        // if (e.touches.length == 1) {
-        //     return
-        // }
-        // var xMove = e.touches[1].clientX - e.touches[0].clientX;
-        // var yMove = e.touches[1].clientY - e.touches[0].clientY;
-        // var distance = Math.sqrt(xMove * xMove + yMove * yMove);
-        // var distanceDiff = distance - this.distance;
-        // var newScale = this.data.imgScale + 0.00005 * distanceDiff
-        // if (newScale >= 2) {
-        //     newScale = 2;
-        // } else if (newScale <= 1) {
-        //     newScale = 1;
-        //     //小于1以后，以该距离为初始距离
-        //     this.distance = distance;
-        // }
-        // this.setData({
-        //     imgScale: newScale
-        // });
+        if (e.touches.length == 1) {
+            return
+        }
+        var xMove = e.touches[1].clientX - e.touches[0].clientX;
+        var yMove = e.touches[1].clientY - e.touches[0].clientY;
+        var distance = Math.sqrt(xMove * xMove + yMove * yMove);
+        var distanceDiff = distance - this.distance;
+        var newScale = this.data.imgScale + 0.00005 * distanceDiff
+        if (newScale >= 2) {
+            newScale = 2;
+        } else if (newScale <= 1) {
+            newScale = 1;
+            //小于1以后，以该距离为初始距离
+            this.distance = distance;
+        }
+        this.setData({
+            imgScale: newScale,
+        });
     },
-    touchEndHandle(e) {}
+    touchEndHandle(e) {},
+    //获取元素距离边框的位置
+    getRect(selector) {
+        return new Promise((reslove, reject) => {
+            var query = wx.createSelectorQuery();
+            query.select(selector).boundingClientRect(function(rect) {
+                reslove(rect);
+            });
+            query.exec();
+        });
+    }
 })
