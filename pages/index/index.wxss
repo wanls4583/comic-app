@@ -76,6 +76,17 @@
     width: 100;
 }
 
+.empty_w {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -65rpx;
+    text-align: center;
+    font-size: 30rpx;
+    color: #d8d8d8;
+    line-height: 30rpx;
+}
+
 .search_w {
     position: relative;
     z-index: 1;

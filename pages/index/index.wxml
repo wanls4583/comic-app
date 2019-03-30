@@ -14,7 +14,7 @@
         <scroll-view scroll-x class='scroll_w' scroll-into-view="{{toCategory}}" scroll-with-animation="{{true}}">
             <view id='category_{{item.cid}}' class='item {{nowCategory.cid == item.cid && "active"}}' wx:for='{{categoryList}}' wx:key='{{item.cid}}' data-category='{{item}}' bindtap='slectCategory'>{{item.name}}</view>
         </scroll-view>
-        <view class='fixed_menu' bindtap='toggleCategory'>
+        <view wx:if='{{categoryList.length}}' class='fixed_menu' bindtap='toggleCategory'>
             <image src='/image/icon_menu.png'></image>
         </view>
     </view>
@@ -65,6 +65,7 @@
                 <view class='hot_bottom_line'></view>
             </view>
         </block>
+        <view wx:if='{{!recommend.length}}' class='empty_w'>玩命加载中~</view>
     </scroll-view>
     <scroll-view wx:else class='category_comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='2000px'>
         <!-- 某分类下的漫画列表 -->
