@@ -33,9 +33,10 @@
                 <view class='item_time'>{{item.lastupdatetime}}</view>
             </view>
         </view>
-        <view wx:if='{{total > -1 && total==comicList.length}}' class='no_more'>
+        <view wx:if='{{total > -1 && total==comicList.length}}' class='loading_tip'>
             <image mode='widthFix' src="/image/icon_end.png"></image>
             <text>没有更多了~</text>
         </view>
+        <view wx:else class='loading_tip'><text>正在加载中...</text></view>
     </scroll-view>
 </view>
