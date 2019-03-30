@@ -210,6 +210,8 @@ Page({
                     app.dirMenu = res.data.switch;
                     if(res.data.switch) {
                         wx.showTabBar();
+                    } else {
+                        wx.hideTabBar();
                     }
                 }
             }
