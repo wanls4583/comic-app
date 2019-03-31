@@ -12,7 +12,7 @@
     <!-- 分类列表 -->
     <view class='category_w'>
         <scroll-view scroll-x class='scroll_w' scroll-into-view="{{toCategory}}" scroll-with-animation="{{true}}">
-            <view id='category_{{item.cid}}' class='item {{nowCategory.cid == item.cid && "active"}}' wx:for='{{categoryList}}' wx:key='{{item.cid}}' data-category='{{item}}' bindtap='slectCategory'>{{item.name}}</view>
+            <view id='category_{{item.cid}}' class='item {{nowCid == item.cid && "active"}}' wx:for='{{categoryList}}' wx:key='{{item.cid}}' data-category='{{item}}' bindtap='slectCategory'>{{item.name}}</view>
         </scroll-view>
         <view wx:if='{{categoryList.length}}' class='fixed_menu' bindtap='toggleCategory'>
             <image src='/image/icon_menu.png'></image>
@@ -29,58 +29,65 @@
             </block>
         </view>
     </view>
-    <scroll-view wx:if='{{!nowCategory.cid}}' class="recommend_comic_scroll" scroll-y>
-        <!-- 轮播图 -->
-        <swiper class='banner_w' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
-            <swiper-item wx:for="{{banner}}" wx:key='{{item.comicid}}'>
-                <view class='banner_item' style='background:url({{item.showconver}}) no-repeat center;background-size:cover' data-comic='{{item}}' bindtap='gotoDetail'>
-                    <view class='banner_bottom'>
-                        <view>{{item.title}}</view>
-                        <view>
-                            <text class='banner_now'>{{currentBannerIndex+1}}</text>
-                            <text>/{{banner.length}}</text>
+    <swiper class='list_swiper_w' bindchange='onSwiperChange' current='{{nowCidIndex}}' duration='{{800}}'>
+        <swiper-item class='swiper_item' wx:for='{{categoryList}}' wx:key='{{item.cid}}'>
+            <scroll-view wx:if='{{(swiperDataMap[0]==item.cid || swiperDataMap[1]==item.cid || swiperDataMap[2]==item.cid) && item.cid==0}}' class="recommend_comic_scroll" scroll-y>
+                <!-- 轮播图 -->
+                <swiper class='banner_w' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
+                    <swiper-item wx:for="{{banner}}" wx:key='{{item.comicid}}'>
+                        <view class='banner_item' style='background:url({{item.showconver}}) no-repeat center;background-size:cover' data-comic='{{item}}' bindtap='gotoDetail'>
+                            <view class='banner_bottom'>
+                                <view>{{item.title}}</view>
+                                <view>
+                                    <text class='banner_now'>{{currentBannerIndex+1}}</text>
+                                    <text>/{{banner.length}}</text>
+                                </view>
+                            </view>
                         </view>
-                    </view>
-                </view>
-            </swiper-item>
-        </swiper>
+                    </swiper-item>
+                </swiper>
 
-        <!-- 各分类推荐列表 -->
-        <block wx:if='{{item.category.cid}}' wx:for="{{recommend}}" wx:key='{{item.cid}}'>
-            <view class='category_title_w'>
-                <view class='left_w'>
-                    <view class='vertical_line'></view>
-                    <text class='category_title'>{{item.category.name}}</text>
-                </view>
-                <button class='read_more' plain='{{true}}' data-category='{{item.category}}' bindtap='slectCategory'></button>
-            </view>
-            <view class='hot_item_w'>
-                <scroll-view class='hot_scroll' scroll-x>
-                    <view class='hot_item' wx:for="{{item.list}}" wx:for-item='listItem' wx:key='{{listItem.comicid}}' data-comic='{{listItem}}' bindtap='gotoDetail'>
-                        <view class='hot_img' style='background:url({{listItem.showpicurlb}}) no-repeat center;background-size:cover'></view>
-                        <view class='hot_title'>{{listItem.title}}</view>
-                        <view class='hot_time'>{{listItem.lastupdatetime}}</view>
+                <!-- 各分类推荐列表 -->
+                <block wx:if='{{item.category.cid}}' wx:for="{{recommend}}" wx:key='{{item.cid}}'>
+                    <view class='category_title_w'>
+                        <view class='left_w'>
+                            <view class='vertical_line'></view>
+                            <text class='category_title'>{{item.category.name}}</text>
+                        </view>
+                        <button class='read_more' plain='{{true}}' data-category='{{item.category}}' bindtap='slectCategory'></button>
                     </view>
-                </scroll-view>
-                <view class='hot_bottom_line'></view>
-            </view>
-        </block>
-        <view wx:if='{{!recommend.length}}' class='empty_w'>玩命加载中~</view>
-    </scroll-view>
-    <scroll-view wx:else class='category_comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='2000px'>
-        <!-- 某分类下的漫画列表 -->
-        <view class='category_item' wx:for='{{comicListByCategory}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
-            <view class='category_item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
-            <view class='category_item_title'>{{item.title}}</view>
-            <view class='category_item_bottom_w'>
-                <view class='category_item_new'>{{item.showlastpartname}}</view>
-                <view class='category_item_time'>{{item.lastupdatetime}}</view>
-            </view>
-        </view>
-        <view wx:if='{{total > -1 && total==comicListByCategory.length}}' class='loading_tip'>
-            <image mode='widthFix' src="/image/icon_end.png"></image>
-            <text>没有更多了~</text>
-        </view>
-        <view wx:else class='loading_tip'><text>正在加载中...</text></view>
-    </scroll-view>
+                    <view class='hot_item_w'>
+                        <scroll-view class='hot_scroll' scroll-x>
+                            <view class='hot_item' wx:for="{{item.list}}" wx:for-item='listItem' wx:key='{{listItem.comicid}}' data-comic='{{listItem}}' bindtap='gotoDetail'>
+                                <view class='hot_img' style='background:url({{listItem.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                                <view class='hot_title'>{{listItem.title}}</view>
+                                <view class='hot_time'>{{listItem.lastupdatetime}}</view>
+                            </view>
+                        </scroll-view>
+                        <view class='hot_bottom_line'></view>
+                    </view>
+                </block>
+                <view wx:if='{{!recommend.length}}' class='empty_w'>玩命加载中~</view>
+            </scroll-view>
+            <scroll-view wx:if='{{(swiperDataMap[0]==item.cid || swiperDataMap[1]==item.cid || swiperDataMap[2]==item.cid) && item.cid}}' class='category_comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='2000px'>
+                <!-- 某分类下的漫画列表 -->
+                <view class='category_item' wx:for='{{swiperData[item.cid].list}}' wx:key='{{item.comicid}}' wx:for-item="comicItem" data-comic='{{comicItem}}' bindtap='gotoDetail'>
+                    <view class='category_item_img' style='background:url({{comicItem.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                    <view class='category_item_title'>{{comicItem.title}}</view>
+                    <view class='category_item_bottom_w'>
+                        <view class='category_item_new'>{{comicItem.showlastpartname}}</view>
+                        <view class='category_item_time'>{{comicItem.lastupdatetime}}</view>
+                    </view>
+                </view>
+                <view wx:if='{{total > -1 && total==comicListByCategory.length}}' class='loading_tip'>
+                    <image mode='widthFix' src="/image/icon_end.png"></image>
+                    <text>没有更多了~</text>
+                </view>
+                <view wx:else class='loading_tip'>
+                    <text>正在加载中...</text>
+                </view>
+            </scroll-view>
+        </swiper-item>
+    </swiper>
+
 </view>

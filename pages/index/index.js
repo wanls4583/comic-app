@@ -12,16 +12,17 @@ Page({
         recommend: [],
         comicListByCategory: [],
         total: -1,
-        nowCategory: {
-            cid: 0
-        },
+        nowCid: 0,
+        nowCidIndex: 0,
         page: 1,
         size: 20,
         toCategory: 'category_0',
         testImg: 'http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg',
         showCategoryDialog: false,
         currentBannerIndex: 0,
-        banner: []
+        banner: [],
+        swiperData: {},
+        swiperDataMap: []
     },
     onLoad: function() {
         wx.hideTabBar();
@@ -57,12 +58,46 @@ Page({
     },
     onPullDownRefresh() {
         this.getSwitch();
-        if (this.data.nowCategory) {
+        if (this.data.nowCid) {
             this.refreshCategory();
         } else {
             this.getCategory();
             this.getRecommend();
         }
+    },
+    onSwiperChange(e) {
+        var current = e.detail.current;
+        this.renderSwiper(current);
+    },
+    renderSwiper(current) {
+        var categoryList = this.data.categoryList;
+        var map = [];
+        if (current == 0) {
+            map.push(0);
+            current + 1 < categoryList.length - 1 && map.push(current + 1);
+            current + 2 < categoryList.length - 1 && map.push(current + 2);
+        } else if (current == categoryList.length - 1) {
+            current - 1 > -1 && map.push(current - 1);
+            current - 2 > -1 && map.push(current - 2);
+            map.push(current);
+        } else {
+            current - 1 > -1 && map.push(current - 1);
+            map.push(current);
+            current + 1 < categoryList.length - 1 && map.push(current + 1);
+        }
+        map = map.map((item) => {
+            return categoryList[item].cid;
+        });
+        map.map((item) => {
+            if (!this.data.swiperData[item]) {
+                this.getComicListByCategory(item);
+            }
+        });
+        this.setData({
+            nowCid: categoryList[current].cid,
+            swiperDataMap: map
+        });
+        this.scrollToCategory(this.data.nowCid);
     },
     //跳到搜索页
     gotoSearch() {
@@ -92,6 +127,14 @@ Page({
                     self.setData({
                         categoryList: res.data
                     });
+                    var cids = [];
+                    for (var i = 0; i < 3 && i < res.data.length; i++) {
+                        cids.push(res.data[i].cid);
+                    }
+                    self.setData({
+                        swiperDataMap: cids
+                    });
+                    self.renderSwiper(0);
                 }
             }
         });
@@ -109,7 +152,7 @@ Page({
                     res.data.map((item) => {
                         allRec = allRec.concat(item.list);
                     });
-                    allRec.map((item)=>{
+                    allRec.map((item) => {
                         item.lastupdatetime = util.passTime(item.lastupdatets);
                     });
                     self.setData({
@@ -138,22 +181,27 @@ Page({
     },
     //选择某个分类
     slectCategory(e) {
-        var category = e.currentTarget.dataset.category;
-        //防止重复点击
-        if (this.data.nowCategory.cid == category.cid) {
-            return;
+        var cid = e.currentTarget.dataset.category.cid;
+        var index = 0;
+        for (var i = 0; i < this.data.categoryList.length; i++) {
+            if (this.data.categoryList[i].cid == cid) {
+                index = i;
+                break;
+            }
         }
         this.setData({
-            comicListByCategory: [],
-            total: -1,
-            nowCategory: category,
+            nowCid: this.data.categoryList[index],
+            nowCidIndex: index,
             showCategoryDialog: false,
-            page: 1
         });
+        this.scrollToCategory(this.data.categoryList[index]);
+        this.renderSwiper(index);
+    },
+    scrollToCategory(cid) {
         //目录滚动到当前按钮的前两个按钮的位置
         for (var i = 0; i < this.data.categoryList.length; i++) {
             var item = this.data.categoryList[i];
-            if (item.cid == category.cid) {
+            if (item.cid == cid) {
                 var index = i - 2 > 0 ? i - 2 : 0;
                 this.setData({
                     toCategory: 'category_' + this.data.categoryList[index].cid
@@ -161,34 +209,52 @@ Page({
                 break;
             }
         }
-        this.getComicListByCategory();
     },
     //刷新分类列表
     refreshCategory() {
         this.setData({
-            comicListByCategory: [],
-            total: -1,
-            page: 1
+            ['swiperData[' + this.data.nowCid + ']']: {
+                list: [],
+                total: -1,
+                scrollTop: 0,
+                page: 1
+            },
         });
-        this.getComicListByCategory();
+        this.renderSwiper(this.data.nowCidIndex);
     },
     //加载漫画列表
-    getComicListByCategory() {
+    getComicListByCategory(cid) {
         var self = this;
-        if (this.data.comicListByCategory.length && this.data.comicListByCategory.length >= this.data.total) {
+        if (!cid) {
             return;
         }
+        if (this.data.swiperData[cid]) {
+            if (this.data.swiperData.total > -1 && this.data.swiperData[cid].list.length >= this.data.swiperData[cid].total) {
+                return;
+            }
+        } else {
+            self.setData({
+                ['swiperData[' + cid + ']']: {
+                    list: [],
+                    total: -1,
+                    scrollTop: 0,
+                    page: 1
+                }
+            });
+        }
         wx.request({
-            url: host + '/comic?cid=' + this.data.nowCategory.cid + '&page=' + this.data.page + '&size=' + this.data.size,
+            url: host + '/comic?cid=' + cid + '&page=' + self.data.swiperData[cid].page + '&size=' + this.data.size,
             success(res) {
                 wx.stopPullDownRefresh();
                 if (res.statusCode == 200 && res.data.list && res.data.list.length) {
                     res.data.list.map((item) => {
                         item.lastupdatetime = util.formatTime(item.lastupdatets, 'yyyy/MM/dd').slice(2);
                     });
+                    var obj = self.data.swiperData[cid];
+                    obj.list = obj.list.concat(res.data.list);
+                    obj.page++;
                     self.setData({
-                        comicListByCategory: self.data.page == 1 ? res.data.list : self.data.comicListByCategory.concat(res.data.list),
-                        total: res.data.size
+                        ['swiperData[' + cid + ']']: obj
                     });
                 }
             }
@@ -196,10 +262,7 @@ Page({
     },
     //加载更多分类下的漫画列表
     loadMore() {
-        this.setData({
-            page: this.data.page + 1
-        });
-        this.getComicListByCategory();
+        this.getComicListByCategory(this.data.nowCid);
     },
     getSwitch() {
         var self = this;
@@ -208,7 +271,7 @@ Page({
             success(res) {
                 if (res.statusCode == 200) {
                     app.dirMenu = res.data.switch;
-                    if(res.data.switch) {
+                    if (res.data.switch) {
                         wx.showTabBar();
                     } else {
                         wx.hideTabBar();

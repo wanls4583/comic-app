@@ -68,12 +68,17 @@
     color: #38ffff;
 }
 
-.recommend_comic_scroll, .category_comic_scroll {
+.list_swiper_w {
     position: absolute;
     top: 172rpx;
     bottom: 0;
     z-index: 1;
-    width: 100;
+    width: 100%;
+    height: auto;
+}
+
+.recommend_comic_scroll, .category_comic_scroll {
+    height: 100%;
 }
 
 .empty_w {
