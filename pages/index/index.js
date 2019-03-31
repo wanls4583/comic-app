@@ -21,7 +21,8 @@ Page({
         showCategoryDialog: false,
         currentBannerIndex: 0,
         banner: [],
-        swiperData: {},
+        swiperData: [{}],
+        scrollTop: [],
         swiperDataMap: []
     },
     onLoad: function() {
@@ -65,7 +66,13 @@ Page({
             this.getRecommend();
         }
     },
-    onSwiperChange(e) {
+    //滚动事件
+    onScroll(e) {
+        var cid = e.currentTarget.dataset.cid;
+        //记录当前滚动距离
+        this.data.swiperData[cid].scrollTop = e.detail.scrollTop;
+    },
+    animationFinish(e) {
         var current = e.detail.current;
         this.renderSwiper(current);
     },
@@ -74,8 +81,8 @@ Page({
         var map = [];
         if (current == 0) {
             map.push(0);
-            current + 1 < categoryList.length - 1 && map.push(current + 1);
-            current + 2 < categoryList.length - 1 && map.push(current + 2);
+            current + 1 < categoryList.length && map.push(current + 1);
+            current + 2 < categoryList.length && map.push(current + 2);
         } else if (current == categoryList.length - 1) {
             current - 1 > -1 && map.push(current - 1);
             current - 2 > -1 && map.push(current - 2);
@@ -83,7 +90,7 @@ Page({
         } else {
             current - 1 > -1 && map.push(current - 1);
             map.push(current);
-            current + 1 < categoryList.length - 1 && map.push(current + 1);
+            current + 1 < categoryList.length && map.push(current + 1);
         }
         map = map.map((item) => {
             return categoryList[item].cid;
@@ -96,6 +103,14 @@ Page({
         this.setData({
             nowCid: categoryList[current].cid,
             swiperDataMap: map
+        }, () => {
+            var s = [];
+            map.map((item) => {
+                s[item] = this.data.swiperData[item].scrollTop || 0;
+            });
+            this.setData({
+                scrollTop: s
+            });
         });
         this.scrollToCategory(this.data.nowCid);
     },
@@ -157,7 +172,7 @@ Page({
                     });
                     self.setData({
                         recommend: res.data
-                    })
+                    });
                     //随机生成四个banner图
                     while (banner.length < 5 && banner.length < allRec.length) {
                         var item = allRec[Math.floor(Math.random() * allRec.length)];
@@ -195,7 +210,6 @@ Page({
             showCategoryDialog: false,
         });
         this.scrollToCategory(this.data.categoryList[index]);
-        this.renderSwiper(index);
     },
     scrollToCategory(cid) {
         //目录滚动到当前按钮的前两个按钮的位置
@@ -229,7 +243,7 @@ Page({
             return;
         }
         if (this.data.swiperData[cid]) {
-            if (this.data.swiperData.total > -1 && this.data.swiperData[cid].list.length >= this.data.swiperData[cid].total) {
+            if (this.data.swiperData[cid].total > -1 && this.data.swiperData[cid].list.length >= this.data.swiperData[cid].total) {
                 return;
             }
         } else {
@@ -252,6 +266,7 @@ Page({
                     });
                     var obj = self.data.swiperData[cid];
                     obj.list = obj.list.concat(res.data.list);
+                    obj.total = res.data.size;
                     obj.page++;
                     self.setData({
                         ['swiperData[' + cid + ']']: obj

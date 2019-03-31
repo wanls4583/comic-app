@@ -29,9 +29,9 @@
             </block>
         </view>
     </view>
-    <swiper class='list_swiper_w' bindchange='onSwiperChange' current='{{nowCidIndex}}' duration='{{800}}'>
+    <swiper class='list_swiper_w' bindanimationfinish='animationFinish' current='{{nowCidIndex}}' duration='{{500}}' circular='{{false}}'>
         <swiper-item class='swiper_item' wx:for='{{categoryList}}' wx:key='{{item.cid}}'>
-            <scroll-view wx:if='{{(swiperDataMap[0]==item.cid || swiperDataMap[1]==item.cid || swiperDataMap[2]==item.cid) && item.cid==0}}' class="recommend_comic_scroll" scroll-y>
+            <scroll-view wx:if='{{(swiperDataMap[0]==item.cid || swiperDataMap[1]==item.cid || swiperDataMap[2]==item.cid) && item.cid==0}}' class="recommend_comic_scroll" data-cid='{{0}}' bindscroll='onScroll' scroll-top='{{scrollTop[item.cid]}}' scroll-y>
                 <!-- 轮播图 -->
                 <swiper class='banner_w' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
                     <swiper-item wx:for="{{banner}}" wx:key='{{item.comicid}}'>
@@ -69,9 +69,9 @@
                 </block>
                 <view wx:if='{{!recommend.length}}' class='empty_w'>玩命加载中~</view>
             </scroll-view>
-            <scroll-view wx:if='{{(swiperDataMap[0]==item.cid || swiperDataMap[1]==item.cid || swiperDataMap[2]==item.cid) && item.cid}}' class='category_comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='2000px'>
+            <scroll-view wx:if='{{(swiperDataMap[0]==item.cid || swiperDataMap[1]==item.cid || swiperDataMap[2]==item.cid) && item.cid}}' class='category_comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='2000px' data-cid='{{item.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[item.cid]}}'>
                 <!-- 某分类下的漫画列表 -->
-                <view class='category_item' wx:for='{{swiperData[item.cid].list}}' wx:key='{{item.comicid}}' wx:for-item="comicItem" data-comic='{{comicItem}}' bindtap='gotoDetail'>
+                <view class='category_item' wx:for='{{swiperData[item.cid].list}}' wx:key='{{comicItem.comicid}}' wx:for-item="comicItem" data-comic='{{comicItem}}' bindtap='gotoDetail'>
                     <view class='category_item_img' style='background:url({{comicItem.showpicurlb}}) no-repeat center;background-size:cover'></view>
                     <view class='category_item_title'>{{comicItem.title}}</view>
                     <view class='category_item_bottom_w'>
