@@ -11,7 +11,6 @@ Page({
         page: 1,
         size: 20,
         showPlace: false,
-        showCancel: false,
         showHistory: true,
         autoFocus: false,
         history: []
@@ -39,7 +38,6 @@ Page({
             comicList: [],
             total: -1,
             page: 1,
-            showCancel: true,
             showPlace: false,
             showHistory: false
         });
@@ -69,7 +67,6 @@ Page({
             comicList: [],
             total: -1,
             page: 1,
-            showCancel: true,
             showHistory: false,
         });
         if (this.data.searchKey && this.data.history.indexOf(this.data.searchKey) == -1) {
@@ -79,6 +76,14 @@ Page({
             wx.setStorageSync('search_history', JSON.stringify(this.data.history))
         }
         this.getComicList();
+    },
+    //清空输入框
+    clearInput() {
+        this.setData({
+            searchKey: '',
+            showPlace: true,
+            autoFocus: true
+        })
     },
     //取消搜索
     searchCancel() {
@@ -99,6 +104,14 @@ Page({
             this.setData({
                 showPlace: true
             });
+        }
+        if(this.data.comicList.length) {
+            //延迟隐藏历史记录
+            setTimeout(()=>{
+                this.setData({
+                    showHistory: false
+                })
+            }, 100);
         }
     },
     //加载更多

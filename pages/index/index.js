@@ -142,10 +142,14 @@ Page({
     //获取推荐列表
     getRecommend() {
         var self = this;
+        wx.showLoading({
+            title: '加载中'
+        });
         wx.request({
             url: host + '/recommend',
             success(res) {
                 wx.stopPullDownRefresh();
+                wx.hideLoading();
                 if (res.statusCode == 200 && res.data && res.data.length) {
                     var allRec = [];
                     var banner = [];
@@ -217,16 +221,7 @@ Page({
     },
     //顶部加载
     loadPre(cid) {
-        var startIndex = swiperData.startIndex;
-        if (startIndex > 0) {
-            var index = startIndex - 90 > 0 ? startIndex - 90 : 0;
-            var addData = this.data.swiperData[cid].slice(index, startIndex);
-            var key = `swiperData[${cid}].renderData`;
-            this.data.swiperData[cid].startIndex -= addData.length;
-            this.setData({
-                key: addData.concat(this.data.swiperData[cid].renderData)
-            });
-        }
+        
     },
     //底部加载
     loadNext(cid) {

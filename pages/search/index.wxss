@@ -41,6 +41,22 @@
     font-size: 30rpx;
 }
 
+.clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 20rpx;
+    width: 36rpx;
+    height: 36rpx;
+    margin: 0 20rpx;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 24rpx;
+    font-weight: bold;
+    line-height: 0;
+}
+
 .search_input_w image {
     width: 38rpx;
     height: 38rpx;
@@ -72,7 +88,7 @@
 }
 
 .search_input {
-    width: 100%;
+    flex-grow: 1;
     height: 100%;
     padding: 0 20rpx;
     border-style: none;

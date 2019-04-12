@@ -32,14 +32,21 @@ button.button-hover {
     color: #38ffff !important;
 }
 
-.detail_w, .catalog_w {
+.swiper{
     position: absolute;
     top: 150rpx;
     bottom: 100rpx;
     left: 60rpx;
     right: 60rpx;
+    height: auto;
     border-radius: 8rpx;
     border: 6rpx solid #fff;
+}
+
+.detail_w, .catalog_w {
+    position: relative;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
 }
 

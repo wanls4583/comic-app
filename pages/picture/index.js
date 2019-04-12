@@ -172,23 +172,29 @@ Page({
     getPics(chapterId) {
         var self = this;
         self.laoding = true;
+        wx.showLoading({
+            mask: true,
+            title: '加载中'
+        });
         return new Promise((resolve) => {
             self.requestTask = wx.request({
                 url: host + '/pic/' + chapterId,
                 success(res) {
                     resolve(res);
                     self.laoding = false;
+                    wx.hideLoading();
                 },
                 fail(err) {
                     reject(err);
                     self.laoding = false;
+                    wx.hideLoading();
                 }
             })
         });
     },
     //为安卓机设置顶部加载提示语
     setTopLoadingTip() {
-        if (this.startChapterIndex > 0) {
+        if (this.nowChapterIndex > 0) {
             this.setData({
                 topLoadingTip: '点击加载上一章'
             });

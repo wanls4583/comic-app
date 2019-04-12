@@ -3,12 +3,12 @@ const app = getApp()
 const host = require('../../config/index.js').httpHost;
 Page({
     data: {
-        showDes: true,
         comic: {},
         chapterList: [],
         loadingStatus: 0,
         historyNum: 0,
-        dirMenu: false
+        dirMenu: false,
+        nowTab: 0
     },
     onLoad: function(option) {
         if (!option.comic) {
@@ -82,6 +82,12 @@ Page({
         this.getCategoryAndArea();
         this.getChpater();
     },
+    animationFinish(e) {
+        var current = e.detail.current;
+        this.setData({
+            nowTab: current
+        });
+    },
     continueRead() {
         if (!this.data.historyNum) {
             return;
@@ -140,15 +146,9 @@ Page({
         });
     },
     toggleTab(e) {
-        if (e.currentTarget.dataset.tab == 1) {
-            this.setData({
-                showDes: true
-            });
-        } else {
-            this.setData({
-                showDes: false
-            });
-        }
+        this.setData({
+            nowTab: e.currentTarget.dataset.tab
+        })
     },
     getCategoryAndArea() {
         var self = this;

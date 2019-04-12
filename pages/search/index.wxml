@@ -12,8 +12,9 @@
                 <text>漫画名 作者</text>
             </view>
             <input class='search_input' focus='{{autoFocus}}' auto-focus='{{autoFocus}}' value='{{searchKey}}' bindconfirm='searchConfirm' bindblur='searchBlur' bindfocus='searchFocus' bindinput='searchInput'></input>
+            <view wx:if='{{searchKey}}' class='clear' bindtap='clearInput'>×</view>
         </view>
-        <view wx:if='{{showCancel}}' class='cancel_search' bindtap='searchCancel'>取消</view>
+        <view wx:if='{{!comicList.length}}' class='cancel_search' bindtap='searchCancel'>取消</view>
     </view>
     <view wx:if='{{showHistory}}'  class='search_history_w'>
         <view class='history_title'>搜索历史</view>
