@@ -11,8 +11,12 @@ Page({
         topLoadingTip: '',
         topLoadingHeight: 100,
         bottomLoadingTip: '',
-        systemInfo: wx.getSystemInfoSync(),
-        showBootomBtn: false
+        systemInfo: app.globalData.systemInfo,
+        showBootomBtn: false,
+        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        navHeight: app.globalData.navHeight,
+        title: '',
+        showTitle: false
     },
     init() {
         console.log('systemInfo', this.data.systemInfo);
@@ -31,7 +35,7 @@ Page({
         this.canLoadTop = true; //是否可以加载上一个章节
         this.tipScrollTop = this.data.systemInfo.screenWidth / 750 * this.data.topLoadingHeight;
         //设置标题
-        wx.setNavigationBarTitle({
+        this.setData({
             title: this.chapterList[obj.startChapterIndex].name.replace(/\s/g, '')
         });
         this.loadNextChapter(0);
@@ -225,7 +229,7 @@ Page({
         //直接指定章节名称
         if (typeof nowChapterIndex != 'undefined') {
             setTimeout(() => {
-                wx.setNavigationBarTitle({
+                this.setData({
                     title: this.chapterList[nowChapterIndex].name.replace(/\s/g, '')
                 });
             }, 100);
@@ -236,7 +240,7 @@ Page({
         function _setTitle() {
             if (!chapterList.length) {
                 //设置标题
-                title && wx.setNavigationBarTitle({
+                title && self.setData({
                     title: title.replace(/\s/g, '')
                 });
                 return;
@@ -248,7 +252,7 @@ Page({
                     nowChapter = chapter;
                 } else if (title) {
                     //设置标题
-                    wx.setNavigationBarTitle({
+                    self.setData({
                         title: title.replace(/\s/g, '')
                     });
                     for (var i = 0; i < self.chapterList.length; i++) {
@@ -307,7 +311,8 @@ Page({
         } else {
             this.tapTimer = setTimeout(() => {
                 this.setData({
-                    showBootomBtn: !this.data.showBootomBtn
+                    showBootomBtn: !this.data.showBootomBtn,
+                    showTitle: !this.data.showTitle
                 });
                 this.startTs = 0;
             }, 300);
@@ -355,6 +360,11 @@ Page({
                 reslove(rect);
             });
             query.exec();
+        });
+    },
+    back() { 
+        wx.navigateBack({
+            delta: 1
         });
     }
 })

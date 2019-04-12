@@ -1,7 +1,10 @@
 <!--index.wxml-->
 <view class='container' bindtouchstart='touchStartHandle' bindtouchmove='touchMoveHandle' bindtouchend='touchEndHandle'>
+    <view wx:if='{{showTitle}}' class='custom_nav' style='height:{{navHeight}}px;padding-top:{{statusBarHeight}}px'>
+        <view class='title'>{{title}}<view class='icon_back' bindtap='back'></view></view>
+    </view>
     <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' upper-threshold='2000px' lower-threshold='2000px' bindscrolltolower='onLolower' bindscrolltoupper='onUpper' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{false}}">
-        <view style='visibility:{{topLoadingTip ? "visible" : "hidden"}}' class='top_loading' bindtap='onPreChapter'>{{topLoadingTip}}</view>
+        <!-- <view style='visibility:{{topLoadingTip ? "visible" : "hidden"}}' class='top_loading' bindtap='onPreChapter'>{{topLoadingTip}}</view> -->
         <view class='image_horizontal_scroll_w'>
             <view class='image_w' style='width:{{imgScale*100+"%"}};'>
                 <image wx:for='{{pics}}' wx:key='{{item.url}}' src='{{item.url}}' style='width:100%;height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{index==0 || item.chapterid!= pics[index-1].chapterid ? "chapter_"+item.chapterid : "pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
