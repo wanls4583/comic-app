@@ -10,7 +10,7 @@
                 <image wx:for='{{pics}}' wx:key='{{item.url}}' src='{{item.url}}' style='width:100%;height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{index==0 || item.chapterid!= pics[index-1].chapterid ? "chapter_"+item.chapterid : "pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
             </view>
         </view>
-        <view wx:if='{{bottomLoading}}' class='bottom_loading' id="bottom_loading">{{bottomLoadingTip}}</view>
+        <view wx:if='{{bottomLoadingTip}}' class='bottom_loading' id="bottom_loading">{{bottomLoadingTip}}</view>
     </scroll-view>
     <view class='bottom_btn_w {{systemInfo.platform=="android" ? "android" : "ios"}} {{showBootomBtn ? "active" : ""}}'>
         <view class='pre_chapter' bindtap='onPreChapter'>上一章</view>

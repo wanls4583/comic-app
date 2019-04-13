@@ -56,6 +56,10 @@ Page({
     //底部菜单点击加载上一章
     onPreChapter() {
         if (this.nowChapterIndex < 1) {
+            wx.showToast({
+                title: '已经是第一章了',
+                icon: 'none'
+            });
             return;
         }
         var chapter = this.chapterList[this.nowChapterIndex - 1];
@@ -67,7 +71,11 @@ Page({
     },
     //底部菜单点击加载下一章
     onNextChapter() {
-        if (this.nowChapterIndex >= this.chapterList.length) {
+        if (this.nowChapterIndex >= this.chapterList.length - 1) {
+            wx.showToast({
+                title: '已经是最后一章了',
+                icon: 'none'
+            });
             return;
         }
         var chapter = this.chapterList[this.nowChapterIndex + 1];
@@ -111,6 +119,10 @@ Page({
             });
         } else if (this.startChapterIndex > 0) {
             var chapter = this.chapterList[this.startChapterIndex - 1];
+            wx.showLoading({
+                mask: true,
+                title: '加载中'
+            });
             this.requestTask && this.requestTask.abort();
             this.getPics(chapter.id).then((res) => {
                 this.allPic = res.data.concat(this.allPic);
@@ -144,6 +156,10 @@ Page({
             });
         } else {
             var chapter = this.chapterList[this.endChapterIndex];
+            wx.showLoading({
+                mask: true,
+                title: '加载中'
+            });
             nextChapterstartPicIndex = this.allPic.length;
             this.requestTask && this.requestTask.abort();
             this.getPics(chapter.id).then((res) => {
@@ -176,10 +192,6 @@ Page({
     getPics(chapterId) {
         var self = this;
         self.laoding = true;
-        wx.showLoading({
-            mask: true,
-            title: '加载中'
-        });
         return new Promise((resolve) => {
             self.requestTask = wx.request({
                 url: host + '/pic/' + chapterId,
