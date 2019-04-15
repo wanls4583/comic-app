@@ -298,6 +298,7 @@ button.read_more {
     float: left;
     position: relative;
     width: 224rpx;
+    height: 350rpx;
     margin-left: 20rpx;
 }
 

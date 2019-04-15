@@ -72,7 +72,7 @@
                 </block>
             </scroll-view>
             <!-- <scroll-view wx:elif='{{(swiperDataMap[0]==item.cid || swiperDataMap[1]==item.cid || swiperDataMap[2]==item.cid) && item.cid}}' class='category_comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{item.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[item.cid]}}'> -->
-            <scroll-view wx:elif='{{item.cid}}' class='category_comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{item.cid}}' bindscroll='onScroll'>
+            <scroll-view wx:elif='{{item.cid}}' class='category_comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{item.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[item.cid]}}'>
                 <!-- 某分类下的漫画列表 -->
                 <view class='category_item' wx:for='{{swiperData[item.cid].renderData}}' wx:key='{{comicItem.comicid}}' wx:for-item="comicItem" data-comic='{{comicItem}}' bindtap='gotoDetail'>
                     <view class='category_item_img'>
@@ -84,7 +84,7 @@
                         <view class='category_item_time'>{{comicItem.lastupdatetime}}</view>
                     </view>
                 </view>
-                <view wx:if='{{swiperData[item.cid].total > -1 && swiperData[item.cid].total <= swiperData[item.cid].renderData.length}}' class='loading_tip'>
+                <view wx:if='{{swiperData[item.cid].total > -1 && swiperData[item.cid].total <= swiperData[item.cid].endIndex}}' class='loading_tip'>
                     <image mode='widthFix' src="/image/icon_end.png"></image>
                     <text>没有更多了~</text>
                 </view>
