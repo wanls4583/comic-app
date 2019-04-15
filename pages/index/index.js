@@ -71,7 +71,7 @@ Page({
                 }, () => {
                     setTimeout(() => {
                         this.deling = false;
-                    }, 1000);
+                    }, 500);
                 });
             });
         } else if (!this.deling && swiperData.startIndex > 0 && e.detail.scrollTop < this.maxTopHeight / 2 * this.itemHeight - 3) {
@@ -94,7 +94,7 @@ Page({
                 }, () => {
                     setTimeout(() => {
                         this.deling = false;
-                    }, 1000);
+                    }, 500);
                 });
             });
         }
@@ -273,7 +273,7 @@ Page({
     loadNext(cid) {
         var swiperData = this.data.swiperData[cid];
         if (swiperData && swiperData.endIndex < swiperData.list.length) {
-            var addData = swiperData.list.slice(swiperData.endIndex, swiperData.endIndex + 90);
+            var addData = swiperData.list.slice(swiperData.endIndex, swiperData.endIndex + 27);
             var key = `swiperData[${cid}].renderData`;
             var total = `swiperData[${cid}].total`;
             var endIndex = `swiperData[${cid}].endIndex`;
