@@ -15,7 +15,7 @@ Page({
         nowCid: 0,
         nowCidIndex: 0,
         page: 1,
-        size: 20,
+        pageSize: 3 * 3 * 3, //一页的数量
         toCategory: 'category_0',
         testImg: 'http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg',
         showCategoryDialog: false,
@@ -25,11 +25,13 @@ Page({
         renderData: [],
         swiperDataMap: [],
         scrollTop: [],
-        palceholderHeight: {}
+        scrollAnimation: false,
+        viewSize: 40, //scroll-view中最多同时存在40页
     },
     onLoad: function() {
         wx.hideTabBar();
         this.itemHeight = 175 * app.globalData.systemInfo.screenWidth / 375;
+        this.windowHeight = app.globalData.systemInfo.windowHeight;
         this.maxTopHeight = 200;
         this.loading = {};
         this.getCategory();
@@ -50,51 +52,34 @@ Page({
     onScroll(e) {
         var cid = e.currentTarget.dataset.cid;
         var swiperData = this.data.swiperData[cid];
-        this.data.swiperData[cid].scrollTop = e.detail.scrollTop;
-        if (!cid) {
+        swiperData.scrollTop = e.detail.scrollTop;
+        if (!cid || this.viewRending) {
             return;
         }
-        if (!this.deling && e.detail.scrollTop > this.maxTopHeight * this.itemHeight) {
-            var key = `swiperData[${cid}].renderData`;
-            var total = `swiperData[${cid}].total`;
-            var delCount = Math.floor(e.detail.scrollTop / this.itemHeight) * 3 - 3 * this.maxTopHeight / 2;
-            this.deling = true;
-            swiperData.startIndex += delCount;
-            console.log('delCount', delCount);
+        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + 1) * this.itemHeight && e.detail.scrollHeight - e.detail.scrollTop < this.windowHeight && swiperData.nowView < swiperData.viewArr.length - 1) {
+            this.viewRending = true;
             this.setData({
-                [key]: swiperData.renderData.slice(delCount),
-                [total]: swiperData.total,
-                [`scrollTop[${cid}]`]: e.detail.scrollTop - delCount / 3 * this.itemHeight
+                [`swiperData[${cid}].nowView`]: swiperData.nowView + 1
             }, () => {
                 this.setData({
-                    [`scrollTop[${cid}]`]: e.detail.scrollTop - delCount / 3 * this.itemHeight
+                    [`scrollTop[${cid}]`]: this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
                 }, () => {
                     setTimeout(() => {
-                        this.deling = false;
-                    }, 500);
+                        this.viewRending = false;
+                    }, 1000);
                 });
             });
-        } else if (!this.deling && swiperData.startIndex > 0 && e.detail.scrollTop < this.maxTopHeight / 2 * this.itemHeight - 3) {
-            var key = `swiperData[${cid}].renderData`;
-            var startIndex = swiperData.startIndex - this.maxTopHeight / 2 * 3;
-            startIndex = startIndex > 0 ? startIndex : 0;
-            var addData = swiperData.list.slice(startIndex, swiperData.startIndex);
-            swiperData.startIndex = startIndex;
-            this.deling = true;
-            console.log('addData', addData.length);
-            if (swiperData.endIndex - startIndex > 2 * this.maxTopHeight) {
-                swiperData.endIndex = 2 * this.maxTopHeight + startIndex;
-            }
+        } else if (e.detail.scrollTop < 3 * this.itemHeight && swiperData.nowView > 0) {
+            this.viewRending = true;
             this.setData({
-                [key]: swiperData.list.slice(startIndex, swiperData.endIndex),
-                [`scrollTop[${cid}]`]: e.detail.scrollTop + addData.length / 3 * this.itemHeight
+                [`swiperData[${cid}].nowView`]: swiperData.nowView - 1
             }, () => {
                 this.setData({
-                    [`scrollTop[${cid}]`]: e.detail.scrollTop + addData.length / 3 * this.itemHeight
+                    [`scrollTop[${cid}]`]: this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 6 * this.itemHeight - this.windowHeight
                 }, () => {
                     setTimeout(() => {
-                        this.deling = false;
-                    }, 500);
+                        this.viewRending = false;
+                    }, 1000);
                 });
             });
         }
@@ -102,7 +87,9 @@ Page({
     //加载更多
     onLoadMore(e) {
         var cid = e.currentTarget.dataset.cid;
-        this.loadNext(cid);
+        if ((this.data.swiperData[cid].nowView + 1) * this.data.viewSize >= this.data.swiperData[cid].renderData.length) {
+            this.loadNext(cid);
+        }
     },
     //左右滑动切换完成事件
     animationFinish(e) {
@@ -272,17 +259,14 @@ Page({
     //底部加载
     loadNext(cid) {
         var swiperData = this.data.swiperData[cid];
-        if (swiperData && swiperData.endIndex < swiperData.list.length) {
-            var addData = swiperData.list.slice(swiperData.endIndex, swiperData.endIndex + 27);
-            var key = `swiperData[${cid}].renderData`;
-            var total = `swiperData[${cid}].total`;
-            var endIndex = `swiperData[${cid}].endIndex`;
-            swiperData.endIndex += addData.length;
+        if (swiperData && swiperData.endPage < swiperData.list.length) {
+            var key = `swiperData[${cid}].renderData[${swiperData.endPage}]`;
+            var endPage = `swiperData[${cid}].endPage`;
             this.setData({
-                [key]: swiperData.renderData.concat(addData),
-                [total]: swiperData.total,
-                [endIndex]: swiperData.endIndex
+                [key]: swiperData.list[swiperData.endPage],
+                [endPage]: swiperData.endPage
             });
+            swiperData.endPage++;
         } else if (!this.loading[cid] && (!swiperData || swiperData.total < 0 || swiperData.list.length < swiperData.total)) {
             if (!swiperData) {
                 this.data.swiperData[cid] = {
@@ -291,14 +275,33 @@ Page({
                     page: 1,
                     list: [],
                     renderData: [],
-                    startIndex: 0,
-                    endIndex: 0
+                    startPage: 0,
+                    endPage: 0
                 }
                 swiperData = this.data.swiperData[cid];
             }
             this.getComicListByCategory(cid).then((data) => {
-                swiperData.list = swiperData.list.concat(data.list);
-                swiperData.total = data.size;
+                this.length = this.length || 0;
+                data.list.map((item, index) => {
+                    item.title = ++this.length + '、' + item.title;
+                });
+                swiperData.list.push(data.list);
+                if (swiperData.total <= 0) {
+                    swiperData.total = data.size;
+                    var totalPageKey = `swiperData[${cid}].totalPage`;
+                    var viewArrKey = `swiperData[${cid}].viewArr`;
+                    var nowViewKey = `swiperData[${cid}].nowView`
+                    var totalPage = Math.ceil(swiperData.total / this.data.pageSize);
+                    var viewArr = [];
+                    for (var i = 0, len = Math.ceil(swiperData.total / this.data.pageSize / this.data.viewSize); i < len; i++) {
+                        viewArr.push(i);
+                    };
+                    this.setData({
+                        [totalPageKey]: totalPage,
+                        [viewArrKey]: viewArr,
+                        [nowViewKey]: 0
+                    })
+                }
                 swiperData.page++;
                 this.loadNext(cid);
             });
@@ -310,7 +313,7 @@ Page({
         this.loading[cid] = true;
         return new Promise((resolve, reject) => {
             wx.request({
-                url: host + '/comic?cid=' + cid + '&page=' + self.data.swiperData[cid].page + '&size=' + this.data.size,
+                url: host + '/comic?cid=' + cid + '&page=' + self.data.swiperData[cid].page + '&size=' + this.data.pageSize,
                 success(res) {
                     wx.stopPullDownRefresh();
                     self.loading[cid] = false;
