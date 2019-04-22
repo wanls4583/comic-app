@@ -281,10 +281,10 @@ Page({
                 swiperData = this.data.swiperData[cid];
             }
             this.getComicListByCategory(cid).then((data) => {
-                this.length = this.length || 0;
-                data.list.map((item, index) => {
-                    item.title = ++this.length + '、' + item.title;
-                });
+                // this.length = this.length || 0;
+                // data.list.map((item, index) => {
+                //     item.title = ++this.length + '、' + item.title;
+                // });
                 swiperData.list.push(data.list);
                 if (swiperData.total <= 0) {
                     swiperData.total = data.size;
