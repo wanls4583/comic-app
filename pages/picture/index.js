@@ -44,11 +44,23 @@ Page({
     onUpper() {},
     //到底底部了
     onLolower() {
-        this.loadMore();
+        if(!this.jumping) {
+            this.loadMore();
+        } else {
+            setTimeout(()=>{
+                this.jumping = false;
+            }, 500);
+        }
     },
     //安卓机顶部点击加载上一章
     onTopPreChapter() {
-        this.loadPreChapter();
+        if (!this.jumping) {
+            this.loadPreChapter();
+        } else {
+            setTimeout(() => {
+                this.jumping = false;
+            }, 500);
+        }
     },
     //底部菜单点击加载上一章
     onPreChapter() {
@@ -204,7 +216,7 @@ Page({
     //设置标题栏名称
     setTitle(nowChapterIndex) {
         var self = this;
-        var chapterList = this.chapterList.slice(this.startChapterIndex, this.endChapterIndex + 1);
+        var chapterList = this.chapterList.slice(this.startChapterIndex);
         var title = '';
         var nowChapter = null;
         //直接指定章节名称
@@ -222,6 +234,7 @@ Page({
                 title && self.setData({
                     title: title.replace(/\s/g, '')
                 });
+                self.nowChapterIndex = self.endChapterIndex;
                 return;
             }
             var chapter = chapterList.shift();
