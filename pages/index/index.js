@@ -8,24 +8,18 @@ Page({
         userInfo: {},
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
-        categoryList: [],
-        recommend: [],
-        comicListByCategory: [],
-        total: -1,
-        nowCid: 0,
-        nowCidIndex: 0,
-        page: 1,
+        categoryList: [], //分类列表
+        recommend: [], //推荐列表
+        nowCid: 0, //当前分类ID
+        nowCidIndex: 0, //当前滑块的索引
         pageSize: 3 * 3 * 3, //一页的数量
-        toCategory: 'category_0',
-        testImg: 'http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg',
-        showCategoryDialog: false,
-        currentBannerIndex: 0,
-        banner: [],
-        swiperData: [{}],
-        renderData: [],
-        swiperDataMap: [],
-        scrollTop: [],
-        scrollAnimation: false,
+        toCategory: 'category_0', //分类列表滚动到指定位置
+        showCategoryDialog: false, //选择分类弹框
+        currentBannerIndex: 0, //当前轮播图索引号
+        banner: [], //轮播图
+        swiperDataMap: [{}], //所有漫画列表
+        renderCids: [], //当前可渲染的列表对应的分类ID
+        scrollTop: [], //列表对应的滚动距离
         viewSize: 40, //scroll-view中最多同时存在40页
     },
     onLoad: function() {
@@ -51,18 +45,18 @@ Page({
     //滚动事件
     onScroll(e) {
         var cid = e.currentTarget.dataset.cid;
-        var swiperData = this.data.swiperData[cid];
+        var swiperData = this.data.swiperDataMap[cid];
         swiperData.scrollTop = e.detail.scrollTop;
         if (!cid || this.viewRending) {
             return;
         }
-        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + 1) * this.itemHeight && e.detail.scrollHeight - e.detail.scrollTop < this.windowHeight && swiperData.nowView < swiperData.viewArr.length - 1) {
+        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + 2) * this.itemHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && swiperData.nowView < swiperData.viewArr.length - 1) {
             this.viewRending = true;
             this.setData({
-                [`swiperData[${cid}].nowView`]: swiperData.nowView + 1
+                [`swiperDataMap[${cid}].nowView`]: swiperData.nowView + 1
             }, () => {
                 this.setData({
-                    [`scrollTop[${cid}]`]: this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
+                    [`scrollTop[${cid}]`]: 2 * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
                 }, () => {
                     setTimeout(() => {
                         this.viewRending = false;
@@ -72,10 +66,10 @@ Page({
         } else if (e.detail.scrollTop < 3 * this.itemHeight && swiperData.nowView > 0) {
             this.viewRending = true;
             this.setData({
-                [`swiperData[${cid}].nowView`]: swiperData.nowView - 1
+                [`swiperDataMap[${cid}].nowView`]: swiperData.nowView - 1
             }, () => {
                 this.setData({
-                    [`scrollTop[${cid}]`]: this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 6 * this.itemHeight - this.windowHeight
+                    [`scrollTop[${cid}]`]: this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 3 * this.itemHeight
                 }, () => {
                     setTimeout(() => {
                         this.viewRending = false;
@@ -87,7 +81,7 @@ Page({
     //加载更多
     onLoadMore(e) {
         var cid = e.currentTarget.dataset.cid;
-        if ((this.data.swiperData[cid].nowView + 1) * this.data.viewSize >= this.data.swiperData[cid].renderData.length) {
+        if ((this.data.swiperDataMap[cid].nowView + 2) * this.data.viewSize >= this.data.swiperDataMap[cid].renderData.length) {
             this.loadNext(cid);
         }
     },
@@ -117,17 +111,17 @@ Page({
             return categoryList[item].cid;
         });
         map.map((item) => {
-            if (!this.data.swiperData[item]) {
+            if (!this.data.swiperDataMap[item]) {
                 this.loadNext(item);
             }
         });
         this.setData({
             nowCid: categoryList[current].cid,
-            swiperDataMap: map
+            renderCids: map
         }, () => {
             var s = [];
             map.map((item) => {
-                s[item] = this.data.swiperData[item].scrollTop || 0;
+                s[item] = this.data.swiperDataMap[item].scrollTop || 0;
             });
             this.setData({
                 scrollTop: s
@@ -169,7 +163,7 @@ Page({
                         cids.push(res.data[i].cid);
                     }
                     self.setData({
-                        swiperDataMap: cids
+                        renderCids: cids
                     });
                     self.renderSwiper(0);
                 }
@@ -253,23 +247,39 @@ Page({
     },
     //刷新分类列表
     refreshCategory() {
-        this.data.swiperData[this.data.nowCid] = null;
+        this.data.swiperDataMap[this.data.nowCid] = null;
         this.renderSwiper(this.data.nowCidIndex);
     },
     //底部加载
     loadNext(cid) {
-        var swiperData = this.data.swiperData[cid];
+        var swiperData = this.data.swiperDataMap[cid];
+        var self = this;
+        //每次追加一页数据到底部
         if (swiperData && swiperData.endPage < swiperData.list.length) {
-            var key = `swiperData[${cid}].renderData[${swiperData.endPage}]`;
-            var endPage = `swiperData[${cid}].endPage`;
+            var key = `swiperDataMap[${cid}].renderData[${swiperData.endPage}]`;
+            var endPage = `swiperDataMap[${cid}].endPage`;
             this.setData({
                 [key]: swiperData.list[swiperData.endPage],
                 [endPage]: swiperData.endPage
+            }, ()=>{
+                if(!self.hasGetScrollHeight) {
+                    var query = wx.createSelectorQuery()
+                    query.select('.category_comic_scroll').boundingClientRect()
+                    query.exec(function (rect) {
+                        self.windowHeight = rect[0].height;
+                    });
+                    var query = wx.createSelectorQuery()
+                    query.select('.category_item').boundingClientRect()
+                    query.exec(function (rect) {
+                        self.itemHeight = rect[0].height;
+                    });
+                    self.hasGetScrollHeight = true;
+                }
             });
             swiperData.endPage++;
         } else if (!this.loading[cid] && (!swiperData || swiperData.total < 0 || swiperData.list.length < swiperData.total)) {
             if (!swiperData) {
-                this.data.swiperData[cid] = {
+                this.data.swiperDataMap[cid] = {
                     scrollTop: 0,
                     total: -1,
                     page: 1,
@@ -278,21 +288,25 @@ Page({
                     startPage: 0,
                     endPage: 0
                 }
-                swiperData = this.data.swiperData[cid];
+                swiperData = this.data.swiperDataMap[cid];
             }
             this.getComicListByCategory(cid).then((data) => {
-                // this.length = this.length || 0;
+                this.length = this.length || 0;
                 // data.list.map((item, index) => {
                 //     item.title = ++this.length + '、' + item.title;
                 // });
                 swiperData.list.push(data.list);
                 if (swiperData.total <= 0) {
                     swiperData.total = data.size;
-                    var totalPageKey = `swiperData[${cid}].totalPage`;
-                    var viewArrKey = `swiperData[${cid}].viewArr`;
-                    var nowViewKey = `swiperData[${cid}].nowView`
+                    var totalPageKey = `swiperDataMap[${cid}].totalPage`;
+                    var viewArrKey = `swiperDataMap[${cid}].viewArr`;
+                    //当前视图索引
+                    var nowViewKey = `swiperDataMap[${cid}].nowView`
+                    //总页数
                     var totalPage = Math.ceil(swiperData.total / this.data.pageSize);
+                    //视图数组
                     var viewArr = [];
+                    //计算视图的个数
                     for (var i = 0, len = Math.ceil(swiperData.total / this.data.pageSize / this.data.viewSize); i < len; i++) {
                         viewArr.push(i);
                     };
@@ -313,7 +327,7 @@ Page({
         this.loading[cid] = true;
         return new Promise((resolve, reject) => {
             wx.request({
-                url: host + '/comic?cid=' + cid + '&page=' + self.data.swiperData[cid].page + '&size=' + this.data.pageSize,
+                url: host + '/comic?cid=' + cid + '&page=' + self.data.swiperDataMap[cid].page + '&size=' + this.data.pageSize,
                 success(res) {
                     wx.stopPullDownRefresh();
                     self.loading[cid] = false;

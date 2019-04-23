@@ -31,7 +31,7 @@
     </view>
     <swiper class='list_swiper_w' bindanimationfinish='animationFinish' current='{{nowCidIndex}}' duration='{{500}}' circular='{{false}}'>
         <swiper-item class='swiper_item' wx:for='{{categoryList}}' wx:for-item='cItem' wx:key='{{cItem.cid}}'>
-            <scroll-view wx:if='{{(swiperDataMap[0]===cItem.cid || swiperDataMap[1]===cItem.cid || swiperDataMap[2]===cItem.cid) && cItem.cid===0}}' class="recommend_comic_scroll" data-cid='{{0}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}' scroll-y>
+            <scroll-view wx:if='{{(renderCids[0]===cItem.cid || renderCids[1]===cItem.cid || renderCids[2]===cItem.cid) && cItem.cid===0}}' class="recommend_comic_scroll" data-cid='{{0}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}' scroll-y>
                 <!-- 轮播图 -->
                 <swiper class='banner_w' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
                     <swiper-item wx:for="{{banner}}" wx:for-item='homeItem'  wx:key='{{homeItem.comicid}}'>
@@ -69,10 +69,11 @@
                     </view>
                 </block>
             </scroll-view>
-            <block wx:if='{{(swiperDataMap[0]===cItem.cid || swiperDataMap[1]===cItem.cid || swiperDataMap[2]===cItem.cid) && cItem.cid}}' wx:for='{{swiperData[cItem.cid].viewArr}}' wx:for-item='vItem' wx:key='{{vItem}}'>
-                <scroll-view wx:if='{{vItem==swiperData[cItem.cid].nowView}}' class='category_comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}'>
-                    <block wx:for='{{swiperData[cItem.cid].renderData}}' wx:for-item='rItem' wx:for-index='rIndex' wx:key='{{rIndex}}'>
-                        <view wx:if='{{rIndex >= vItem*viewSize && rIndex <= (vItem+1)*viewSize}}' class='category_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>
+            <!-- 各分类下的列表 -->
+            <block wx:if='{{(renderCids[0]===cItem.cid || renderCids[1]===cItem.cid || renderCids[2]===cItem.cid) && cItem.cid}}' wx:for='{{swiperDataMap[cItem.cid].viewArr}}' wx:for-item='vItem' wx:key='{{vItem}}'>
+                <scroll-view wx:if='{{vItem==swiperDataMap[cItem.cid].nowView}}' class='category_comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}'>
+                    <block wx:for='{{swiperDataMap[cItem.cid].renderData}}' wx:for-item='rItem' wx:for-index='rIndex' wx:key='{{rIndex}}'>
+                        <view wx:if='{{rIndex >= vItem*viewSize && rIndex < (vItem+1)*viewSize+2}}' class='category_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>
                             <view class='category_item_img'>
                                 <image src='{{comicItem.showpicurlb}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
                             </view>
@@ -83,7 +84,7 @@
                             </view>
                         </view>
                     </block>
-                    <view wx:if='{{swiperData[cItem.cid].totalPage <= swiperData[cItem.cid].endPage}}' class='loading_tip'>
+                    <view wx:if='{{swiperDataMap[cItem.cid].totalPage <= swiperDataMap[cItem.cid].endPage}}' class='loading_tip'>
                         <image mode='widthFix' src="/image/icon_end.png"></image>
                         <text>没有更多了~</text>
                     </view>
@@ -92,7 +93,7 @@
                     </view>
                 </scroll-view>
             </block>
-            <view wx:if='{{swiperDataMap[0]!=cItem.cid && swiperDataMap[1]!=cItem.cid && swiperDataMap[2]!=cItem.cid}}' class='loading_tip'>
+            <view wx:if='{{renderCids[0]!=cItem.cid && renderCids[1]!=cItem.cid && renderCids[2]!=cItem.cid}}' class='loading_tip'>
                 <text>正在加载中...</text>
             </view>
         </swiper-item>
