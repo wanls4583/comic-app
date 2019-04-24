@@ -21,7 +21,7 @@ Page({
         renderCids: [], //当前可渲染的列表对应的分类ID
         scrollTop: [], //列表对应的滚动距离
         viewSize: 40, //scroll-view中最多同时存在40页
-        overlappingPage: 4, //前后视图交叉的页数
+        overlappingPage: 5, //前后视图交叉的页数
     },
     onLoad: function() {
         wx.hideTabBar();

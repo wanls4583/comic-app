@@ -19,7 +19,7 @@ Page({
         viewSize: 40, //scroll-view中最多同时存在40页
         pageSize: 3 * 3 * 3, //一页的数量
         scrollTop: 0,
-        overlappingPage: 4
+        overlappingPage: 5
     },
     onLoad: function() {
         var history = wx.getStorageSync('search_history');
@@ -183,12 +183,16 @@ Page({
                                 var query = wx.createSelectorQuery()
                                 query.select('.comic_scroll').boundingClientRect()
                                 query.exec(function (rect) {
-                                    self.windowHeight = rect[0].height;
+                                    if (rect && rect[0]) {
+                                        self.windowHeight = rect[0].height;
+                                    }
                                 });
                                 var query = wx.createSelectorQuery()
                                 query.select('.item').boundingClientRect()
                                 query.exec(function (rect) {
-                                    self.itemHeight = rect[0].height;
+                                    if (rect && rect[0]){
+                                        self.itemHeight = rect[0].height;
+                                    }
                                 });
                             }, 50);
                             self.hasGetScrollHeight = true;
