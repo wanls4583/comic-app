@@ -73,7 +73,7 @@
             <block wx:if='{{(renderCids[0]===cItem.cid || renderCids[1]===cItem.cid || renderCids[2]===cItem.cid) && cItem.cid}}' wx:for='{{swiperDataMap[cItem.cid].viewArr}}' wx:for-item='vItem' wx:key='{{vItem}}'>
                 <scroll-view wx:if='{{vItem==swiperDataMap[cItem.cid].nowView}}' class='category_comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}'>
                     <block wx:for='{{swiperDataMap[cItem.cid].renderData}}' wx:for-item='rItem' wx:for-index='rIndex' wx:key='{{rIndex}}'>
-                        <view wx:if='{{rIndex >= vItem*viewSize && rIndex < (vItem+1)*viewSize+2}}' class='category_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>
+                        <view wx:if='{{rIndex >= vItem*viewSize && rIndex < (vItem+1)*viewSize+overlappingPage}}' class='category_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>
                             <view class='category_item_img'>
                                 <image src='{{comicItem.showpicurlb}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
                             </view>

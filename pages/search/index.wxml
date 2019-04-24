@@ -26,7 +26,7 @@
     </view>
     <block wx:for='{{viewArr}}' wx:for-item="vItem" wx:for-index="vIndex" wx:key='{{vItem}}'>
         <scroll-view wx:if='{{vItem==nowView}}' hidden='{{showHistory}}' class='comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx' bindscroll='onScroll' scroll-top='{{scrollTop}}'>
-            <block wx:if='{{pIndex >= vItem*viewSize && pIndex < (vItem+1)*viewSize+2}}' wx:for='{{comicList}}' wx:for-item="pItem" wx:for-index="pIndex" wx:key='{{pIndex}}'>
+            <block wx:if='{{pIndex >= vItem*viewSize && pIndex < (vItem+1)*viewSize+overlappingPage}}' wx:for='{{comicList}}' wx:for-item="pItem" wx:for-index="pIndex" wx:key='{{pIndex}}'>
                 <view class='item' wx:for='{{pItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
                     <view class='item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
                     <view class='item_title'>{{item.title}}</view>

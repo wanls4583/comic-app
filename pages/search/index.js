@@ -18,7 +18,8 @@ Page({
         nowView: 0,
         viewSize: 40, //scroll-view中最多同时存在40页
         pageSize: 3 * 3 * 3, //一页的数量
-        scrollTop: 0
+        scrollTop: 0,
+        overlappingPage: 4
     },
     onLoad: function() {
         var history = wx.getStorageSync('search_history');
@@ -35,13 +36,13 @@ Page({
         if (this.viewRending) {
             return;
         }
-        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + 2) * this.itemHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && this.data.nowView < this.data.viewArr.length - 1) {
+        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && this.data.nowView < this.data.viewArr.length - 1) {
             this.viewRending = true;
             this.setData({
                 nowView: this.data.nowView + 1
             }, () => {
                 this.setData({
-                    scrollTop: 2 * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
+                    scrollTop: this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
                 }, () => {
                     setTimeout(() => {
                         this.viewRending = false;
@@ -156,7 +157,7 @@ Page({
     },
     //加载更多
     loadMore() {
-        if ((this.data.nowView + 1) * this.data.viewSize + 3 >= this.data.comicList.length) {
+        if ((this.data.nowView + 1) * this.data.viewSize + this.data.overlappingPage + 1 >= this.data.comicList.length) {
             this.getComicList();
         }
     },
@@ -178,16 +179,18 @@ Page({
                         [`comicList[${self.data.page-1}]`]: res.data.list
                     }, ()=>{
                         if (!self.hasGetScrollHeight) {
-                            var query = wx.createSelectorQuery()
-                            query.select('.comic_scroll').boundingClientRect()
-                            query.exec(function (rect) {
-                                self.windowHeight = rect[0].height;
-                            });
-                            var query = wx.createSelectorQuery()
-                            query.select('.item').boundingClientRect()
-                            query.exec(function (rect) {
-                                self.itemHeight = rect[0].height;
-                            });
+                            setTimeout(() => {
+                                var query = wx.createSelectorQuery()
+                                query.select('.comic_scroll').boundingClientRect()
+                                query.exec(function (rect) {
+                                    self.windowHeight = rect[0].height;
+                                });
+                                var query = wx.createSelectorQuery()
+                                query.select('.item').boundingClientRect()
+                                query.exec(function (rect) {
+                                    self.itemHeight = rect[0].height;
+                                });
+                            }, 50);
                             self.hasGetScrollHeight = true;
                         }
                     });

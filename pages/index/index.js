@@ -21,12 +21,12 @@ Page({
         renderCids: [], //当前可渲染的列表对应的分类ID
         scrollTop: [], //列表对应的滚动距离
         viewSize: 40, //scroll-view中最多同时存在40页
+        overlappingPage: 4, //前后视图交叉的页数
     },
     onLoad: function() {
         wx.hideTabBar();
         this.itemHeight = 180 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
-        this.maxTopHeight = 200;
         this.loading = {};
         this.getCategory();
         this.getRecommend();
@@ -50,13 +50,13 @@ Page({
         if (!cid || this.viewRending) {
             return;
         }
-        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + 2) * this.itemHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && swiperData.nowView < swiperData.viewArr.length - 1) {
+        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && swiperData.nowView < swiperData.viewArr.length - 1) {
             this.viewRending = true;
             this.setData({
                 [`swiperDataMap[${cid}].nowView`]: swiperData.nowView + 1
             }, () => {
                 this.setData({
-                    [`scrollTop[${cid}]`]: 2 * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
+                    [`scrollTop[${cid}]`]: this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
                 }, () => {
                     setTimeout(() => {
                         this.viewRending = false;
@@ -81,7 +81,7 @@ Page({
     //加载更多
     onLoadMore(e) {
         var cid = e.currentTarget.dataset.cid;
-        if ((this.data.swiperDataMap[cid].nowView + 1) * this.data.viewSize + 3 >= this.data.swiperDataMap[cid].renderData.length) {
+        if ((this.data.swiperDataMap[cid].nowView + 1) * this.data.viewSize + this.data.overlappingPage + 1 >= this.data.swiperDataMap[cid].renderData.length) {
             this.loadNext(cid);
         }
     },
@@ -263,16 +263,18 @@ Page({
                 [endPage]: swiperData.endPage
             }, ()=>{
                 if(!self.hasGetScrollHeight) {
-                    var query = wx.createSelectorQuery()
-                    query.select('.category_comic_scroll').boundingClientRect()
-                    query.exec(function (rect) {
-                        self.windowHeight = rect[0].height;
-                    });
-                    var query = wx.createSelectorQuery()
-                    query.select('.category_item').boundingClientRect()
-                    query.exec(function (rect) {
-                        self.itemHeight = rect[0].height;
-                    });
+                    setTimeout(()=>{
+                        var query = wx.createSelectorQuery()
+                        query.select('.category_comic_scroll').boundingClientRect()
+                        query.exec(function (rect) {
+                            self.windowHeight = rect[0].height;
+                        });
+                        var query = wx.createSelectorQuery()
+                        query.select('.category_item').boundingClientRect()
+                        query.exec(function (rect) {
+                            self.itemHeight = rect[0].height;
+                        });
+                    }, 50);
                     self.hasGetScrollHeight = true;
                 }
             });
