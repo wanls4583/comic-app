@@ -17,14 +17,14 @@ Page({
         showCategoryDialog: false, //选择分类弹框
         currentBannerIndex: 0, //当前轮播图索引号
         banner: [], //轮播图
-        swiperDataMap: [{}], //所有漫画列表
+        swiperDataMap: [], //所有漫画列表
         renderCids: [], //当前可渲染的列表对应的分类ID
         scrollTop: [], //列表对应的滚动距离
         viewSize: 40, //scroll-view中最多同时存在40页
     },
     onLoad: function() {
         wx.hideTabBar();
-        this.itemHeight = 175 * app.globalData.systemInfo.screenWidth / 375;
+        this.itemHeight = 180 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
         this.maxTopHeight = 200;
         this.loading = {};
@@ -81,7 +81,7 @@ Page({
     //加载更多
     onLoadMore(e) {
         var cid = e.currentTarget.dataset.cid;
-        if ((this.data.swiperDataMap[cid].nowView + 2) * this.data.viewSize >= this.data.swiperDataMap[cid].renderData.length) {
+        if ((this.data.swiperDataMap[cid].nowView + 1) * this.data.viewSize + 3 >= this.data.swiperDataMap[cid].renderData.length) {
             this.loadNext(cid);
         }
     },

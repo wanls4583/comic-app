@@ -166,6 +166,7 @@
     float: left;
     position: relative;
     width: 224rpx;
+    height: 360rpx;
     margin-left: 20rpx;
 }
 
@@ -177,12 +178,13 @@
 
 .item_title {
     position: absolute;
-    bottom: 70rpx;
+    bottom: 84rpx;
     height: 50rpx;
-    width: 100%;
+    left: 4rpx;
+    right: 4rpx;
     padding-left: 10rpx;
     line-height: 50rpx;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.65);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -193,9 +195,9 @@
 .item_bottom_w {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    height: 70rpx;
+    height: 80rpx;
     font-size: 24rpx;
+    line-height: 54rpx;
 }
 
 .item_new {

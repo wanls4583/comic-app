@@ -37,7 +37,7 @@
     background-color: rgba(256, 256, 256, 0.1);
 }
 
-.category_dialog_icon_close image{
+.category_dialog_icon_close image {
     width: 40rpx;
     height: 40rpx;
 }
@@ -135,10 +135,14 @@
 .category_w .scroll_w .item {
     height: 100rpx;
     line-height: 100rpx;
-    margin-left: 40rpx;
+    margin-right: 45rpx;
     display: inline-block;
     color: #fff;
     font-size: 34rpx;
+}
+
+.category_w .scroll_w .item:last-child {
+    margin-right: 20rpx;
 }
 
 .category_w .scroll_w .item.active, .category_w .scroll_w .item:active {
@@ -148,10 +152,10 @@
 .fixed_menu {
     flex-shrink: 0;
     flex-grow: 0;
-    margin: 0 40rpx 0 20rpx;
+    margin: 0 20rpx 0 20rpx;
 }
 
-.fixed_menu image{
+.fixed_menu image {
     width: 40rpx;
     height: 34rpx;
     vertical-align: top;
@@ -251,7 +255,7 @@ button.read_more {
 
 .hot_item {
     display: inline-block;
-    margin-left: 40rpx;
+    margin-left: 20rpx;
     width: 180rpx;
 }
 
@@ -298,7 +302,7 @@ button.read_more {
     float: left;
     position: relative;
     width: 224rpx;
-    height: 350rpx;
+    height: 360rpx;
     margin-left: 20rpx;
 }
 
@@ -310,12 +314,13 @@ button.read_more {
 
 .category_item_title {
     position: absolute;
-    bottom: 70rpx;
+    bottom: 84rpx;
     height: 50rpx;
-    width: 100%;
+    left: 4rpx;
+    right: 4rpx;
     padding-left: 10rpx;
     line-height: 50rpx;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.65);
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -326,9 +331,9 @@ button.read_more {
 .category_item_bottom_w {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    height: 70rpx;
+    height: 80rpx;
     font-size: 24rpx;
+    line-height: 54rpx;
 }
 
 .category_item_new {
@@ -343,7 +348,9 @@ button.read_more {
     flex-shrink: 0;
     color: #38ffff;
 }
+
 /* 没有更多了 */
+
 .loading_tip {
     width: 100%;
     height: 50px;

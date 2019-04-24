@@ -9,11 +9,16 @@ Page({
         comicList: [],
         total: -1,
         page: 1,
-        size: 20,
+        pageSize: 27,
         showPlace: false,
         showHistory: true,
         autoFocus: false,
-        history: []
+        history: [],
+        viewArr: [],
+        nowView: 0,
+        viewSize: 40, //scroll-view中最多同时存在40页
+        pageSize: 3 * 3 * 3, //一页的数量
+        scrollTop: 0
     },
     onLoad: function() {
         var history = wx.getStorageSync('search_history');
@@ -22,6 +27,41 @@ Page({
             autoFocus: true,
             history: history
         });
+        this.itemHeight = 180 * app.globalData.systemInfo.screenWidth / 375;
+        this.windowHeight = app.globalData.systemInfo.windowHeight;
+    },
+    //滚动事件
+    onScroll(e) {
+        if (this.viewRending) {
+            return;
+        }
+        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + 2) * this.itemHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && this.data.nowView < this.data.viewArr.length - 1) {
+            this.viewRending = true;
+            this.setData({
+                nowView: this.data.nowView + 1
+            }, () => {
+                this.setData({
+                    scrollTop: 2 * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
+                }, () => {
+                    setTimeout(() => {
+                        this.viewRending = false;
+                    }, 1000);
+                });
+            });
+        } else if (e.detail.scrollTop < 3 * this.itemHeight && this.data.nowView > 0) {
+            this.viewRending = true;
+            this.setData({
+                nowView: this.data.nowView - 1
+            }, () => {
+                this.setData({
+                    scrollTop: this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 3 * this.itemHeight
+                }, () => {
+                    setTimeout(() => {
+                        this.viewRending = false;
+                    }, 1000);
+                });
+            });
+        }
     },
     //跳转到动漫详情页
     gotoDetail(e) {
@@ -116,30 +156,58 @@ Page({
     },
     //加载更多
     loadMore() {
-        if (this.data.comicList.length && this.data.comicList.length >= this.data.total) {
-            return;
-        } else if (this.data.total != -1) {
-            this.setData({
-                page: this.data.page + 1
-            })
+        if ((this.data.nowView + 1) * this.data.viewSize + 3 >= this.data.comicList.length) {
+            this.getComicList();
         }
-        this.getComicList();
     },
     //加载列表
     getComicList() {
         var self = this;
         wx.request({
-            url: host + '/comic?search=' + this.data.searchKey + '&page=' + this.data.page + '&size=' + this.data.size,
+            url: host + '/comic?search=' + this.data.searchKey + '&page=' + this.data.page + '&size=' + this.data.pageSize,
             success(res) {
                 wx.stopPullDownRefresh();
                 if (res.statusCode == 200 && res.data.list) {
                     res.data.list.map((item) => {
                         item.lastupdatetime = util.formatTime(item.lastupdatets, 'yyyy/MM/dd').slice(2);
+                        // self.length = self.length || 0;
+                        // item.title = ++self.length+item.title;
                     });
                     self.setData({
-                        comicList: self.data.page == 1 ? res.data.list : self.data.comicList.concat(res.data.list),
-                        total: res.data.size
+                        page: self.data.page,
+                        [`comicList[${self.data.page-1}]`]: res.data.list
+                    }, ()=>{
+                        if (!self.hasGetScrollHeight) {
+                            var query = wx.createSelectorQuery()
+                            query.select('.comic_scroll').boundingClientRect()
+                            query.exec(function (rect) {
+                                self.windowHeight = rect[0].height;
+                            });
+                            var query = wx.createSelectorQuery()
+                            query.select('.item').boundingClientRect()
+                            query.exec(function (rect) {
+                                self.itemHeight = rect[0].height;
+                            });
+                            self.hasGetScrollHeight = true;
+                        }
                     });
+                    self.data.page++;
+                    if (self.data.total <= 0) {
+                        //总页数
+                        var totalPage = Math.ceil(res.data.size / self.data.pageSize);
+                        //视图数组
+                        var viewArr = [];
+                        //计算视图的个数
+                        for (var i = 0, len = Math.ceil(res.data.size / self.data.pageSize / self.data.viewSize); i < len; i++) {
+                            viewArr.push(i);
+                        };
+                        self.setData({
+                            totalPage: totalPage,
+                            viewArr: viewArr,
+                            nowView: 0,
+                            total: res.data.size
+                        })
+                    }
                 }
             }
         })
