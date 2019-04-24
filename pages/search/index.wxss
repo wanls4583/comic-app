@@ -18,6 +18,8 @@
 }
 
 .search_w {
+    position: relative;
+    z-index: 3;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -97,8 +99,18 @@
     color: #fff;
 }
 
+.search_history_layer {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
 .search_history_w {
     position: relative;
+    top: 72rpx;
     z-index: 2;
     margin: 30rpx 20rpx 0;
     padding: 20rpx 10rpx 0;
