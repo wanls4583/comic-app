@@ -16,7 +16,10 @@ Page({
         statusBarHeight: app.globalData.systemInfo.statusBarHeight,
         navHeight: app.globalData.navHeight,
         title: '',
-        showTitle: false
+        showTitle: false,
+        chapterList: [],
+        nowChapterIndex: 1,
+        scrollAnimation: false
     },
     init() {
         console.log('systemInfo', this.data.systemInfo);
@@ -30,10 +33,13 @@ Page({
         this.startChapterIndex = obj.startChapterIndex; //已请求章节的开始索引
         this.endChapterIndex = obj.startChapterIndex; //已请求章节的结束(不包含)索引
         this.allPic = []; //存储已经从网络获取到的图片链接
-        this.tipScrollTop = this.data.systemInfo.screenWidth / 750 * this.data.topLoadingHeight;
+        // this.tipScrollTop = this.data.systemInfo.screenWidth / 750 * this.data.topLoadingHeight;
+        this.tipScrollTop = 0;
         //设置标题
         this.setData({
-            title: this.chapterList[obj.startChapterIndex].name.replace(/\s/g, '')
+            title: this.chapterList[obj.startChapterIndex].name.replace(/\s/g, ''),
+            chapterList: this.chapterList,
+            nowChapterIndex: this.nowChapterIndex
         });
         this.loadNextChapter(this.nowChapterIndex);
     },
@@ -44,16 +50,17 @@ Page({
     onUpper() {},
     //到底底部了
     onLolower() {
-        if(!this.jumping) {
+        if (!this.jumping) {
             this.loadMore();
         } else {
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.jumping = false;
             }, 500);
         }
     },
     //安卓机顶部点击加载上一章
     onTopPreChapter() {
+        wx.vibrateShort();
         if (!this.jumping) {
             this.loadPreChapter();
         } else {
@@ -64,6 +71,7 @@ Page({
     },
     //底部菜单点击加载上一章
     onPreChapter() {
+        wx.vibrateShort();
         if (this.nowChapterIndex < 1) {
             wx.showToast({
                 title: '已经是第一章了',
@@ -73,8 +81,14 @@ Page({
         }
         this.loadPreChapter(--this.nowChapterIndex);
     },
+    sliderCchange(e) {
+        var chapter = e.detail.value;
+        this.nowChapterIndex = chapter - 1;
+        this.loadNextChapter(chapter - 1);
+    },
     //底部菜单点击加载下一章
     onNextChapter() {
+        wx.vibrateShort();
         if (this.nowChapterIndex >= this.chapterList.length - 1) {
             wx.showToast({
                 title: '已经是最后一章了',
@@ -95,7 +109,11 @@ Page({
                 pics: pics
             }, () => {
                 this.setData({
-                    scrollTop: this.tipScrollTop
+                    scrollAnimation: false
+                }, () => {
+                    this.setData({
+                        scrollTop: this.tipScrollTop
+                    })
                 });
                 this.setTopLoadingTip();
             });
@@ -125,7 +143,11 @@ Page({
                 pics: pics,
             }, () => {
                 this.setData({
-                    scrollTop: this.tipScrollTop
+                    scrollAnimation: false
+                }, () => {
+                    this.setData({
+                        scrollTop: this.tipScrollTop
+                    })
                 });
                 this.setTopLoadingTip();
                 this.setBottomLoadingTip();
@@ -222,7 +244,8 @@ Page({
         //直接指定章节名称
         if (typeof nowChapterIndex != 'undefined') {
             this.setData({
-                title: this.chapterList[nowChapterIndex].name.replace(/\s/g, '')
+                title: this.chapterList[nowChapterIndex].name.replace(/\s/g, ''),
+                nowChapterIndex: this.nowChapterIndex
             });
         } else { //通过计算得出当前章节名称
             _setTitle();
@@ -235,6 +258,9 @@ Page({
                     title: title.replace(/\s/g, '')
                 });
                 self.nowChapterIndex = self.endChapterIndex;
+                self.setData({
+                    nowChapterIndex: self.nowChapterIndex
+                });
                 return;
             }
             var chapter = chapterList.shift();
@@ -250,6 +276,9 @@ Page({
                     for (var i = 0; i < self.chapterList.length; i++) {
                         if (self.chapterList[i].id == nowChapter.id) {
                             self.nowChapterIndex = i;
+                            self.setData({
+                                nowChapterIndex: self.nowChapterIndex
+                            });
                             break;
                         }
                     }
@@ -271,8 +300,13 @@ Page({
     },
     //回到顶部
     scrollToTop() {
+        wx.vibrateShort();
         this.setData({
-            scrollTop: this.tipScrollTop
+            scrollAnimation: true
+        }, () => {
+            this.setData({
+                scrollTop: this.tipScrollTop
+            })
         });
     },
     //双击缩放

@@ -3,7 +3,7 @@
     <view wx:if='{{showTitle}}' class='custom_nav' style='height:{{navHeight}}px;padding-top:{{statusBarHeight}}px'>
         <view class='title'>{{title}}<view class='icon_back' bindtap='back'></view></view>
     </view>
-    <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' upper-threshold='2000px' lower-threshold='2000px' bindscrolltolower='onLolower' bindscrolltoupper='onUpper' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{false}}">
+    <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' upper-threshold='2000px' lower-threshold='2000px' bindscrolltolower='onLolower' bindscrolltoupper='onUpper' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{scrollAnimation}}">
         <!-- <view style='visibility:{{topLoadingTip ? "visible" : "hidden"}}' class='top_loading' bindtap='onPreChapter'>{{topLoadingTip}}</view> -->
         <view class='image_horizontal_scroll_w'>
             <view class='image_w' style='width:{{imgScale*100+"%"}};'>
@@ -13,8 +13,10 @@
         <view wx:if='{{bottomLoadingTip}}' class='bottom_loading' id="bottom_loading">{{bottomLoadingTip}}</view>
     </scroll-view>
     <view class='bottom_btn_w {{systemInfo.platform=="android" ? "android" : "ios"}} {{showBootomBtn ? "active" : ""}}'>
-        <view class='pre_chapter' bindtap='onPreChapter'>上一章</view>
-        <view class='scroll_to_top' bindtap='scrollToTop'>回到顶部</view>
-        <view class='next_chapter' bindtap='onNextChapter'>下一章</view>
+        <view class='pre_chapter' bindtap='onPreChapter'><image mode='widthFix' src='/image/icon_left.png'></image></view>
+        <slider class='slider' value='{{nowChapterIndex+1}}' bindchange="sliderCchange" activeColor='#7e6353' block-color='#7e6353' block-size='18' show-value='{{true}}' step="1" min="1" max="{{chapterList.length}}"/>
+        <view class='total'>/{{chapterList.length}}</view>
+        <view class='next_chapter' bindtap='onNextChapter'><image mode='widthFix' src='/image/icon_left.png' style='transform:rotate(180deg)'></image></view>
     </view>
+    <view wx:if='{{showBootomBtn}}' class='scroll_top' bindtap='scrollToTop'><image mode='widthFix' src='/image/icon_top.png'></image></view>
 </view>

@@ -28,7 +28,6 @@ scroll-view {
     z-index: 99;
     width: 100%;
     color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
     box-sizing: content-box;
 }
 

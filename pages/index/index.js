@@ -274,7 +274,7 @@ Page({
                         query.exec(function (rect) {
                             self.itemHeight = rect[0].height;
                         });
-                    }, 50);
+                    }, 500);
                     self.hasGetScrollHeight = true;
                 }
             });
@@ -348,6 +348,9 @@ Page({
     },
     getSwitch() {
         var self = this;
+        // app.dirMenu = true;
+        // wx.showTabBar();
+        // return;
         wx.request({
             url: host + '/switch',
             success(res) {

@@ -194,7 +194,7 @@ Page({
                                         self.itemHeight = rect[0].height;
                                     }
                                 });
-                            }, 50);
+                            }, 500);
                             self.hasGetScrollHeight = true;
                         }
                     });

@@ -45,38 +45,71 @@
     left: 0;
     width: 100%;
     height: 0;
-    opacity: 0;
+    opacity: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
     font-size: 30rpx;
     overflow: hidden;
     transition: height 0.1s;
 }
 
-.bottom_btn_w {
-    opacity: 1;
-}
-
 .bottom_btn_w.ios.active {
-    height: 120rpx;
-    padding: 0 40rpx 20rpx 40rpx;
+    height: 160rpx;
+    padding: 0 0 40rpx 0;
 }
 
 .bottom_btn_w.android.active {
-    height: 100rpx;
-    padding: 0 40rpx;
+    height: 120rpx;
+    padding: 0;
 }
 
-.pre_chapter, .next_chapter, .scroll_to_top {
-    padding: 0 40rpx;
-    line-height: 80rpx;
-    border-radius: 50rpx;
+.slider {
+    flex-grow: 1;
+    margin: 0;
 }
 
-.pre_chapter:active , .next_chapter:active, .scroll_to_top:active {
-    color: #38ffff;
-    background: rgba(256, 256, 256, 0.2);
+.total {
+    font-size: 24rpx;
+    color: #999;
+}
+
+.pre_chapter, .next_chapter {
+    padding: 20rpx 30rpx;
+    font-size: 0;
+}
+
+.pre_chapter {
+    padding-right: 60rpx;
+}
+
+.next_chapter {
+    padding-left: 60rpx;
+}
+
+.pre_chapter image, .next_chapter image{
+    width: 40rpx;
+}
+
+.scroll_top {
+    position: fixed;
+    bottom: 200rpx;
+    right: 30rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.scroll_top image{
+    width: 40rpx;
+}
+
+.custom_nav {
+    background-color: rgba(0, 0, 0, 0.8);
 }
