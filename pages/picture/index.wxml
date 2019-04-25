@@ -34,10 +34,16 @@
             </view>
         </view>
         <view class='bottom_menu_w'>
-            <!-- <view class='menu_item {{nowMenu==0 ? "active" : ""}}' data-index='{{0}}' bindtap='menuChange'><image mode='aspectFit' src='/image/icon_menu_chapter.png' style='height:26rpx;margin-top:7rpx'></image><text>目录</text></view> -->
+            <view class='menu_item {{nowMenu==0 ? "active" : ""}}' data-index='{{0}}' bindtap='menuChange'><image mode='aspectFit' src='/image/icon_menu_chapter.png' style='height:26rpx;margin-top:7rpx'></image><text>目录</text></view>
             <view class='menu_item {{nowMenu==1 ? "active" : ""}}' data-index='{{1}}' bindtap='menuChange'><image mode='aspectFit' src='/image/icon_process.png' style='height:30rpx;margin-top:5rpx'></image><text>进度</text></view>
             <view class='menu_item {{nowMenu==2 ? "active" : ""}}' data-index='{{2}}' bindtap='menuChange'><image mode='aspectFit' src='/image/icon_light.png' style='height:40rpx'></image><text>亮度</text></view>
         </view>
+    </view>
+    <view class='catalog_w {{nowMenu==0 ? "active" : ""}}'style='padding-top:{{statusBarHeight}}px'>
+        <!-- <view class='catalog_bg' style='background:url({{pics[0].url}}) no-repeat center;background-size:cover'></view> -->
+        <scroll-view scroll-y class='catalog_scroll_w'>
+            <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' style='color:{{nowChapterIndex==index ? "#fff" : "#aaa"}}' bindtap='gotoChapter'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
+        </scroll-view>
     </view>
     <view class='scroll_top {{showBootomBtn?"active":""}}' bindtap='scrollToTop'><image mode='widthFix' src='/image/icon_top.png'></image></view>
 </view>

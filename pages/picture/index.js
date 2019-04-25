@@ -100,6 +100,16 @@ Page({
         this.nowChapterIndex = chapter - 1;
         this.loadNextChapter(chapter - 1);
     },
+    //章节跳转
+    gotoChapter(e) {
+        var index = e.currentTarget.dataset.index;
+        this.nowChapterIndex = index;
+        this.loadNextChapter(index);
+        this.setData({
+            nowMenu: 1
+        });
+        wx.vibrateShort();
+    },
     //调整亮度
     lightChange(e) {
         var light = e.detail.value;
@@ -139,6 +149,12 @@ Page({
         this.setData({
             nowMenu: nowMenu
         });
+        if(nowMenu==0) {
+            this.setData({
+                showTitle: false,
+                showBootomBtn: false
+            })
+        }
         wx.vibrateShort();
     },
     //底部菜单点击加载下一章
@@ -388,10 +404,20 @@ Page({
             clearTimeout(this.tapTimer);
         } else {
             this.tapTimer = setTimeout(() => {
-                this.setData({
-                    showBootomBtn: !this.data.showBootomBtn,
-                    showTitle: !this.data.showTitle
-                });
+                if(this.data.nowMenu == 0) { //目录弹框
+                    this.setData({
+                        nowMenu: 1
+                    });
+                } else {
+                    this.setData({
+                        showBootomBtn: !this.data.showBootomBtn,
+                        showTitle: !this.data.showTitle,
+                    }, ()=>{
+                        this.setData({
+                            nowMenu: 1
+                        });
+                    });
+                }
                 this.startTs = 0;
             }, 300);
         }

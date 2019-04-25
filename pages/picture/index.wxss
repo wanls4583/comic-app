@@ -1,3 +1,15 @@
+.custom_nav {
+    top: -112px;
+    opacity: 0;
+    transition: all 0.3s;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.custom_nav.active {
+    top: 0;
+    opacity: 1;
+}
+
 .scroll_w {
     height: 100%;
     background-color: #7e6353;
@@ -148,18 +160,6 @@
     width: 40rpx;
 }
 
-.custom_nav {
-    top: -112px;
-    opacity: 0;
-    transition: all 0.3s;
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.custom_nav.active {
-    top: 0;
-    opacity: 1;
-}
-
 .bad_chapter {
     display: flex;
     align-items: center;
@@ -188,4 +188,55 @@
     padding: 0 136rpx 20rpx 120rpx;
     font-size: 24rpx;
     color: #fff;
+}
+
+/* 目录 */
+.catalog_w {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -70%;
+    width: 70%;
+    opacity: 0;
+    background-color: rgba(0, 0, 0, 0.9);
+    transition: all 0.5s;
+}
+
+.catalog_w.active {
+    left: 0;
+    opacity: 1;
+}
+
+/* .catalog_bg {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(30rpx);
+    opacity: 0
+} */
+
+.catalog_scroll_w {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+
+.catalog_item {
+    height: 80rpx;
+    margin: 0 30rpx;
+    color: #ccc;
+    font-size: 24rpx;
+    line-height: 80rpx;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1rpx solid rgba(255,255,255, 0.15);
+}
+
+.catalog_item:active {
+    background-color: rgba(255,255,255, 0.1);
 }

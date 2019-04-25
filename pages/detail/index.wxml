@@ -42,7 +42,7 @@
         </swiper-item>
         <swiper-item wx:if='{{dirMenu}}'>
             <view class='catalog_w'>
-                <view class='catalog_bg' style='background:url(http://mhfm6tel.cdndm5.com/7/6746/20190222150546_480x369_82.jpg) no-repeat center;background-size:cover'></view>
+                <view class='catalog_bg' style='background:url({{comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
                 <view class='catalog_layer'>
                     <view class='catalog_head_w'>
                         <view class='catalog_num_w'>
