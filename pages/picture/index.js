@@ -130,6 +130,9 @@ Page({
                 light: this.preLight
             });
         }
+        this.setData({
+            switchChecked: bool
+        })
     },
     menuChange(e) {
         var nowMenu = e.currentTarget.dataset.index;
