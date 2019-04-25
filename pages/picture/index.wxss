@@ -41,29 +41,60 @@
 
 .bottom_btn_w {
     position: absolute;
-    bottom: 0;
+    bottom: -300rpx;
     left: 0;
     width: 100%;
-    height: 0;
-    opacity: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    opacity: 0;
     background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
     font-size: 30rpx;
     overflow: hidden;
-    transition: height 0.1s;
+    transition: all 0.1s;
+    box-sizing: content-box;
 }
 
 .bottom_btn_w.ios.active {
-    height: 160rpx;
-    padding: 0 0 40rpx 0;
+    opacity: 1;
+    padding-bottom: 40rpx;
+    bottom: 0;
 }
 
 .bottom_btn_w.android.active {
-    height: 120rpx;
-    padding: 0;
+    opacity: 1;
+    bottom: 0;
+}
+
+.process_w {
+    height: 100rpx;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bottom_menu_w {
+    display: flex;
+    justify-content: space-around;
+    height: 80rpx;
+}
+
+.menu_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 80rpx;
+    font-size: 20rpx;
+    line-break: 20rpx;
+    color: #fff;
+    opacity: 0.5;
+}
+
+.menu_item.active {
+    opacity: 1;
+}
+
+.menu_item image {
+    width: 80rpx;
 }
 
 .slider {
@@ -95,7 +126,7 @@
 
 .scroll_top {
     position: fixed;
-    bottom: 200rpx;
+    bottom: 300rpx;
     right: 30rpx;
     display: flex;
     justify-content: center;
@@ -111,5 +142,43 @@
 }
 
 .custom_nav {
+    top: -100rpx;
+    opacity: 0;
+    transition: all 0.1s;
     background-color: rgba(0, 0, 0, 0.8);
+}
+
+.custom_nav.active {
+    top: 0;
+    opacity: 1;
+}
+
+.bad_chapter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ccc;
+    font-size: 30rpx;
+    color: #666;
+}
+
+.light_w .slider {
+    margin: 0 40rpx;
+}
+
+.light_slider_w {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80rpx;
+    padding: 0 40rpx;
+}
+
+.light_switch_w {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 136rpx 20rpx 120rpx;
+    font-size: 24rpx;
+    color: #fff;
 }

@@ -19,11 +19,15 @@ Page({
         showTitle: false,
         chapterList: [],
         nowChapterIndex: 1,
-        scrollAnimation: false
+        scrollAnimation: false,
+        nowMenu: 1,
+        light: 0,
+        switchChecked: false
     },
     init() {
         console.log('systemInfo', this.data.systemInfo);
         var objStr = wx.getStorageSync('chapterList');
+        var self = this;
         if (!objStr) {
             return;
         }
@@ -42,6 +46,15 @@ Page({
             nowChapterIndex: this.nowChapterIndex
         });
         this.loadNextChapter(this.nowChapterIndex);
+        //获取设备初始亮度
+        wx.getScreenBrightness({
+            success: function(e){
+                self.setData({
+                    light: e.value
+                });
+                self.originLight = e.value;
+            }
+        })
     },
     onLoad: function(option) {
         this.init();
@@ -81,10 +94,48 @@ Page({
         }
         this.loadPreChapter(--this.nowChapterIndex);
     },
-    sliderCchange(e) {
+    //章节跳转
+    sliderChange(e) {
         var chapter = e.detail.value;
         this.nowChapterIndex = chapter - 1;
         this.loadNextChapter(chapter - 1);
+    },
+    //调整亮度
+    lightChange(e) {
+        var light = e.detail.value;
+        wx.setScreenBrightness({
+            value: light
+        });
+        this.setData({
+            light: light,
+            switchChecked: false
+        })
+    },
+    //是否跟随系统亮度
+    switchChange(e) {
+        var bool = e.detail.value;
+        if(bool) {
+            wx.setScreenBrightness({
+                value: this.originLight
+            });
+            this.preLight = this.data.light;
+            this.setData({
+                light: this.originLight
+            });
+        } else {
+            wx.setScreenBrightness({
+                value: this.preLight
+            });
+            this.setData({
+                light: this.preLight
+            });
+        }
+    },
+    menuChange(e) {
+        var nowMenu = e.currentTarget.dataset.index;
+        this.setData({
+            nowMenu: nowMenu
+        })
     },
     //底部菜单点击加载下一章
     onNextChapter() {
@@ -125,7 +176,7 @@ Page({
             });
             this.requestTask && this.requestTask.abort();
             this.getPics(chapter.id).then((res) => {
-                this.allPic[chapterIndex] = res.data;
+                this.allPic[chapterIndex] = res.data || [{ chapterid: chapter.id, chapterIndex: chapterIndex }];
                 this.loadPreChapter(chapterIndex);
             });
         }
@@ -152,7 +203,7 @@ Page({
                 this.setTopLoadingTip();
                 this.setBottomLoadingTip();
             });
-        } else {
+        } else if (typeof pics == 'undefined') {
             var chapter = this.chapterList[chapterIndex];
             wx.showLoading({
                 // mask: true,
@@ -160,7 +211,7 @@ Page({
             });
             this.requestTask && this.requestTask.abort();
             this.getPics(chapter.id).then((res) => {
-                this.allPic[chapterIndex] = res.data;
+                this.allPic[chapterIndex] = res.data || [{ chapterid: chapter.id, chapterIndex: chapterIndex }];
                 this.loadNextChapter(chapterIndex);
             });
         }
@@ -178,7 +229,7 @@ Page({
             } else {
                 var chapter = this.chapterList[this.endChapterIndex + 1];
                 this.getPics(chapter.id).then((res) => {
-                    this.allPic[this.endChapterIndex + 1] = res.data;
+                    this.allPic[this.endChapterIndex + 1] = res.data || [{ chapterid: chapter.id, chapterIndex: this.endChapterIndex + 1}];
                     this.endChapterIndex++;
                     this.setData({
                         pics: this.data.pics.concat(res.data)

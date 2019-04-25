@@ -1,22 +1,43 @@
 <!--index.wxml-->
 <view class='container' bindtouchstart='touchStartHandle' bindtouchmove='touchMoveHandle' bindtouchend='touchEndHandle'>
-    <view wx:if='{{showTitle}}' class='custom_nav' style='height:{{navHeight}}px;padding-top:{{statusBarHeight}}px'>
+    <view class='custom_nav {{showTitle ? "active" : ""}}' style='height:{{navHeight}}px;padding-top:{{statusBarHeight}}px'>
         <view class='title'>{{title}}<view class='icon_back' bindtap='back'></view></view>
     </view>
     <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' upper-threshold='2000px' lower-threshold='2000px' bindscrolltolower='onLolower' bindscrolltoupper='onUpper' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{scrollAnimation}}">
         <!-- <view style='visibility:{{topLoadingTip ? "visible" : "hidden"}}' class='top_loading' bindtap='onPreChapter'>{{topLoadingTip}}</view> -->
         <view class='image_horizontal_scroll_w'>
             <view class='image_w' style='width:{{imgScale*100+"%"}};'>
-                <image wx:for='{{pics}}' wx:key='{{item.url}}' src='{{item.url}}' style='width:100%;height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{index==0 || item.chapterid!= pics[index-1].chapterid ? "chapter_"+item.chapterid : "pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
+                <block wx:for='{{pics}}' wx:key='{{item.url}}'>
+                    <image wx:if='{{item.url}}' src='{{item.url}}' style='width:100%;height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{index==0 || item.chapterid!= pics[index-1].chapterid ? "chapter_"+item.chapterid : "pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
+                    <view wx:else class='bad_chapter' style='height:{{systemInfo.screenHeight}}px' data-index='{{index}}' bindtap='clickToScale'>第{{item.chapterIndex+1}}章节被破坏</view>
+                </block>
             </view>
         </view>
         <view wx:if='{{bottomLoadingTip}}' class='bottom_loading' id="bottom_loading">{{bottomLoadingTip}}</view>
     </scroll-view>
     <view class='bottom_btn_w {{systemInfo.platform=="android" ? "android" : "ios"}} {{showBootomBtn ? "active" : ""}}'>
-        <view class='pre_chapter' bindtap='onPreChapter'><image mode='widthFix' src='/image/icon_left.png'></image></view>
-        <slider class='slider' value='{{nowChapterIndex+1}}' bindchange="sliderCchange" activeColor='#7e6353' block-color='#7e6353' block-size='18' show-value='{{true}}' step="1" min="1" max="{{chapterList.length}}"/>
-        <view class='total'>/{{chapterList.length}}</view>
-        <view class='next_chapter' bindtap='onNextChapter'><image mode='widthFix' src='/image/icon_left.png' style='transform:rotate(180deg)'></image></view>
+        <view class='process_w' wx:if="{{nowMenu==1}}">
+            <view class='pre_chapter' bindtap='onPreChapter'><image mode='widthFix' src='/image/icon_left.png'></image></view>
+            <slider class='slider' value='{{nowChapterIndex+1}}' bindchange="sliderChange" activeColor='#7e6353' block-color='#7e6353' block-size='18' show-value='{{true}}' step="1" min="1" max="{{chapterList.length}}"/>
+            <view class='total'>/{{chapterList.length}}</view>
+            <view class='next_chapter' bindtap='onNextChapter'><image mode='widthFix' src='/image/icon_left.png' style='transform:rotate(180deg)'></image></view>
+        </view>
+        <view class='light_w' wx:if="{{nowMenu==2}}">
+            <view class='light_slider_w'>
+                <image src='/image/icon_light.png'  style='width:40rpx;height:40rpx;'></image>
+                <slider class='slider' value='{{light}}' bindchange="lightChange" activeColor='#7e6353' block-color='#7e6353' block-size='18' step="0.1" min="0" max="1"/>
+                <image src='/image/icon_light.png' style='width:60rpx;height:60rpx;'></image>
+            </view>
+            <view class='light_switch_w'>
+                <text>跟随系统亮度</text>
+                <switch checked='{{switchChecked}}' bindchange="switchChange" color='#7e6353'/>
+            </view>
+        </view>
+        <view class='bottom_menu_w'>
+            <!-- <view class='menu_item {{nowMenu==0 ? "active" : ""}}' data-index='{{0}}' bindtap='menuChange'><image mode='aspectFit' src='/image/icon_menu_chapter.png' style='height:26rpx;margin-top:7rpx'></image><text>目录</text></view> -->
+            <view class='menu_item {{nowMenu==1 ? "active" : ""}}' data-index='{{1}}' bindtap='menuChange'><image mode='aspectFit' src='/image/icon_process.png' style='height:30rpx;margin-top:5rpx'></image><text>进度</text></view>
+            <view class='menu_item {{nowMenu==2 ? "active" : ""}}' data-index='{{2}}' bindtap='menuChange'><image mode='aspectFit' src='/image/icon_light.png' style='height:40rpx'></image><text>亮度</text></view>
+        </view>
     </view>
     <view wx:if='{{showBootomBtn}}' class='scroll_top' bindtap='scrollToTop'><image mode='widthFix' src='/image/icon_top.png'></image></view>
 </view>
