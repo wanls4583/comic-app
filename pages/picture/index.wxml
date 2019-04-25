@@ -39,5 +39,5 @@
             <view class='menu_item {{nowMenu==2 ? "active" : ""}}' data-index='{{2}}' bindtap='menuChange'><image mode='aspectFit' src='/image/icon_light.png' style='height:40rpx'></image><text>亮度</text></view>
         </view>
     </view>
-    <view wx:if='{{showBootomBtn}}' class='scroll_top' bindtap='scrollToTop'><image mode='widthFix' src='/image/icon_top.png'></image></view>
+    <view class='scroll_top {{showBootomBtn?"active":""}}' bindtap='scrollToTop'><image mode='widthFix' src='/image/icon_top.png'></image></view>
 </view>

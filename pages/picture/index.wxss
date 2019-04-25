@@ -41,7 +41,7 @@
 
 .bottom_btn_w {
     position: absolute;
-    bottom: -300rpx;
+    bottom: -284rpx;
     left: 0;
     width: 100%;
     opacity: 0;
@@ -49,7 +49,7 @@
     color: #fff;
     font-size: 30rpx;
     overflow: hidden;
-    transition: all 0.1s;
+    transition: all 0.3s;
     box-sizing: content-box;
 }
 
@@ -126,7 +126,7 @@
 
 .scroll_top {
     position: fixed;
-    bottom: 300rpx;
+    bottom: -100rpx;
     right: 30rpx;
     display: flex;
     justify-content: center;
@@ -135,6 +135,13 @@
     height: 80rpx;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.scroll_top.active {
+    bottom: 300rpx;
+    opacity: 1;
 }
 
 .scroll_top image{
@@ -142,9 +149,9 @@
 }
 
 .custom_nav {
-    top: -100rpx;
+    top: -112px;
     opacity: 0;
-    transition: all 0.1s;
+    transition: all 0.3s;
     background-color: rgba(0, 0, 0, 0.8);
 }
 
