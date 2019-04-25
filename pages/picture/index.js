@@ -113,6 +113,7 @@ Page({
     },
     //是否跟随系统亮度
     switchChange(e) {
+        wx.vibrateShort();
         var bool = e.detail.value;
         if(bool) {
             wx.setScreenBrightness({
