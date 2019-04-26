@@ -22,7 +22,7 @@ Page({
         scrollTop: [], //列表对应的滚动距离
         viewSize: 40, //scroll-view中最多同时存在40页
         overlappingPage: 5, //前后视图交叉的页数
-        animationDuration: 500,
+        animationDuration: 300,
         stopSwiper: false
     },
     onLoad: function() {
@@ -239,7 +239,7 @@ Page({
                 nowCid: this.data.categoryList[index],
                 nowCidIndex: index,
                 showCategoryDialog: false,
-                animationDuration: 500
+                animationDuration: 300
             });
         });
         this.scrollToCategory(this.data.categoryList[index]);
