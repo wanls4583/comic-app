@@ -22,7 +22,8 @@ Page({
         scrollTop: [], //列表对应的滚动距离
         viewSize: 40, //scroll-view中最多同时存在40页
         overlappingPage: 5, //前后视图交叉的页数
-        animationDuration: 300
+        animationDuration: 500,
+        stopSwiper: false
     },
     onLoad: function() {
         wx.hideTabBar();
@@ -93,12 +94,12 @@ Page({
         var current = e.detail.current;
         this.renderSwiper(current);
         this.setData({
-            animationDuration: 300
+            stopSwiper: false
         });
     },
     swiperChange(e) {
         this.setData({
-            animationDuration: 100
+            stopSwiper: true
         });
     },
     //渲染swiper-item，每次只渲染三个
@@ -238,7 +239,7 @@ Page({
                 nowCid: this.data.categoryList[index],
                 nowCidIndex: index,
                 showCategoryDialog: false,
-                animationDuration: 300
+                animationDuration: 500
             });
         });
         this.scrollToCategory(this.data.categoryList[index]);

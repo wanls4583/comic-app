@@ -77,6 +77,15 @@
     height: auto;
 }
 
+/* 滑块遮罩层 */
+.list_swiper_cover {
+    position: fixed;
+    top: 172rpx;
+    bottom: 0;
+    z-index: 2;
+    width: 100%;
+}
+
 .recommend_comic_scroll, .category_comic_scroll {
     height: 100%;
 }

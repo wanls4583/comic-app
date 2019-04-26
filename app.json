@@ -1,35 +1,36 @@
 {
-  "pages": [
-    "pages/index/index",
-    "pages/picture/index",
-    "pages/search/index",
-    "pages/center/index",
-    "pages/detail/index",
-    "pages/history/index"
-  ],
-  "tabBar": {
-    "color": "#8a8a8a",
-    "selectedColor": "#fff",
-    "borderStyle": "black",
-    "backgroundColor": "#584d42",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "iconPath": "image/icon_home.png",
-        "selectedIconPath": "image/icon_home_h.png",
-        "text": "首页"
-      },
-      {
-        "pagePath": "pages/history/index",
-        "iconPath": "image/icon_book.png",
-        "selectedIconPath": "image/icon_book_h.png",
-        "text": "书架"
-      }
-    ]
-  },
-  "window": {
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#7e6353",
-    "navigationBarTextStyle": "white"
-  }
+    "pages": [
+        "pages/index/index",
+        "pages/picture/index",
+        "pages/search/index",
+        "pages/center/index",
+        "pages/detail/index",
+        "pages/history/index"
+    ],
+    "tabBar": {
+        "color": "#8a8a8a",
+        "selectedColor": "#fff",
+        "borderStyle": "black",
+        "backgroundColor": "#584d42",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "iconPath": "image/icon_home.png",
+                "selectedIconPath": "image/icon_home_h.png",
+                "text": "首页"
+            },
+            {
+                "pagePath": "pages/history/index",
+                "iconPath": "image/icon_book.png",
+                "selectedIconPath": "image/icon_book_h.png",
+                "text": "书架"
+            }
+        ]
+    },
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#7e6353",
+        "navigationBarTextStyle": "white"
+    },
+    "sitemapLocation": "sitemap.json"
 }

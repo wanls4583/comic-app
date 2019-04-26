@@ -95,4 +95,5 @@
             </block>
         </swiper-item>
     </swiper>
+    <view wx:if='{{stopSwiper}}' class='list_swiper_cover'></view>
 </view>
