@@ -22,7 +22,7 @@ Page({
         scrollAnimation: false,
         nowMenu: 1,
         light: 0,
-        switchChecked: false
+        switchChecked: true
     },
     init() {
         var objStr = wx.getStorageSync('chapterList');
