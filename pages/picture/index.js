@@ -25,27 +25,27 @@ Page({
         switchChecked: false
     },
     init() {
-        console.log('systemInfo', this.data.systemInfo);
         var objStr = wx.getStorageSync('chapterList');
         var self = this;
         if (!objStr) {
             return;
         }
         var obj = JSON.parse(objStr);
-        this.chapterList = obj.chapterList;
-        this.nowChapterIndex = obj.startChapterIndex;
+        this.chapterList = obj.chapterList; //章节列表
+        this.nowChapterIndex = obj.startChapterIndex; //当前章节索引
         this.startChapterIndex = obj.startChapterIndex; //已请求章节的开始索引
         this.endChapterIndex = obj.startChapterIndex; //已请求章节的结束(不包含)索引
         this.allPic = []; //存储已经从网络获取到的图片链接
-        // this.tipScrollTop = this.data.systemInfo.screenWidth / 750 * this.data.topLoadingHeight;
-        this.tipScrollTop = 0;
+        this.tipScrollTop = 0//this.data.systemInfo.screenWidth / 750 * this.data.topLoadingHeight;
+        this.picTotal = 0; //图片计数
+        this.maxPicTotal = 2000; //最多加载2000张图片
         //设置标题
         this.setData({
             title: this.chapterList[obj.startChapterIndex].name.replace(/\s/g, ''),
             chapterList: this.chapterList,
             nowChapterIndex: this.nowChapterIndex
         });
-        this.loadNextChapter(this.nowChapterIndex);
+        this.loadChapter(this.nowChapterIndex);
         //获取设备初始亮度
         wx.getScreenBrightness({
             success: function(e){
@@ -71,16 +71,9 @@ Page({
             }, 500);
         }
     },
-    //安卓机顶部点击加载上一章
+    //顶部点击加载上一章
     onTopPreChapter() {
-        wx.vibrateShort();
-        if (!this.jumping) {
-            this.loadPreChapter();
-        } else {
-            setTimeout(() => {
-                this.jumping = false;
-            }, 500);
-        }
+        this.onPreChapter();
     },
     //底部菜单点击加载上一章
     onPreChapter() {
@@ -92,19 +85,31 @@ Page({
             });
             return;
         }
-        this.loadPreChapter(--this.nowChapterIndex);
+        this.loadChapter(--this.nowChapterIndex);
+    },
+    //底部菜单点击加载下一章
+    onNextChapter() {
+        wx.vibrateShort();
+        if (this.nowChapterIndex >= this.chapterList.length - 1) {
+            wx.showToast({
+                title: '已经是最后一章了',
+                icon: 'none'
+            });
+            return;
+        }
+        this.loadChapter(++this.nowChapterIndex);
     },
     //章节跳转
     sliderChange(e) {
         var chapter = e.detail.value;
         this.nowChapterIndex = chapter - 1;
-        this.loadNextChapter(chapter - 1);
+        this.loadChapter(chapter - 1);
     },
     //章节跳转
     gotoChapter(e) {
         var index = e.currentTarget.dataset.index;
         this.nowChapterIndex = index;
-        this.loadNextChapter(index);
+        this.loadChapter(index);
         this.setData({
             nowMenu: 1
         });
@@ -157,68 +162,27 @@ Page({
         }
         wx.vibrateShort();
     },
-    //底部菜单点击加载下一章
-    onNextChapter() {
-        wx.vibrateShort();
-        if (this.nowChapterIndex >= this.chapterList.length - 1) {
-            wx.showToast({
-                title: '已经是最后一章了',
-                icon: 'none'
-            });
-            return;
-        }
-        this.loadNextChapter(++this.nowChapterIndex);
-    },
-    /**
-     * 加载或回到上一章
-     */
-    loadPreChapter(chapterIndex) {
-        var pics = this.allPic[chapterIndex];
-        this.setTitle(chapterIndex);
-        if (pics) {
-            this.setData({
-                pics: pics
-            }, () => {
-                this.setData({
-                    scrollAnimation: false
-                }, () => {
-                    this.setData({
-                        scrollTop: this.tipScrollTop
-                    })
-                });
-                this.setTopLoadingTip();
-            });
-        } else {
-            var chapter = this.chapterList[chapterIndex];
-            wx.showLoading({
-                // mask: true,
-                title: '加载中'
-            });
-            this.requestTask && this.requestTask.abort();
-            this.getPics(chapter.id).then((res) => {
-                this.allPic[chapterIndex] = res.data || [{ chapterid: chapter.id, chapterIndex: chapterIndex }];
-                this.loadPreChapter(chapterIndex);
-            });
-        }
-        this.startChapterIndex = chapterIndex;
-        this.endChapterIndex = chapterIndex;
-    },
     /**
      * 去到下一章
      */
-    loadNextChapter(chapterIndex) {
+    loadChapter(chapterIndex) {
         var pics = this.allPic[chapterIndex];
         this.setTitle(chapterIndex);
         if (pics) {
+            this.picTotal = pics.length;
             this.setData({
-                pics: pics,
+                pics: [pics],
             }, () => {
                 this.setData({
                     scrollAnimation: false
                 }, () => {
                     this.setData({
-                        scrollTop: this.tipScrollTop
-                    })
+                        scrollTop: this.chapterScrollTop || this.tipScrollTop
+                    });
+                    if(this.chapterScrollTop) {
+                        this.loadMore();
+                    } 
+                    this.chapterScrollTop = 0;
                 });
                 this.setTopLoadingTip();
                 this.setBottomLoadingTip();
@@ -232,7 +196,7 @@ Page({
             this.requestTask && this.requestTask.abort();
             this.getPics(chapter.id).then((res) => {
                 this.allPic[chapterIndex] = res.data || [{ chapterid: chapter.id, chapterIndex: chapterIndex }];
-                this.loadNextChapter(chapterIndex);
+                this.loadChapter(chapterIndex);
             });
         }
         this.startChapterIndex = chapterIndex;
@@ -240,20 +204,34 @@ Page({
     },
     //底部自动加载
     loadMore() {
+        //避免超过小程序DOM的限制
+        if(this.picTotal > this.maxPicTotal) {
+            var chapter = this.chapterList[this.nowChapterIndex];
+            this.getRect('.chapter_' + chapter.id).then((rect) => {
+                if (rect) {
+                    //该章节的滚动距离
+                    this.chapterScrollTop = rect.top;
+                }
+                this.loadChapter(this.nowChapterIndex);
+            });
+            return;
+        }
         if (this.endChapterIndex + 1 < this.chapterList.length && !this.laoding) {
             if (this.allPic[this.endChapterIndex + 1]) {
                 this.setData({
-                    pics: this.data.pics.concat(this.allPic[this.endChapterIndex + 1])
+                    [`pics[${this.data.pics.length}]`]: this.allPic[this.endChapterIndex + 1]
                 });
+                this.picTotal += this.allPic[this.endChapterIndex + 1].length;
                 this.endChapterIndex++;
             } else {
                 var chapter = this.chapterList[this.endChapterIndex + 1];
                 this.getPics(chapter.id).then((res) => {
                     this.allPic[this.endChapterIndex + 1] = res.data || [{ chapterid: chapter.id, chapterIndex: this.endChapterIndex + 1}];
-                    this.endChapterIndex++;
+                    this.picTotal += this.allPic[this.endChapterIndex + 1].length;
                     this.setData({
-                        pics: this.data.pics.concat(res.data)
+                        [`pics[${this.data.pics.length}]`]: res.data
                     });
+                    this.endChapterIndex++;
                     this.setBottomLoadingTip();
                 });
             }
