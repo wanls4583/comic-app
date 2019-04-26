@@ -29,7 +29,7 @@
             </block>
         </view>
     </view>
-    <swiper class='list_swiper_w' bindanimationfinish='animationFinish' current='{{nowCidIndex}}' duration='{{animationDuration}}' circular='{{false}}'>
+    <swiper class='list_swiper_w' bindanimationfinish='animationFinish' bindchange='swiperChange' current='{{nowCidIndex}}' duration='{{animationDuration}}' circular='{{false}}'>
         <swiper-item class='swiper_item' wx:for='{{categoryList}}' wx:for-item='cItem' wx:key='{{cItem.cid}}'>
             <scroll-view wx:if='{{(renderCids[0]===cItem.cid || renderCids[1]===cItem.cid || renderCids[2]===cItem.cid) && cItem.cid===0}}' class="recommend_comic_scroll" data-cid='{{0}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}' scroll-y>
                 <!-- 轮播图 -->
