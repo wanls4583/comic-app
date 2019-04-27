@@ -1,8 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp();
-const host = require('../../config/index.js').httpHost;
-
+const request = require('../../utils/request.js');
 Page({
     data: {
         categoryList: [{
@@ -66,8 +65,8 @@ Page({
             });
             return;
         }
-        wx.request({
-            url: host+'/feedback/add',
+        request({
+            url: '/feedback/add',
             method: 'post',
             data: {
                 contactType: this.contactType,

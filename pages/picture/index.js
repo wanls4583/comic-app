@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp()
-const host = require('../../config/index.js').httpHost;
+const request = require('../../utils/request.js');
 Page({
     data: {
         pics: [],
@@ -245,8 +245,8 @@ Page({
         var self = this;
         self.laoding = true;
         return new Promise((resolve) => {
-            self.requestTask = wx.request({
-                url: host + '/pic/' + chapterId,
+            self.requestTask = request({
+                url: '/pic/' + chapterId,
                 success(res) {
                     resolve(res);
                     self.laoding = false;

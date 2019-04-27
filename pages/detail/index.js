@@ -1,6 +1,6 @@
 //获取应用实例
-const app = getApp()
-const host = require('../../config/index.js').httpHost;
+const app = getApp();
+const request = require('../../utils/request.js');
 Page({
     data: {
         comic: {},
@@ -152,8 +152,8 @@ Page({
     },
     getCategoryAndArea() {
         var self = this;
-        wx.request({
-            url: host + '/comic/category_area/' + this.data.comic.comicid,
+        request({
+            url: '/comic/category_area/' + this.data.comic.comicid,
             success(res) {
                 if (res.statusCode == 200) {
                     self.setData({
@@ -166,8 +166,8 @@ Page({
     },
     getChpater() {
         var self = this;
-        wx.request({
-            url: host + '/chapter/' + this.data.comic.comicid,
+        request({
+            url: '/chapter/' + this.data.comic.comicid,
             success(res) {
                 wx.stopPullDownRefresh();
                 if (res.statusCode == 200) {

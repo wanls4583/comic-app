@@ -2,7 +2,7 @@
 //获取应用实例
 const app = getApp()
 const util = require('../../utils/util.js');
-const host = require('../../config/index.js').httpHost;
+const request = require('../../utils/request.js');
 Page({
     data: {
         userInfo: {},
@@ -160,8 +160,8 @@ Page({
     //获取所有分类
     getCategory() {
         var self = this;
-        wx.request({
-            url: host + '/category',
+        request({
+            url: '/category',
             success(res) {
                 if (res.statusCode == 200 && res.data && res.data.length) {
                     var cids = [];
@@ -184,8 +184,8 @@ Page({
         wx.showLoading({
             title: '加载中'
         });
-        wx.request({
-            url: host + '/recommend',
+        request({
+            url: '/recommend',
             success(res) {
                 wx.stopPullDownRefresh();
                 wx.hideLoading();
@@ -338,8 +338,8 @@ Page({
         var self = this;
         this.loading[cid] = true;
         return new Promise((resolve, reject) => {
-            wx.request({
-                url: host + '/comic?cid=' + cid + '&page=' + self.data.swiperDataMap[cid].page + '&size=' + this.data.pageSize,
+            request({
+                url: '/comic?cid=' + cid + '&page=' + self.data.swiperDataMap[cid].page + '&size=' + this.data.pageSize,
                 success(res) {
                     wx.stopPullDownRefresh();
                     self.loading[cid] = false;
@@ -361,8 +361,8 @@ Page({
         // app.dirMenu = true;
         // wx.showTabBar();
         // return;
-        wx.request({
-            url: host + '/switch',
+        request({
+            url: '/switch',
             success(res) {
                 if (res.statusCode == 200) {
                     app.dirMenu = res.data.switch;

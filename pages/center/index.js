@@ -1,7 +1,7 @@
 //index.js
 //获取应用实例
 const app = getApp()
-
+const loginUtil = require('../../utils/login.js');
 Page({
     data: {
         userInfo: {},
@@ -38,11 +38,24 @@ Page({
     },
     getUserInfo: function(e) {
         console.log(e)
-        app.globalData.userInfo = e.detail.userInfo
+        app.globalData.userInfo = e.detail.userInfo;
+        wx.setStorageSync('userInfo', e.detail.userInfo);
         this.setData({
             userInfo: e.detail.userInfo,
             hasUserInfo: true
-        })
+        });
+        wx.showLoading({
+            title: '登录中',
+        });
+        loginUtil.login().then(()=>{
+            wx.hideLoading();
+        }).catch(()=>{
+            wx.hideLoading();
+            wx.showToast({
+                title: '登录失败',
+                icon: 'none'
+            });
+        });
     },
     gotoFeedBack() {
         wx.navigateTo({

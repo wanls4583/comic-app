@@ -2,7 +2,7 @@
 //获取应用实例
 const app = getApp()
 const util = require('../../utils/util.js');
-const host = require('../../config/index.js').httpHost;
+const request = require('../../utils/request.js');
 Page({
     data: {
         searchKey: '',
@@ -164,8 +164,8 @@ Page({
     //加载列表
     getComicList() {
         var self = this;
-        wx.request({
-            url: host + '/comic?search=' + this.data.searchKey + '&page=' + this.data.page + '&size=' + this.data.pageSize,
+        request({
+            url: '/comic?search=' + this.data.searchKey + '&page=' + this.data.page + '&size=' + this.data.pageSize,
             success(res) {
                 wx.stopPullDownRefresh();
                 if (res.statusCode == 200 && res.data.list) {
