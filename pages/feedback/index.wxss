@@ -16,8 +16,16 @@
     opacity: 0.3;
 }
 
+radio .wx-radio-input{ 
+    height: 34rpx; 
+    width: 34rpx;
+    border: 2rpx solid #ddd;
+    background: transparent;
+    box-sizing: border-box;
+ }
+
 .block_title {
-    margin: 40rpx 30rpx;
+    margin: 20rpx 30rpx;
     line-height: 30rpx;
     font-size: 30rpx;
     color: #fff;
@@ -49,6 +57,7 @@
 }
 
 .textarea_wrap {
+    margin: 48rpx 0;
     padding: 0 30rpx;
 }
 
@@ -65,21 +74,22 @@
 .contact_radio_group {
     position: relative;
     z-index: 1;
+    display: flex;
     padding: 0 30rpx;
 }
 
 .contact_radio{
-    display: inline-block;
-    height: 60rpx;
+    display: flex;
+    height: 80rpx;
+    align-items: center;
     margin-right: 30rpx;
-    line-height: 60rpx;
     font-size: 24rpx;
     color: #ddd;
 }
 
 .input_wrap {
     padding: 0 30rpx;
-    margin-top: 30rpx;
+    margin-top: 20rpx;
 }
 
 .input {
@@ -93,16 +103,16 @@
 
 .submit {
     height: 80rpx;
-    background-color: rgba(256, 256, 256, 0.2);
+    background-color: rgba(256, 256, 256, 0.05);
     border: 1px solid #fff;
     border-radius: 6rpx;
     line-height: 80rpx;
     font-size: 30rpx;
     color: #fff;
     text-align: center;
-    margin: 30rpx;
+    margin: 60rpx 30rpx;
 }
 
 .submit:active {
-    background-color: rgba(256, 256, 256, 0.1);
+    background-color: rgba(256, 256, 256, 0.2);
 }
