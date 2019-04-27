@@ -1,0 +1,27 @@
+<!--index.wxml-->
+<view class='container'>
+    <!-- 模糊背景 -->
+    <view class='center_bg'>
+        <image src='/image/bg.jpg'></image>
+    </view>
+    <view class='block_title'>反馈类型</view>
+    <radio-group class="category_radio_group" bindchange="categoryRadioChange">
+        <label class="category_radio" wx:for="{{categoryList}}">
+            <radio value="{{item.name}}" checked="{{item.checked}}" color='#584d42'/> {{item.value}}
+        </label>
+    </radio-group>
+    <view class='block_title'>反馈内容</view>
+    <view class='textarea_wrap'>
+        <textarea class="textarea" auto-height maxlength='500' placeholder='请输入意见...' bindinput='contentInput'/>
+    </view>
+    <view class='block_title'>联系方式</view>
+    <radio-group class="contact_radio_group" bindchange="contactRadioChange">
+        <label class="contact_radio" wx:for="{{contactList}}">
+            <radio value="{{item.name}}" checked="{{item.checked}}" color='#584d42'/> {{item.value}}
+        </label>
+    </radio-group>
+    <view class='input_wrap'>
+        <input class='input' placeholder='QQ/电话/邮箱' bindinput='contactInput'></input>
+    </view>
+    <view class='submit' bindtap='submit'>提交</view>
+</view>

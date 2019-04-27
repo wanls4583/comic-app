@@ -44,9 +44,9 @@ Page({
             hasUserInfo: true
         })
     },
-    gotoHistory() {
+    gotoFeedBack() {
         wx.navigateTo({
-            url: '/pages/history/index'
+            url: '/pages/feedback/index'
         })
     }
 })

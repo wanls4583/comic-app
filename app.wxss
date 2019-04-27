@@ -13,12 +13,11 @@ page {
     box-sizing: border-box;
 }
 
-view, input {
+view, input, textarea, scroll-view  {
     box-sizing: border-box;
 }
 
 scroll-view {
-    box-sizing: border-box;
     overflow: auto;
 }
 

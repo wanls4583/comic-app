@@ -12,6 +12,6 @@
         </view>
     </view>
     <scroll-view class='menu_w'>
-        <view class='menu_item' bindtap='gotoHistory'><text>本地历史记录</text><image src='/image/icon_right_arrow.png'></image></view>
+        <view class='menu_item' bindtap='gotoFeedBack'><text>意见反馈</text><image src='/image/icon_right_arrow.png'></image></view>
     </scroll-view>
 </view>
