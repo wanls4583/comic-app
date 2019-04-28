@@ -216,6 +216,10 @@ Page({
     //添加到收藏
     like() {
         var self = this;
+        if (this.changeLike) {
+            return;
+        }
+        this.changeLike = true;
         request({
             url: '/like/add',
             method: 'post',
@@ -223,6 +227,7 @@ Page({
                 id: this.data.comic.id
             },
             success(res) {
+                self.changeLike = false;
                 if(res.data.status == 1) {
                     wx.showToast({
                         title: '收藏成功'
@@ -249,6 +254,10 @@ Page({
     //取消收藏
     unLike() {
         var self = this;
+        if(this.changeLike) {
+            return;
+        }
+        this.changeLike = true;
         request({
             url: '/like/del',
             method: 'post',
@@ -256,6 +265,7 @@ Page({
                 id: this.data.comic.id
             },
             success(res) {
+                self.changeLike = false;
                 if (res.data.status == 1) {
                     wx.showToast({
                         title: '取消收藏成功'

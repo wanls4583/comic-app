@@ -81,7 +81,7 @@
     position: absolute;
     bottom: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.58) !important;
+    background-color: rgba(0, 0, 0, 0.58);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -93,10 +93,16 @@
 button.logn_btn {
     border-radius: 0;
     border-style: none;
+    background-color: rgba(0, 0, 0, 0.58);
     color: #fff;
 }
 
+.like_w:active {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
 button.logn_btn.button-hover {
+    background-color: rgba(0, 0, 0, 0.4);
     color: #fff;
 }
 
