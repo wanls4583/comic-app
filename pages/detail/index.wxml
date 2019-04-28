@@ -26,7 +26,7 @@
                             <view class='detail_area'>{{comic.area.name || '--'}}</view>
                             <view class='detail_status'>{{comic.status}}</view>
                             <view class='detail_publish'>{{comic.shelvestime}}</view>
-                            <view class='detail_new'>最新：{{comic.comicpart}}</view>
+                            <view class='detail_new'>最新：{{comic.showlastpartname}}</view>
                         </view>
                     </view>
                     <view class='detail_author_category_w'>
