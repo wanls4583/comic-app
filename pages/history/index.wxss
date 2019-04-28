@@ -2,10 +2,10 @@
 
 .blur_bg {
     position: absolute;
-    top: 10%;
+    top: 0;
     bottom: 0;
     width: 100%;
-    filter: blur(80rpx);
+    filter: blur(60rpx);
     overflow: hidden;
     z-index: -1;
 }
@@ -14,7 +14,7 @@
     width: 100%;
     height: 90%;
     margin-top: 10%;
-    opacity: 0.25;
+    opacity: 0.1;
 }
 
 .tab_w {
