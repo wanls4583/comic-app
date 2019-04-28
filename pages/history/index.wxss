@@ -5,7 +5,7 @@
     top: 0;
     bottom: 0;
     width: 100%;
-    filter: blur(60rpx);
+    filter: blur(40rpx);
     overflow: hidden;
     z-index: -1;
 }
