@@ -1,6 +1,7 @@
 //获取应用实例
 const app = getApp();
 const request = require('../../utils/request.js');
+const loginUtil = require('../../utils/login.js');
 Page({
     data: {
         comic: {},
@@ -8,7 +9,9 @@ Page({
         loadingStatus: 0,
         historyNum: 0,
         dirMenu: false,
-        nowTab: 0
+        nowTab: 0,
+        liked: false,
+        logined: false
     },
     onLoad: function(option) {
         if (!option.comic) {
@@ -29,6 +32,7 @@ Page({
             dirMenu: app.dirMenu
         });
         this.getCategoryAndArea();
+        this.getLiked();
         this.getChpater();
         //设置标题
         wx.setNavigationBarTitle({
@@ -61,6 +65,18 @@ Page({
     },
     onShow() {
         var self = this;
+        loginUtil.checkLogin().then(()=>{
+            self.setData({
+                logined: true
+            });
+            if(!self.liked) {
+                self.getLiked();
+            }
+        }).catch(()=>{
+            self.setData({
+                logined: false
+            });
+        });
         //获取章节观看记录
         wx.getStorage({
             key: 'comic_history',
@@ -184,5 +200,106 @@ Page({
                 }
             }
         })
-    }
+    },
+    //是否被收藏
+    getLiked() {
+        var self = this;
+        request({
+            url: '/like/get?id=' + this.data.comic.id,
+            success(res) {
+                self.setData({
+                    liked: res.data.result && res.data.result.length || false
+                });
+            }
+        })
+    },
+    //添加到收藏
+    like() {
+        var self = this;
+        request({
+            url: '/like/add',
+            method: 'post',
+            data: {
+                id: this.data.comic.id
+            },
+            success(res) {
+                if(res.data.status == 1) {
+                    wx.showToast({
+                        title: '收藏成功'
+                    });
+                    self.setData({
+                        liked: true
+                    });
+                    wx.setStorageSync('likeChange', true);
+                } else if(res.data.status == 403) {
+                    wx.showToast({
+                        title: '请先登录'
+                    });
+                    self.setData({
+                        logined: false
+                    });
+                } else {
+                    wx.showToast({
+                        title: '添加失败，服务器错误'
+                    });
+                }
+            }
+        })
+    },
+    //取消收藏
+    unLike() {
+        var self = this;
+        request({
+            url: '/like/del',
+            method: 'post',
+            data: {
+                id: this.data.comic.id
+            },
+            success(res) {
+                if (res.data.status == 1) {
+                    wx.showToast({
+                        title: '取消收藏成功'
+                    });
+                    self.setData({
+                        liked: false
+                    });
+                    wx.setStorageSync('likeChange', true);
+                } else if (res.data.status == 403) {
+                    wx.showToast({
+                        title: '请先登录'
+                    });
+                    self.setData({
+                        logined: false
+                    });
+                } else {
+                    wx.showToast({
+                        title: '添加失败，服务器错误'
+                    });
+                }
+            }
+        })
+    },
+    getUserInfo: function (e) {
+        console.log(e)
+        app.globalData.userInfo = e.detail.userInfo;
+        wx.setStorageSync('userInfo', JSON.stringify(e.detail.userInfo));
+        this.setData({
+            userInfo: e.detail.userInfo
+        });
+        wx.showLoading({
+            title: '登录中',
+        });
+        loginUtil.login().then(() => {
+            wx.hideLoading();
+            this.setData({
+                logined: true
+            })
+        }).catch(() => {
+            wx.hideLoading();
+            wx.showToast({
+                title: '登录失败',
+                icon: 'none'
+            });
+        });
+    },
 })

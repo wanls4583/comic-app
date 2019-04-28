@@ -23,13 +23,12 @@
     border-radius: 0;
 }
 
-button.active {
+.menu_btn_w button.active {
     background-color: rgba(255, 255, 255, 0.2);
 }
 
-button.button-hover {
+.menu_btn_w button.button-hover {
     background-color: rgba(255, 255, 255, 0.2) !important;
-    color: #38ffff !important;
 }
 
 .swiper{
@@ -70,10 +69,45 @@ button.button-hover {
 }
 
 .detail_cover {
+    position: relative;
     flex-shrink: 0;
     width: 200rpx;
     height: 230rpx;
     border-radius: 8rpx;
+    overflow: hidden;
+}
+
+.like_w, .logn_btn {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.58) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50rpx;
+    color: #fff;
+    font-size: 24rpx;
+    line-height: 0;
+}
+
+button.logn_btn {
+    border-radius: 0;
+    border-style: none;
+    color: #fff;
+}
+
+button.logn_btn.button-hover {
+    color: #fff;
+}
+
+.like_w image, .logn_btn image {
+    width: 24rpx;
+    margin-right: 6rpx;
+}
+
+.like_w.active {
+    color: #38ffff;
 }
 
 .detail_head_right {

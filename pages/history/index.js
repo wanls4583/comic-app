@@ -2,12 +2,34 @@
 //获取应用实例
 const app = getApp()
 const util = require('../../utils/util.js');
+const request = require('../../utils/request.js');
+const loginUtil = require('../../utils/login.js');
 Page({
     data: {
-        comicHistory: []
+        comicHistory: [],
+        favoriteList: [],
+        nowSwiperIndex: 0,
+        logined: false,
+        page: 0,
+        pageSize: 27,
+        totalPage: -1
     },
     onShow: function() {
         var self = this;
+        loginUtil.checkLogin().then(() => {
+            self.setData({
+                logined: true
+            });
+            if (!self.data.favoriteList.length) {
+                self.getLikeList();
+            } else if(wx.getStorageSync('likeChange')) {
+                self.refresh();
+            }
+        }).catch(() => {
+            self.setData({
+                logined: false
+            });
+        });
         wx.getStorage({
             key: 'comic_history',
             success: function(res) {
@@ -21,6 +43,10 @@ Page({
                 });
             },
         })
+    },
+    //下拉刷新
+    onPullDownRefresh() {
+        this.refresh();
     },
     //跳转到动漫详情页
     gotoDetail(e) {
@@ -45,5 +71,54 @@ Page({
                 }
             }
         })
+    },
+    //刷新收藏列表
+    refresh() {
+        this.setData({
+            page: 0,
+            totalPage: -1,
+            favoriteList: []
+        });
+        this.getLikeList();
+    },
+    //获取收藏列表
+    getLikeList() {
+        request({
+            url: '/like/list',
+            data: {
+                page: this.data.page + 1,
+                pageSize: this.data.pageSize
+            },
+            success: (res)=>{
+                res.data.list.map((item) => {
+                    item.lastupdatetime = util.formatTime(item.lastupdatets, 'yyyy/MM/dd').slice(2);
+                });
+                if(res.data.list.length) {
+                    this.setData({
+                        [`favoriteList[${this.data.favoriteList.length}]`]: res.data.list,
+                        page: this.data.page + 1,
+                    });
+                }
+                this.setData({
+                    totalPage: Math.ceil(res.data.total / this.data.pageSize)
+                });
+                wx.removeStorageSync('likeChange');
+                wx.stopPullDownRefresh();
+            }
+        })
+    },
+    //更改tab
+    changeSwiper(e) {
+        var index = e.currentTarget.dataset.index;
+        this.setData({
+            nowSwiperIndex: index
+        });
+    },
+    //滑动
+    onChangeSwiper(e) {
+        var index = e.detail.current;
+        this.setData({
+            nowSwiperIndex: index
+        });
     }
 })

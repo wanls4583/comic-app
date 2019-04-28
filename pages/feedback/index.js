@@ -70,15 +70,19 @@ Page({
             method: 'post',
             data: {
                 contactType: this.contactType,
-                contact: this.contact,
+                contact: this.contact || '',
                 category: this.category,
                 content: this.content
             },
             success: (res)=>{
                 if(res.data.status==1) {
                     wx.showToast({
-                        title: '反馈成功'
+                        title: '反馈成功',
+                        duration: 2000
                     });
+                    setTimeout(()=>{
+                        this.back();
+                    }, 1500);
                 } else {
                     wx.showToast({
                         title: '反馈失败',
@@ -93,5 +97,10 @@ Page({
                 }); 
             }
         })
+    },
+    back() {
+        wx.navigateBack({
+            delta: 1
+        });
     }
 })
