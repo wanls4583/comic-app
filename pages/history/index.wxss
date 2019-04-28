@@ -2,10 +2,10 @@
 
 .blur_bg {
     position: absolute;
-    top: 0;
+    top: 10%;
     bottom: 0;
     width: 100%;
-    filter: blur(40rpx);
+    filter: blur(80rpx);
     overflow: hidden;
     z-index: -1;
 }

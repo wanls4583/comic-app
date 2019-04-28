@@ -12,13 +12,13 @@
                     <view class='detail_head_w'>
                         <view class='detail_cover' style='background:url({{comic.showpicurlb}}) no-repeat center;background-size:cover'>
                             <block wx:if='{{!logined}}'>
-                                <button class='logn_btn' plain='{{true}}' open-type="getUserInfo" bindgetuserinfo="getUserInfo"><image mode='widthFix' src='/image/icon_like.png'></image>收藏</button>
+                                <button class='logn_btn' plain='{{true}}' open-type="getUserInfo" bindgetuserinfo="getUserInfo"><image src='/image/icon_like.png'></image>收藏</button>
                             </block>
                             <block wx:elif='{{liked}}'>
-                                <view class='like_w active' bindtap='unLike'><image mode='widthFix' src='/image/icon_like_h.png'></image>收藏</view>
+                                <view class='like_w active' bindtap='unLike'><image src='/image/icon_like_h.png'></image>收藏</view>
                             </block>
                             <block wx:else>
-                                <view class='like_w' bindtap='like'><image mode='widthFix' src='/image/icon_like.png'></image>收藏</view>
+                                <view class='like_w' bindtap='like'><image src='/image/icon_like.png'></image>收藏</view>
                             </block>
                         </view>
                         <view class='detail_head_right'>

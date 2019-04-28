@@ -2,7 +2,7 @@
 <view class='container'>
     <!-- 模糊背景 -->
     <view class='blur_bg'>
-        <image src='{{comicHistory.length && comicHistory[0].showpicurlb || "/image/bg.jpg"}}'></image>
+        <image src='{{comicHistory.length && comicHistory[0].comic.showpicurlb || "/image/bg.jpg"}}'></image>
     </view>
     <view class='tab_w'>
         <view class='tab_item_w'>
@@ -16,12 +16,14 @@
     <swiper class='swiper' bindchange='onChangeSwiper' current='{{nowSwiperIndex}}' duration='{{500}}' circular='{{false}}'>
         <swiper-item class='swiper_item'>
             <scroll-view wx:if='{{comicHistory.length}}' class='comic_scroll' scroll-y>
-                <view class='item' wx:for='{{comicHistory}}' wx:key='{{item.comicid}}' data-comic='{{item.comic}}' bindtap='gotoDetail'>
-                    <view class='item_img' style='background:url({{item.comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
-                    <view class='item_title'>{{item.comic.title}}</view>
-                    <view class='item_bottom_w'>
-                        <view class='item_new'>{{item.comic.showlastpartname}}</view>
-                        <view class='item_time'>{{item.comic.lastupdatetime}}</view>
+                <view style='min-height:100%;margin-top:1px;'>
+                    <view class='item' wx:for='{{comicHistory}}' wx:key='{{item.comicid}}' data-comic='{{item.comic}}' bindtap='gotoDetail'>
+                        <view class='item_img' style='background:url({{item.comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                        <view class='item_title'>{{item.comic.title}}</view>
+                        <view class='item_bottom_w'>
+                            <view class='item_new'>{{item.comic.showlastpartname}}</view>
+                            <view class='item_time'>{{item.comic.lastupdatetime}}</view>
+                        </view>
                     </view>
                 </view>
             </scroll-view>
@@ -30,19 +32,21 @@
         <swiper-item class='swiper_item'>
             <button wx:if="{{!logined}}" class='login_btn' open-type="getUserInfo" bindgetuserinfo="getUserInfo">请先登录</button>
             <scroll-view wx:elif='{{favoriteList.length}}' class='comic_scroll' scroll-y>
-                <block wx:for='{{favoriteList}}' wx:for-item='pageItem' wx:for-index='pageIndex' wx:key='{{pageIndex}}'>
-                    <view class='item' wx:for='{{pageItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
-                        <view class='item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
-                        <view class='item_title'>{{item.title}}</view>
-                        <view class='item_bottom_w'>
-                            <view class='item_new'>{{item.showlastpartname}}</view>
-                            <view class='item_time'>{{item.lastupdatetime}}</view>
+                <view style='min-height:100%;margin-top:1px;'>
+                    <block wx:for='{{favoriteList}}' wx:for-item='pageItem' wx:for-index='pageIndex' wx:key='{{pageIndex}}'>
+                        <view class='item' wx:for='{{pageItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
+                            <view class='item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                            <view class='item_title'>{{item.title}}</view>
+                            <view class='item_bottom_w'>
+                                <view class='item_new'>{{item.showlastpartname}}</view>
+                                <view class='item_time'>{{item.lastupdatetime}}</view>
+                            </view>
                         </view>
+                    </block>
+                    <view wx:if='{{page && page == totalPage}}' class='loading_tip'>
+                        <image mode='widthFix' src="/image/icon_end.png"></image>
+                        <text>没有更多了~</text>
                     </view>
-                </block>
-                <view wx:if='{{page && page == totalPage}}' class='loading_tip'>
-                    <image mode='widthFix' src="/image/icon_end.png"></image>
-                    <text>没有更多了~</text>
                 </view>
             </scroll-view>
             <view wx:elif='{{totalPage==0}}' class='empty_list'>暂无收藏记录~</view>

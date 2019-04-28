@@ -88,7 +88,6 @@
     height: 50rpx;
     color: #fff;
     font-size: 24rpx;
-    line-height: 0;
 }
 
 button.logn_btn {
@@ -103,7 +102,9 @@ button.logn_btn.button-hover {
 
 .like_w image, .logn_btn image {
     width: 24rpx;
+    height: 24rpx;
     margin-right: 6rpx;
+    margin-top: -2rpx;
 }
 
 .like_w.active {
