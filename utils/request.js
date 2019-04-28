@@ -6,7 +6,7 @@ function request(obj) {
     if (obj.method && obj.method.toLocaleUpperCase() == 'POST') {
         header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
     }
-    wx.request({
+    return wx.request({
         url: host + obj.url,
         method: obj.method || 'get',
         header: header,

@@ -244,7 +244,7 @@ Page({
     getPics(chapterId) {
         var self = this;
         self.laoding = true;
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             self.requestTask = request({
                 url: '/pic/' + chapterId,
                 success(res) {
@@ -351,7 +351,7 @@ Page({
     scrollToTop() {
         wx.vibrateShort();
         this.setData({
-            scrollAnimation: true
+            scrollAnimation: false
         }, () => {
             this.setData({
                 scrollTop: this.tipScrollTop
