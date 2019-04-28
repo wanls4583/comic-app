@@ -2,6 +2,5 @@
     "backgroundColorTop": "#7e6353",
     "backgroundColorBottom": "#584d42",
     "usingComponents": {},
-    "navigationBarTitleText": "M画大全",
-    "enablePullDownRefresh": true
+    "navigationBarTitleText": "漫画搜索"
 }

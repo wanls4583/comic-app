@@ -96,6 +96,7 @@ Page({
     },
     onPullDownRefresh() {
         this.getCategoryAndArea();
+        this.getLiked();
         this.getChpater();
     },
     animationFinish(e) {
