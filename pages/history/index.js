@@ -120,5 +120,26 @@ Page({
         this.setData({
             nowSwiperIndex: index
         });
-    }
+    },
+    getUserInfo: function (e) {
+        console.log(e)
+        app.globalData.userInfo = e.detail.userInfo;
+        wx.setStorageSync('userInfo', JSON.stringify(e.detail.userInfo));
+        wx.showLoading({
+            title: '登录中',
+        });
+        loginUtil.login().then(() => {
+            wx.hideLoading();
+            this.setData({
+                logined: true
+            });
+            this.refresh();
+        }).catch(() => {
+            wx.hideLoading();
+            wx.showToast({
+                title: '登录失败',
+                icon: 'none'
+            });
+        });
+    },
 })

@@ -2,18 +2,42 @@ const request = require('./request.js');
 
 function checkLogin() {
     return checkSession().then(()=>{
-        if (wx.getStorageSync('sessionid') && wx.getStorageSync('sessionid')) {
-            return Promise.resolve();
-        } else {
+        if (wx.getStorageSync('sessionid') && wx.getStorageSync('userInfo')) {
+            return checkLoginStatus().then((result)=>{
+                if(!result) {
+                    return login();
+                }
+            });
+        } else if (wx.getStorageSync('userInfo')) {
             wx.removeStorageSync('sessionid');
             return login();
+        } else {
+            return Promise.reject('数据错误');
         }
     }).catch(()=>{
         return checkAuthorize().then(()=>{
             return getUserInfo();
         }).then(()=>{
             return login();
-        });
+        }).catch((err)=>{
+            return Promise.reject(err);
+        })
+    });
+}
+
+//检测后台登录状态
+function checkLoginStatus() {
+    return new Promise((resolve, reject) => {
+        request({
+            url: '/users/checkLogin',
+            method: 'post',
+            success: (res) => {
+                resolve(res.data.result);
+            },
+            fail: (err) => {
+                reject(err);
+            }
+        })
     });
 }
 
