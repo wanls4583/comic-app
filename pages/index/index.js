@@ -358,9 +358,9 @@ Page({
     },
     getSwitch() {
         var self = this;
-        app.dirMenu = true;
-        wx.showTabBar();
-        return;
+        // app.dirMenu = true;
+        // wx.showTabBar();
+        // return;
         request({
             url: '/switch',
             success(res) {
