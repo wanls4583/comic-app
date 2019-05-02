@@ -20,3 +20,21 @@ view, input, textarea, scroll-view {
 scroll-view {
     overflow: auto;
 }
+
+.blur_bg {
+    display: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    filter: blur(60rpx);
+    overflow: hidden;
+    z-index: -1;
+}
+
+.blur_bg image {
+    width: 100%;
+    height: 90%;
+    margin-top: 10%;
+    opacity: 0.3;
+}

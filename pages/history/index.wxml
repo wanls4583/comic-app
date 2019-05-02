@@ -3,7 +3,7 @@
     <navigationBar title='书架'></navigationBar>
     <!-- 模糊背景 -->
     <view class='blur_bg'>
-        <image src='{{comicHistory.length && comicHistory[0].comic.cover_url || "/image/bg.jpg"}}'></image>
+        <image src='{{"/image/bg.jpg"}}'></image>
     </view>
     <view class='tab_w'>
         <view class='tab_item_w'>

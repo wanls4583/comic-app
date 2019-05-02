@@ -62,25 +62,25 @@ Page({
     },
     scrollCompute(e) {
         var scrollTop = e.detail.scrollTop;
-        var preScrollTop = this.preScrollTop || 0;
         var cid = e.currentTarget.dataset.cid;
         var swiperData = this.data.swiperDataMap[cid];
-        this.preScrollTop = scrollTop;
         swiperData.scrollTop = scrollTop;
+        // var preScrollTop = this.preScrollTop || 0;
+        // this.preScrollTop = scrollTop;
         //显/隐排序栏
-        if (scrollTop < app.globalData.systemInfo.screenWidth / 375 * 40) {
-            this.setData({
-                [`swiperDataMap[${cid}].showSort`]: true
-            });
-        } else if (preScrollTop - scrollTop < -10) {
-            this.setData({
-                [`swiperDataMap[${cid}].showSort`]: false
-            });
-        } else if (preScrollTop - scrollTop > 10) {
-            this.setData({
-                [`swiperDataMap[${cid}].showSort`]: true
-            });
-        }
+        // if (scrollTop < app.globalData.systemInfo.screenWidth / 375 * 40) {
+        //     this.setData({
+        //         [`swiperDataMap[${cid}].showSort`]: true
+        //     });
+        // } else if (preScrollTop - scrollTop < -10) {
+        //     this.setData({
+        //         [`swiperDataMap[${cid}].showSort`]: false
+        //     });
+        // } else if (preScrollTop - scrollTop > 10) {
+        //     this.setData({
+        //         [`swiperDataMap[${cid}].showSort`]: true
+        //     });
+        // }
         //切换中
         if (this.viewRending) {
             return;

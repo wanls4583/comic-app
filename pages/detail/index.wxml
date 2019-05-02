@@ -5,77 +5,78 @@
         <button plain='{{true}}' class='{{nowTab==0 && "active"}}' data-tab='{{0}}' bindtap='toggleTab'>简介</button>
         <button wx:if='{{dirMenu}}' plain='{{true}}' class='{{nowTab==1 && "active"}}' data-tab='{{1}}' bindtap='toggleTab'>目录</button>
     </view>
-    <swiper class='swiper' current='{{nowTab}}' bindanimationfinish='animationFinish'>
-        <swiper-item>
-            <view class='detail_w'>
-                <view class='detail_bg' style='background:url({{comic.cover_url}}) no-repeat center;background-size:cover'></view>
-                <view class='detail_layer'>
-                    <view class='detail_head_w'>
-                        <view class='detail_cover' style='background:url({{comic.cover_url}}) no-repeat center;background-size:cover'>
-                            <block wx:if='{{!logined}}'>
-                                <button class='logn_btn' plain='{{true}}' open-type="getUserInfo" bindgetuserinfo="getUserInfo"><image src='/image/icon_like.png'></image>收藏</button>
-                            </block>
-                            <block wx:elif='{{liked}}'>
-                                <view class='like_w active' bindtap='unLike'><image src='/image/icon_like_h.png'></image>收藏</view>
-                            </block>
-                            <block wx:else>
-                                <view class='like_w' bindtap='like'><image src='/image/icon_like.png'></image>收藏</view>
-                            </block>
+    <view class='swiper'>
+        <view class='detail_bg'><image src='{{comic.cover_url}}'></image></view>
+        <swiper current='{{nowTab}}' bindanimationfinish='animationFinish'>
+            <swiper-item>
+                <view class='detail_w'>
+                    <view class='detail_layer'>
+                        <view class='detail_head_w'>
+                            <view class='detail_cover' style='background:url({{comic.cover_url}}) no-repeat center;background-size:cover'>
+                                <block wx:if='{{!logined}}'>
+                                    <button class='logn_btn' plain='{{true}}' open-type="getUserInfo" bindgetuserinfo="getUserInfo"><image src='/image/icon_like.png'></image>收藏</button>
+                                </block>
+                                <block wx:elif='{{liked}}'>
+                                    <view class='like_w active' bindtap='unLike'><image src='/image/icon_like_h.png'></image>收藏</view>
+                                </block>
+                                <block wx:else>
+                                    <view class='like_w' bindtap='like'><image src='/image/icon_like.png'></image>收藏</view>
+                                </block>
+                            </view>
+                            <view class='detail_head_right'>
+                                <view class='detail_title'>{{comic.title}}</view>
+                                <view class='detail_area'>{{comic.area.name || '--'}}</view>
+                                <view class='detail_status'>{{comic.status}}</view>
+                                <view class='detail_publish'>{{comic.publishTime}}</view>
+                                <view class='detail_new'>最新：{{comic.last_part_name}}</view>
+                            </view>
                         </view>
-                        <view class='detail_head_right'>
-                            <view class='detail_title'>{{comic.title}}</view>
-                            <view class='detail_area'>{{comic.area.name || '--'}}</view>
-                            <view class='detail_status'>{{comic.status}}</view>
-                            <view class='detail_publish'>{{comic.publishTime}}</view>
-                            <view class='detail_new'>最新：{{comic.last_part_name}}</view>
+                        <view class='detail_author_category_w'>
+                            <view class='detail_author_w'>
+                                <view class='label'>作者:</view>
+                                <view class='detail_author' wx:for='{{comic.author}}' wx:key='{{index}}'>{{item}}</view>
+                            </view>
+                            <view class='detail_category_w'>
+                                <view class='label'>分类:</view>
+                                <block wx:if='{{comic.categorys.length}}'>
+                                    <view class='detail_category' wx:for='{{comic.categorys}}' wx:key='{{index}}'>{{item.name}}</view>
+                                </block>
+                                <view wx:else class='detail_category'>--</view>
+                            </view>
                         </view>
+                        <view class='detail_des_title'>故事简介</view>
+                        <!-- 1rpx边距可以触发回弹效果 -->
+                        <scroll-view scroll-y class='detail_des'>
+                            <view style='margin-top:1rpx'>{{comic.content}}</view>
+                        </scroll-view>
                     </view>
-                    <view class='detail_author_category_w'>
-                        <view class='detail_author_w'>
-                            <view class='label'>作者:</view>
-                            <view class='detail_author' wx:for='{{comic.author}}' wx:key='{{index}}'>{{item}}</view>
-                        </view>
-                        <view class='detail_category_w'>
-                            <view class='label'>分类:</view>
-                            <block wx:if='{{comic.categorys.length}}'>
-                                <view class='detail_category' wx:for='{{comic.categorys}}' wx:key='{{index}}'>{{item.name}}</view>
-                            </block>
-                            <view wx:else class='detail_category'>--</view>
-                        </view>
-                    </view>
-                    <view class='detail_des_title'>故事简介</view>
-                    <!-- 1rpx边距可以触发回弹效果 -->
-                    <scroll-view scroll-y class='detail_des'>
-                        <view style='margin-top:1rpx'>{{comic.content}}</view>
-                    </scroll-view>
                 </view>
-            </view>
-        </swiper-item>
-        <swiper-item wx:if='{{dirMenu}}'>
-            <view class='catalog_w'>
-                <view class='catalog_bg' style='background:url({{comic.cover_url}}) no-repeat center;background-size:cover'></view>
-                <view class='catalog_layer'>
-                    <view class='catalog_head_w'>
-                        <view class='catalog_num_w'>
-                            <view class='catalog_num'>{{comic.count}}</view>
-                            <view class='catalog_new'>最近更新</view>
-                            <view class='catalog_name' bindtap='gotoLast'>{{comic.last_part_name}}</view>
+            </swiper-item>
+            <swiper-item wx:if='{{dirMenu}}'>
+                <view class='catalog_w'>
+                    <view class='catalog_layer'>
+                        <view class='catalog_head_w'>
+                            <view class='catalog_num_w'>
+                                <view class='catalog_num'>{{comic.count}}</view>
+                                <view class='catalog_new'>最近更新</view>
+                                <view class='catalog_name' bindtap='gotoLast'>{{comic.last_part_name}}</view>
+                            </view>
+                            <view class='catalog_num_w'>
+                                <view class='catalog_num'>{{historyNum}}</view>
+                                <view class='catalog_new'>上次看到</view>
+                                <view class='catalog_continue' bindtap='continueRead'>{{historyNum ? '继续浏览' : '无浏览记录'}}</view>
+                            </view>
                         </view>
-                        <view class='catalog_num_w'>
-                            <view class='catalog_num'>{{historyNum}}</view>
-                            <view class='catalog_new'>上次看到</view>
-                            <view class='catalog_continue' bindtap='continueRead'>{{historyNum ? '继续浏览' : '无浏览记录'}}</view>
-                        </view>
+                        <scroll-view scroll-y class='catalog_list_w'>
+                            <block wx:if='{{loadingStatus==1}}'>
+                                <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' bindtap='gotoPicture'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
+                            </block>
+                            <view wx:elif='{{loadingStatus==1}}' class='loading_tip'>暂无章节~</view>
+                            <view wx:else class='loading_tip'>加载中~</view>
+                        </scroll-view>
                     </view>
-                    <scroll-view scroll-y class='catalog_list_w'>
-                        <block wx:if='{{loadingStatus==1}}'>
-                            <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' bindtap='gotoPicture'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
-                        </block>
-                        <view wx:elif='{{loadingStatus==1}}' class='loading_tip'>暂无章节~</view>
-                        <view wx:else class='loading_tip'>加载中~</view>
-                    </scroll-view>
                 </view>
-            </view>
-        </swiper-item>
-    </swiper>
+            </swiper-item>
+        </swiper>
+    </view>
 </view>

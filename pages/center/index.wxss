@@ -3,23 +3,6 @@
     flex-direction: column;
 }
 
-.center_bg {
-    position: absolute;
-    top: 0;
-    z-index: 0;
-    width: 100%;
-    height: 100%;
-    filter: blur(60rpx);
-    overflow: hidden;
-    opacity: 0.3;
-}
-
-.center_bg image {
-    width: 100%;
-    height: 90%;
-    margin-top: 10%;
-}
-
 .top_w {
     position: relative;
     z-index: 1;

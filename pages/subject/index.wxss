@@ -1,22 +1,5 @@
 /**index.wxss**/
 
-.home_bg {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    filter: blur(60rpx);
-    overflow: hidden;
-    z-index: -1;
-}
-
-.home_bg image {
-    width: 100%;
-    height: 90%;
-    margin-top: 10%;
-    opacity: 0.3;
-}
-
 .category_dialog_w {
     position: absolute;
     top: 0;
@@ -78,6 +61,7 @@
 }
 
 /* 滑块遮罩层 */
+
 .list_swiper_cover {
     position: fixed;
     top: 80rpx;
@@ -86,20 +70,7 @@
     width: 100%;
 }
 
-.category_comic_scroll {
-    height: 100%;
-}
-
-.empty_w {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    margin-top: -65rpx;
-    text-align: center;
-    font-size: 30rpx;
-    color: #d8d8d8;
-    line-height: 30rpx;
-}
+/* 分类列表-begin */
 
 .category_w {
     position: relative;
@@ -142,38 +113,13 @@
     margin-right: 20rpx;
 }
 
-.category_w .scroll_w .item.active, .category_w .scroll_w .item:active {
+.category_w .scroll_w .item.active {
     font-size: 34rpx;
+    font-weight: bolder;
     color: #38ffff;
 }
 
-.order_w {
-    position: absolute;
-    top: -80rpx;
-    left: 20rpx;
-    right: 24rpx;
-    z-index: 2;
-    height: 80rpx;
-    display: flex;
-    font-size: 26rpx;
-    color: #fff;
-    /* background-color: rgba(256, 256, 256, 0.05); */
-    opacity: 0;
-    transition: all 0.3s;
-}
-
-.order_w.active {
-    opacity: 1;
-    top: 0;
-}
-
-.order_w .order_item {
-    height: 80rpx;
-    line-height: 80rpx;
-    margin-right: 45rpx;
-}
-
-.order_item.active,.order_item:active {
+.category_w .scroll_w .item:active {
     color: #38ffff;
 }
 
@@ -190,7 +136,62 @@
     margin-top: 24rpx;
 }
 
-.category_item {
+/* 分类列表-end */
+
+/* 排序-begin */
+
+.order_w {
+    position: absolute;
+    top: -80rpx;
+    left: 20rpx;
+    right: 24rpx;
+    z-index: 2;
+    height: 80rpx;
+    display: flex;
+    font-size: 26rpx;
+    color: #fff;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.order_w.active {
+    opacity: 1;
+    top: 0;
+}
+
+.order_w .order_item {
+    height: 80rpx;
+    line-height: 80rpx;
+    margin-right: 45rpx;
+}
+
+.order_item.active, .order_item:active {
+    color: #38ffff;
+}
+
+/* 排序-end */
+
+/* 滚动容器 */
+
+.category_comic_scroll {
+    height: 100%;
+    padding-top: 80rpx;
+}
+
+.empty_w {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -65rpx;
+    text-align: center;
+    font-size: 30rpx;
+    color: #d8d8d8;
+    line-height: 30rpx;
+}
+
+/* 漫画item-begin */
+
+.comic_item {
     float: left;
     position: relative;
     width: 224rpx;
@@ -198,13 +199,13 @@
     margin-left: 20rpx;
 }
 
-.category_item_img {
+.comic_item_img {
     width: 100%;
     height: 280rpx;
     border: 4rpx solid #fff;
 }
 
-.category_item_title {
+.comic_item_title {
     position: absolute;
     bottom: 84rpx;
     height: 50rpx;
@@ -220,7 +221,7 @@
     color: #fff;
 }
 
-.category_item_bottom_w {
+.comic_item_bottom_w {
     display: flex;
     justify-content: space-between;
     height: 80rpx;
@@ -228,7 +229,7 @@
     line-height: 54rpx;
 }
 
-.category_item_new {
+.comic_item_new {
     flex-grow: 1;
     white-space: nowrap;
     overflow: hidden;
@@ -236,10 +237,12 @@
     color: #d8d8d8;
 }
 
-.category_item_time {
+.comic_item_time {
     flex-shrink: 0;
     color: #38ffff;
 }
+
+/* 漫画item-end */
 
 /* 没有更多了 */
 

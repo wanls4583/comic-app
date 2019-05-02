@@ -2,8 +2,8 @@
 <view class='container'>
     <navigationBar wx:if='{{!showCategoryDialog}}' title='分类'></navigationBar>
     <!-- 模糊背景 -->
-    <view class='home_bg'>
-        <image src='{{bgImage || "/image/bg.jpg"}}'></image>
+    <view class='blur_bg'>
+        <image src='{{"/image/bg.jpg"}}'></image>
     </view>
     <!-- 分类列表 -->
     <view class='category_w'>
@@ -36,17 +36,17 @@
             </view>
             <!-- 各分类下的列表 -->
             <block wx:if='{{(renderCids[0]===cItem.cid || renderCids[1]===cItem.cid || renderCids[2]===cItem.cid)}}' wx:for='{{swiperDataMap[cItem.cid].viewArr}}' wx:for-item='vItem' wx:key='{{vItem}}'>
-                <scroll-view wx:if='{{vItem==swiperDataMap[cItem.cid].nowView}}' class='category_comic_scroll' style='padding-top:{{ swiperDataMap[cItem.cid].showSort ? 80 : 0 }}rpx' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}'>
-                    <view class='scroll_list_w' style='margin-top:{{ swiperDataMap[cItem.cid].showSort ? 1 : 80 }}rpx'>
+                <scroll-view wx:if='{{vItem==swiperDataMap[cItem.cid].nowView}}' class='category_comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}'>
+                    <view class='scroll_list_w'>
                         <block wx:for='{{swiperDataMap[cItem.cid].renderData}}' wx:for-item='rItem' wx:for-index='rIndex' wx:key='{{rIndex}}'>
-                            <view wx:if='{{rIndex >= vItem*viewSize && rIndex < (vItem+1)*viewSize+overlappingPage}}' class='category_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>
-                                <view class='category_item_img'>
+                            <view wx:if='{{rIndex >= vItem*viewSize && rIndex < (vItem+1)*viewSize+overlappingPage}}' class='comic_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>
+                                <view class='comic_item_img'>
                                     <image src='{{comicItem.showpicurlb}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
                                 </view>
-                                <view class='category_item_title'>{{comicItem.title}}</view>
-                                <view class='category_item_bottom_w'>
-                                    <view class='category_item_new'>{{comicItem.last_part_name}}</view>
-                                    <view class='category_item_time'>{{comicItem.lastupdatetime}}</view>
+                                <view class='comic_item_title'>{{comicItem.title}}</view>
+                                <view class='comic_item_bottom_w'>
+                                    <view class='comic_item_new'>{{comicItem.last_part_name}}</view>
+                                    <view class='comic_item_time'>{{comicItem.lastupdatetime}}</view>
                                 </view>
                             </view>
                         </block>

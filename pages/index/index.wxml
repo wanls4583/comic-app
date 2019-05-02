@@ -1,8 +1,8 @@
 <!--index.wxml-->
 <view class='container'>
     <!-- 模糊背景 -->
-    <view class='home_bg'>
-        <image src='{{banner.length && banner[0].showpicurlb || "/image/bg.jpg"}}'></image>
+    <view class='blur_bg'>
+        <image src='{{"/image/bg.jpg"}}'></image>
     </view>
     <navigationBar holder='{{false}}' background='rgba(126, 99, 83,{{searchOpacity}})' external-classes='custom_nav'></navigationBar>
     <view class='search_w' style='top:{{statusBarHeight}}px;height:{{navHeight}}px;right:{{menuRect.right-menuRect.left+20}}px'>
