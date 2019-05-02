@@ -30,14 +30,13 @@ Page({
         this.itemHeight = 180 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
         this.loading = {};
+        this.loaded = {};
         this.getCategory();
     },
     onShow() {
         var cid = wx.getStorageSync('nowCid');
         if (cid) {
-            this.setData({
-                nowCid: cid
-            });
+            this.historyCid = cid;
             if (this.data.categoryList.length) {
                 this.changeCategory(cid);
             }
@@ -54,11 +53,11 @@ Page({
     //滚动事件
     onScroll(e) {
         //避免频繁计算
-        if(!this.scrollTimer) {
-            this.scrollTimer = setTimeout(()=>{
+        if (!this.scrollTimer) {
+            this.scrollTimer = setTimeout(() => {
                 this.scrollCompute(e);
                 this.scrollTimer = null;
-            },50);
+            }, 50);
         }
     },
     scrollCompute(e) {
@@ -138,7 +137,6 @@ Page({
     },
     //渲染swiper-item，每次只渲染三个
     renderSwiper(current) {
-        console.log('renderSwiper', current);
         var categoryList = this.data.categoryList;
         var map = [];
         var scrollTop = [];
@@ -186,28 +184,6 @@ Page({
         var comic = e.currentTarget.dataset.comic;
         wx.navigateTo({
             url: '/pages/detail/index?comic=' + encodeURIComponent(JSON.stringify(comic))
-        });
-    },
-    //获取所有分类
-    getCategory() {
-        var self = this;
-        request({
-            url: '/category',
-            success(res) {
-                if (res.statusCode == 200 && res.data && res.data.length) {
-                    var cids = [];
-                    for (var i = 0; i < 3 && i < res.data.length; i++) {
-                        cids.push(res.data[i].cid);
-                    }
-                    self.setData({
-                        categoryList: res.data,
-                        renderCids: cids
-                    });
-                    self.renderSwiper(0);
-                    self.preLoadData();
-                    self.changeCategory(self.data.nowCid);
-                }
-            }
         });
     },
     //显隐分类弹出框
@@ -260,7 +236,6 @@ Page({
                 animationDuration: 300
             });
         });
-        this.scrollToCategory(cid);
     },
     //导航栏菜单滚动到指定item
     scrollToCategory(cid) {
@@ -272,6 +247,7 @@ Page({
                 this.setData({
                     toCategory: 'category_' + this.data.categoryList[index].cid
                 });
+                wx.setStorageSync('nowCid', cid);
                 break;
             }
         }
@@ -379,6 +355,39 @@ Page({
         }
         return Promise.resolve();
     },
+    //获取所有分类
+    getCategory() {
+        var self = this;
+        request({
+            url: '/category',
+            success(res) {
+                if (res.statusCode == 200 && res.data && res.data.length) {
+                    var cids = [];
+                    var nowCid = self.historyCid || res.data[0].cid;
+                    var current = 0;
+                    for (var i = 0; i < 3 && i < res.data.length; i++) {
+                        cids.push(res.data[i].cid);
+                    }
+                    self.setData({
+                        categoryList: res.data,
+                        renderCids: cids
+                    });
+                    self.preLoadData();
+                    for (var i = 0; i < self.data.categoryList.length; i++) {
+                        if (self.data.categoryList[i].cid == nowCid) {
+                            current = i;
+                            break;
+                        }
+                    }
+                    if (current == 0) {
+                        self.renderSwiper(current);
+                    } else {
+                        self.changeCategory(nowCid);
+                    }
+                }
+            }
+        });
+    },
     //加载漫画列表
     getComicListByCategory(cid) {
         var self = this;
@@ -400,6 +409,7 @@ Page({
                     wx.stopPullDownRefresh();
                     wx.hideLoading();
                     self.loading[cid] = false;
+                    self.loaded[cid] = true;
                     res.data.list.map((item) => {
                         item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
                     });
@@ -418,14 +428,13 @@ Page({
         var categoryList = this.data.categoryList.slice(3);
         var cid = 0;
         for (var i = 0; i < categoryList.length; i++) {
-            if (!categoryList[i].loaded) {
+            if (!this.loaded[categoryList[i].cid]) {
                 cid = categoryList[i].cid;
                 break;
             }
         }
         if (cid) {
             this.loadNext(categoryList[i].cid).then(() => {
-                categoryList[i].loaded = true;
                 setTimeout(() => {
                     this.preLoadData();
                 }, 100);
