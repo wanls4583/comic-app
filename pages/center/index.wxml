@@ -1,5 +1,6 @@
 <!--index.wxml-->
 <view class='container'>
+    <navigationBar></navigationBar>
     <!-- 模糊背景 -->
     <view class='center_bg'>
         <image src='/image/bg.jpg'></image>

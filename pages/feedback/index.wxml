@@ -1,9 +1,6 @@
 <!--index.wxml-->
 <view class='container'>
-    <!-- 模糊背景 -->
-    <!-- <view class='center_bg'>
-        <image src='/image/bg.jpg'></image>
-    </view> -->
+    <navigationBar title='意见反馈'></navigationBar>
     <view class='block_title'>反馈类型</view>
     <radio-group class='category_radio_group' bindchange='categoryRadioChange'>
         <label class='category_radio' wx:for='{{categoryList}}' wx:key='{{index}}'>

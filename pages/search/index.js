@@ -19,7 +19,9 @@ Page({
         viewSize: 40, //scroll-view中最多同时存在40页
         pageSize: 3 * 3 * 3, //一页的数量
         scrollTop: 0,
-        overlappingPage: 5
+        overlappingPage: 5,
+        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        navHeight: app.globalData.navHeight,
     },
     onLoad: function() {
         var history = wx.getStorageSync('search_history');
@@ -170,7 +172,7 @@ Page({
                 wx.stopPullDownRefresh();
                 if (res.statusCode == 200 && res.data.list) {
                     res.data.list.map((item) => {
-                        item.lastupdatetime = util.formatTime(item.lastupdatets, 'yyyy/MM/dd').slice(2);
+                        item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
                         // self.length = self.length || 0;
                         // item.title = ++self.length+item.title;
                     });

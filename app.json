@@ -1,8 +1,9 @@
 {
     "pages": [
         "pages/index/index",
-        "pages/feedback/index",
         "pages/picture/index",
+        "pages/subject/index",
+        "pages/feedback/index",
         "pages/search/index",
         "pages/center/index",
         "pages/detail/index",
@@ -21,6 +22,12 @@
                 "text": "首页"
             },
             {
+                "pagePath": "pages/subject/index",
+                "iconPath": "image/icon_category.png",
+                "selectedIconPath": "image/icon_category_h.png",
+                "text": "分类"
+            },
+            {
                 "pagePath": "pages/history/index",
                 "iconPath": "image/icon_book.png",
                 "selectedIconPath": "image/icon_book_h.png",
@@ -37,7 +44,11 @@
     "window": {
         "backgroundTextStyle": "light",
         "navigationBarBackgroundColor": "#7e6353",
-        "navigationBarTextStyle": "white"
+        "navigationBarTextStyle": "white",
+        "navigationStyle": "custom"
+    },
+    "usingComponents": {
+        "navigationBar": "/components/navigationBar/index"
     },
     "sitemapLocation": "sitemap.json"
 }

@@ -1,5 +1,6 @@
 <!--index.wxml-->
 <view class="container">
+    <navigationBar title='{{title}}'></navigationBar>
     <view class='menu_btn_w'>
         <button plain='{{true}}' class='{{nowTab==0 && "active"}}' data-tab='{{0}}' bindtap='toggleTab'>简介</button>
         <button wx:if='{{dirMenu}}' plain='{{true}}' class='{{nowTab==1 && "active"}}' data-tab='{{1}}' bindtap='toggleTab'>目录</button>
@@ -7,10 +8,10 @@
     <swiper class='swiper' current='{{nowTab}}' bindanimationfinish='animationFinish'>
         <swiper-item>
             <view class='detail_w'>
-                <view class='detail_bg' style='background:url({{comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                <view class='detail_bg' style='background:url({{comic.cover_url}}) no-repeat center;background-size:cover'></view>
                 <view class='detail_layer'>
                     <view class='detail_head_w'>
-                        <view class='detail_cover' style='background:url({{comic.showpicurlb}}) no-repeat center;background-size:cover'>
+                        <view class='detail_cover' style='background:url({{comic.cover_url}}) no-repeat center;background-size:cover'>
                             <block wx:if='{{!logined}}'>
                                 <button class='logn_btn' plain='{{true}}' open-type="getUserInfo" bindgetuserinfo="getUserInfo"><image src='/image/icon_like.png'></image>收藏</button>
                             </block>
@@ -25,8 +26,8 @@
                             <view class='detail_title'>{{comic.title}}</view>
                             <view class='detail_area'>{{comic.area.name || '--'}}</view>
                             <view class='detail_status'>{{comic.status}}</view>
-                            <view class='detail_publish'>{{comic.shelvestime}}</view>
-                            <view class='detail_new'>最新：{{comic.showlastpartname}}</view>
+                            <view class='detail_publish'>{{comic.publishTime}}</view>
+                            <view class='detail_new'>最新：{{comic.last_part_name}}</view>
                         </view>
                     </view>
                     <view class='detail_author_category_w'>
@@ -52,13 +53,13 @@
         </swiper-item>
         <swiper-item wx:if='{{dirMenu}}'>
             <view class='catalog_w'>
-                <view class='catalog_bg' style='background:url({{comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                <view class='catalog_bg' style='background:url({{comic.cover_url}}) no-repeat center;background-size:cover'></view>
                 <view class='catalog_layer'>
                     <view class='catalog_head_w'>
                         <view class='catalog_num_w'>
                             <view class='catalog_num'>{{comic.count}}</view>
                             <view class='catalog_new'>最近更新</view>
-                            <view class='catalog_name' bindtap='gotoLast'>{{comic.showlastpartname}}</view>
+                            <view class='catalog_name' bindtap='gotoLast'>{{comic.last_part_name}}</view>
                         </view>
                         <view class='catalog_num_w'>
                             <view class='catalog_num'>{{historyNum}}</view>

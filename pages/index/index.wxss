@@ -1,4 +1,7 @@
 /**index.wxss**/
+.custom_nav {
+    padding-bottom: 10rpx;
+}
 
 .home_bg {
     position: absolute;
@@ -14,167 +17,49 @@
     width: 100%;
     height: 90%;
     margin-top: 10%;
-    opacity: 0.25;
+    opacity: 0.3;
 }
 
-.category_dialog_w {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    z-index: 2;
-    width: 100%;
-    background: linear-gradient(#7e6353, #584d42);
-    opacity: 0.98;
-}
-
-.category_dialog_icon_close {
-    position: absolute;
-    top: 20rpx;
-    left: 43rpx;
-}
-
-.category_dialog_icon_close:active {
-    background-color: rgba(256, 256, 256, 0.1);
-}
-
-.category_dialog_icon_close image {
-    width: 40rpx;
-    height: 40rpx;
-}
-
-.category_dialog_list_w {
-    padding-left: 43rpx;
-    margin-top: 120rpx;
-    text-align: justify;
-}
-
-.category_dialog_list_w .item {
-    display: inline-block;
-    width: 136rpx;
-    height: 60rpx;
-    padding: 0 20rpx;
-    margin-right: 40rpx;
-    margin-bottom: 40rpx;
-    background-color: rgba(256, 256, 256, 0.35);
-    border-radius: 4rpx;
-    font-size: 24rpx;
-    color: #fff;
-    text-align: center;
-    line-height: 60rpx;
-}
-
-.category_dialog_list_w .item:active, .scroll_to_top {
-    background-color: rgba(256, 256, 256, 0.1);
-    color: #38ffff;
-}
-
-.list_swiper_w {
-    position: absolute;
-    top: 172rpx;
-    bottom: 0;
-    z-index: 1;
-    width: 100%;
-    height: auto;
-}
-
-/* 滑块遮罩层 */
-.list_swiper_cover {
-    position: fixed;
-    top: 172rpx;
-    bottom: 0;
-    z-index: 2;
-    width: 100%;
-}
-
-.recommend_comic_scroll, .category_comic_scroll {
+.recommend_comic_scroll {
     height: 100%;
 }
 
-.empty_w {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    margin-top: -65rpx;
-    text-align: center;
-    font-size: 30rpx;
-    color: #d8d8d8;
-    line-height: 30rpx;
+.top_w {
+    position: relative;
 }
 
 .search_w {
-    position: relative;
-    z-index: 1;
-    width: 710rpx;
-    height: 72rpx;
-    margin: 0 20rpx;
-    padding: 16rpx 0;
-    border-radius: 8rpx;
-    background: rgba(256, 256, 256, 0.3);
+    position: fixed;
+    z-index: 99;
+    left: 20rpx;
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: #fff;
-    font-size: 30rpx;
 }
 
-.search_w image {
-    width: 38rpx;
-    height: 38rpx;
-    margin-right: 10rpx;
-}
-
-.category_w {
-    position: relative;
-    z-index: 1;
-    height: 100rpx;
-    line-height: 100rpx;
+.search {
+    padding: 0 20rpx;
+    width: 100%;
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    border-radius: 30rpx;
+    border: 1rpx solid rgba(256, 256, 256, 0.3);
+    background-color: rgba(0, 0, 0, 0.15);
+    font-size: 24rpx;
     color: #fff;
-    font-size: 34rpx;
 }
 
-.category_w .scroll_w {
-    overflow: auto;
-    flex-grow: 1;
-    white-space: nowrap;
-    margin-left: 20rpx;
+.search:active {
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
-.category_w .scroll_w .item {
-    height: 100rpx;
-    line-height: 100rpx;
-    margin-right: 45rpx;
-    display: inline-block;
-    color: #fff;
-    font-size: 34rpx;
-}
-
-.category_w .scroll_w .item:last-child {
-    margin-right: 20rpx;
-}
-
-.category_w .scroll_w .item.active, .category_w .scroll_w .item:active {
-    color: #38ffff;
-}
-
-.fixed_menu {
-    flex-shrink: 0;
-    flex-grow: 0;
-    margin: 0 20rpx 0 20rpx;
-}
-
-.fixed_menu image {
-    width: 40rpx;
-    height: 34rpx;
-    vertical-align: top;
-    margin-top: 36rpx;
+.search image{
+    width: 26rpx;
+    margin-right: 16rpx;
 }
 
 .banner_w {
     position: relative;
-    height: 345rpx;
-    /* box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.5); */
+    /* height: 345rpx; *//* box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.5); */
 }
 
 .banner_item {
@@ -199,6 +84,8 @@
 .banner_now {
     color: #38ffff;
 }
+
+/* 分类标题-begin */
 
 .category_title_w {
     height: 100rpx;
@@ -239,6 +126,17 @@ button.read_more {
     content: '•••';
 }
 
+/* 分类标题-end */
+
+/* 横向滚动容器 */
+
+.hot_scroll {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+/* 漫画item-begin */
+
 .hot_item_w {
     position: relative;
 }
@@ -255,11 +153,6 @@ button.read_more {
 
 .hot_item_w:last-child .hot_bottom_line {
     display: none;
-}
-
-.hot_scroll {
-    overflow: auto;
-    white-space: nowrap;
 }
 
 .hot_item {
@@ -307,56 +200,7 @@ button.read_more {
     text-align: left;
 }
 
-.category_item {
-    float: left;
-    position: relative;
-    width: 224rpx;
-    height: 360rpx;
-    margin-left: 20rpx;
-}
-
-.category_item_img {
-    width: 100%;
-    height: 280rpx;
-    border: 4rpx solid #fff;
-}
-
-.category_item_title {
-    position: absolute;
-    bottom: 84rpx;
-    height: 50rpx;
-    left: 4rpx;
-    right: 4rpx;
-    padding-left: 10rpx;
-    line-height: 50rpx;
-    background-color: rgba(0, 0, 0, 0.65);
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: 24rpx;
-    color: #fff;
-}
-
-.category_item_bottom_w {
-    display: flex;
-    justify-content: space-between;
-    height: 80rpx;
-    font-size: 24rpx;
-    line-height: 54rpx;
-}
-
-.category_item_new {
-    flex-grow: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #d8d8d8;
-}
-
-.category_item_time {
-    flex-shrink: 0;
-    color: #38ffff;
-}
+/* 漫画item-end */
 
 /* 没有更多了 */
 

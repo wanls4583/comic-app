@@ -1,6 +1,4 @@
 {
     "backgroundColorTop": "#7e6353",
-    "backgroundColorBottom": "#584d42",
-    "usingComponents": {},
-    "navigationStyle": "custom"
+    "backgroundColorBottom": "#584d42"
 }

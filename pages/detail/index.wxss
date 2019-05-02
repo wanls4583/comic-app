@@ -1,6 +1,7 @@
 .container {
     position: relative;
-    padding-top: 30rpx;
+    display: flex;
+    flex-direction: column;
 }
 
 .menu_btn_w {
@@ -9,7 +10,7 @@
     height: 64rpx;
     border: 2rpx solid #d8d8d8;
     border-radius: 8rpx;
-    margin: 0 auto 20rpx;
+    margin: 30rpx auto 0;
     background-color: #785948;
 }
 
@@ -32,12 +33,8 @@
 }
 
 .swiper{
-    position: absolute;
-    top: 150rpx;
-    bottom: 100rpx;
-    left: 60rpx;
-    right: 60rpx;
-    height: auto;
+    flex-grow: 1;
+    margin: 50rpx 50rpx 100rpx;
     border-radius: 8rpx;
     border: 6rpx solid #fff;
 }

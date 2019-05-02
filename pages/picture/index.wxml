@@ -1,8 +1,6 @@
 <view class='container' bindtouchstart='touchStartHandle' bindtouchmove='touchMoveHandle' bindtouchend='touchEndHandle'>
     <!-- 标题栏 -->
-    <view class='custom_nav {{showTitle ? "active" : ""}}' style='height:{{navHeight}}px;padding-top:{{statusBarHeight}}px'>
-        <view class='title'>{{title}}<view class='icon_back' bindtap='back'></view></view>
-    </view>
+    <navigationBar external-classes='custom_nav {{showTitle ? "active" : ""}}' title='{{title}}' holder='{{false}}' background='rgba(0,0,0,0.8)'></navigationBar>
     <!-- 阅读区 -->
     <scroll-view class='scroll_w' scroll-y scroll-top='{{scrollTop}}' upper-threshold='2000px' lower-threshold='2000px' bindscrolltolower='onLolower' bindscrolltoupper='onUpper' bindscroll='scroll' scroll-into-view='{{picIndex}}' scroll-with-animation="{{scrollAnimation}}">
         <!-- <view style='visibility:{{topLoadingTip ? "visible" : "hidden"}}' class='top_loading' bindtap='onPreChapter'>{{topLoadingTip}}</view> -->

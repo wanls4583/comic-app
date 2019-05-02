@@ -1,29 +1,34 @@
 <!--index.wxml-->
 <view class='container'>
+    <navigationBar title='书架'></navigationBar>
     <!-- 模糊背景 -->
     <view class='blur_bg'>
-        <image src='{{comicHistory.length && comicHistory[0].comic.showpicurlb || "/image/bg.jpg"}}'></image>
+        <image src='{{comicHistory.length && comicHistory[0].comic.cover_url || "/image/bg.jpg"}}'></image>
     </view>
     <view class='tab_w'>
         <view class='tab_item_w'>
             <view class='tab_item {{nowSwiperIndex==0 ? "active" : ""}}' data-index='{{0}}' bindtap='changeSwiper'>历史</view>
             <view class='tab_item {{nowSwiperIndex==1 ? "active" : ""}}' data-index='{{1}}' bindtap='changeSwiper'>收藏</view>
         </view>
-        <view wx:if='{{nowSwiperIndex==0}}' class='delete' bindtap='clearHistory'>
+        <view class='delete {{nowSwiperIndex==0 ? "active" : ""}}' bindtap='clearHistory'>
             <image src='/image/icon_delete.png' mode='widthFix'></image>
         </view>
     </view>
-    <swiper class='swiper' bindchange='onChangeSwiper' current='{{nowSwiperIndex}}' duration='{{500}}' circular='{{false}}'>
+    <swiper class='swiper' style='margin-top:{{navHeight+statusBarHeight}}px;' bindchange='onChangeSwiper' current='{{nowSwiperIndex}}' duration='{{500}}' circular='{{false}}'>
         <swiper-item class='swiper_item'>
             <scroll-view wx:if='{{comicHistory.length}}' class='comic_scroll' scroll-y>
                 <view style='min-height:100%;margin-top:1px;'>
                     <view class='item' wx:for='{{comicHistory}}' wx:key='{{item.comicid}}' data-comic='{{item.comic}}' bindtap='gotoDetail'>
-                        <view class='item_img' style='background:url({{item.comic.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                        <view class='item_img' style='background:url({{item.comic.cover_url}}) no-repeat center;background-size:cover'></view>
                         <view class='item_title'>{{item.comic.title}}</view>
                         <view class='item_bottom_w'>
-                            <view class='item_new'>{{item.comic.showlastpartname}}</view>
+                            <view class='item_new'>{{item.comic.last_part_name}}</view>
                             <view class='item_time'>{{item.comic.lastupdatetime}}</view>
                         </view>
+                    </view>
+                    <view class='loading_tip'>
+                        <image mode='widthFix' src="/image/icon_end.png"></image>
+                        <text>没有更多了~</text>
                     </view>
                 </view>
             </scroll-view>
@@ -35,10 +40,10 @@
                 <view style='min-height:100%;margin-top:1px;'>
                     <block wx:for='{{favoriteList}}' wx:for-item='pageItem' wx:for-index='pageIndex' wx:key='{{pageIndex}}'>
                         <view class='item' wx:for='{{pageItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
-                            <view class='item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
+                            <view class='item_img' style='background:url({{item.cover_url}}) no-repeat center;background-size:cover'></view>
                             <view class='item_title'>{{item.title}}</view>
                             <view class='item_bottom_w'>
-                                <view class='item_new'>{{item.showlastpartname}}</view>
+                                <view class='item_new'>{{item.last_part_name}}</view>
                                 <view class='item_time'>{{item.lastupdatetime}}</view>
                             </view>
                         </view>

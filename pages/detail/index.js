@@ -1,5 +1,6 @@
 //获取应用实例
 const app = getApp();
+const util = require('../../utils/util.js');
 const request = require('../../utils/request.js');
 const loginUtil = require('../../utils/login.js');
 Page({
@@ -11,7 +12,9 @@ Page({
         dirMenu: false,
         nowTab: 0,
         liked: false,
-        logined: false
+        logined: false,
+        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        navHeight: app.globalData.navHeight,
     },
     onLoad: function(option) {
         if (!option.comic) {
@@ -27,6 +30,7 @@ Page({
         comic.author = comic.author.split(',');
         comic.area = '';
         comic.categorys = [];
+        comic.publishTime = util.formatTime(comic.publish_time, 'yyyy/MM/dd');
         this.setData({
             comic: comic,
             dirMenu: app.dirMenu
@@ -35,7 +39,7 @@ Page({
         this.getLiked();
         this.getChpater();
         //设置标题
-        wx.setNavigationBarTitle({
+        this.setData({
             title: comic.title
         });
         //存储漫画打开记录

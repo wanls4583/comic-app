@@ -1,5 +1,6 @@
 <!--index.wxml-->
 <view class='container'>
+    <navigationBar title='搜索'></navigationBar>
     <!-- 模糊背景 -->
     <view class='blur_bg'>
         <image src='{{comicList.length && comicList[0][0].showpicurlb || "/image/bg.jpg"}}'></image>
@@ -17,7 +18,7 @@
         <view wx:if='{{!comicList.length}}' class='cancel_search' bindtap='searchCancel'>取消</view>
     </view>
     <view wx:if='{{showHistory}}' class='search_history_layer'>
-        <view class='search_history_w'>
+        <view class='search_history_w' style='margin-top:{{navHeight+statusBarHeight+10}}px;'>
             <view class='history_title'>搜索历史</view>
             <view wx:if='{{history.length}}' class='history_item_w'>
                 <view wx:for='{{history}}' wx:key='{{index}}' class='history_item' data-text='{{item}}' bindtap='selectHistory'>{{item}}</view>
@@ -27,13 +28,13 @@
         </view>
     </view>
     <block wx:if="{{viewArr.length}}" wx:for='{{viewArr}}' wx:for-item="vItem" wx:for-index="vIndex" wx:key='{{vItem}}'>
-        <scroll-view wx:if='{{vItem==nowView}}' style='opacity:{{showHistory?0.015:1}}'  class='comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx' bindscroll='onScroll' scroll-top='{{scrollTop}}'>
+        <scroll-view wx:if='{{vItem==nowView}}' style='opacity:{{showHistory?0.015:1}};margin-top:{{navHeight+statusBarHeight}}px;'  class='comic_scroll' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx' bindscroll='onScroll' scroll-top='{{scrollTop}}'>
             <block wx:if='{{pIndex >= vItem*viewSize && pIndex < (vItem+1)*viewSize+overlappingPage}}' wx:for='{{comicList}}' wx:for-item="pItem" wx:for-index="pIndex" wx:key='{{pIndex}}'>
                 <view class='item' wx:for='{{pItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
                     <view class='item_img' style='background:url({{item.showpicurlb}}) no-repeat center;background-size:cover'></view>
                     <view class='item_title'>{{item.title}}</view>
                     <view class='item_bottom_w'>
-                        <view class='item_new'>{{item.showlastpartname}}</view>
+                        <view class='item_new'>{{item.last_part_name}}</view>
                         <view class='item_time'>{{item.lastupdatetime}}</view>
                     </view>
                 </view>

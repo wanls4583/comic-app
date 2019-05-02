@@ -12,7 +12,9 @@ Page({
         logined: false,
         page: 0,
         pageSize: 27,
-        totalPage: -1
+        totalPage: -1,
+        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        navHeight: app.globalData.navHeight,
     },
     onShow: function() {
         var self = this;
@@ -36,7 +38,7 @@ Page({
                 var comicHistory = JSON.parse(res.data);
                 comicHistory.map((item)=>{
                     item.comic.author = item.comic.author.join(',');
-                    item.comic.lastupdatetime = util.formatTime(item.comic.lastupdatets, 'yyyy/MM/dd').slice(2);
+                    item.comic.lastupdatetime = util.formatTime(item.comic.update_time, 'yyyy/MM/dd').slice(2);
                 });
                 self.setData({
                     comicHistory: comicHistory
@@ -58,6 +60,9 @@ Page({
     //清除历史记录
     clearHistory() {
         var self = this;
+        if (this.data.nowSwiperIndex!=0) {
+            return;
+        }
         wx.showModal({
             title: '删除',
             content: '确认删除历史记录？',
@@ -91,7 +96,7 @@ Page({
             },
             success: (res)=>{
                 res.data.list.map((item) => {
-                    item.lastupdatetime = util.formatTime(item.lastupdatets, 'yyyy/MM/dd').slice(2);
+                    item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
                 });
                 if(res.data.list.length) {
                     this.setData({

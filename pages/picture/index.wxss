@@ -1,12 +1,11 @@
 .custom_nav {
-    top: -112px;
+    top: -112px !important;
     opacity: 0;
     transition: all 0.3s;
-    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .custom_nav.active {
-    top: 0;
+    top: 0 !important;
     opacity: 1;
 }
 

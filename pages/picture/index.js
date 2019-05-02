@@ -443,10 +443,5 @@ Page({
             });
             query.exec();
         });
-    },
-    back() {
-        wx.navigateBack({
-            delta: 1
-        });
     }
 })
