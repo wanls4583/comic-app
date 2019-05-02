@@ -285,12 +285,20 @@ Page({
                         var query = wx.createSelectorQuery()
                         query.select('.category_comic_scroll').boundingClientRect()
                         query.exec(function(rect) {
-                            self.windowHeight = rect[0].height;
+                            if (rect && rect[0]) {
+                                self.windowHeight = rect[0].height;
+                            } else {
+                                self.hasGetScrollHeight = false;
+                            }
                         });
                         var query = wx.createSelectorQuery()
                         query.select('.category_item').boundingClientRect()
                         query.exec(function(rect) {
-                            self.itemHeight = rect[0].height;
+                            if (rect && rect[0]) {
+                                self.itemHeight = rect[0].height;
+                            } else {
+                                self.hasGetScrollHeight = false;
+                            }
                         });
                     }, 500);
                     self.hasGetScrollHeight = true;
