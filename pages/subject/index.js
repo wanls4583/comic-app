@@ -9,6 +9,7 @@ Page({
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
         categoryList: [], //分类列表
+        nowAid: 0, //当前地区ID
         nowCid: 0, //当前分类ID
         nowCidIndex: 0, //当前滑块的索引
         pageSize: 3 * 3 * 3, //一页的数量
@@ -16,6 +17,8 @@ Page({
         showCategoryDialog: false, //选择分类弹框
         currentBannerIndex: 0, //当前轮播图索引号
         swiperDataMap: [], //所有漫画列表
+        aidSelectMap: [], //存储地区选择
+        aidMap: [], //存储所有地区
         renderCids: [], //当前可渲染的列表对应的分类ID
         scrollTop: [], //列表对应的滚动距离
         viewSize: 40, //scroll-view中最多同时存在40页
@@ -32,13 +35,31 @@ Page({
         this.loading = {};
         this.loaded = {};
         this.getCategory();
+        this.getArea();
+        wx.removeStorageSync('nowAid');
     },
     onShow() {
         var cid = wx.getStorageSync('nowCid');
-        if (cid) {
+        var aid = wx.getStorageSync('nowAid');
+        //地区更改
+        if (!isNaN(parseInt(aid)) && this.data.nowAid != aid) {
+            this.setData({
+                [`aidSelectMap[${cid}]`]: aid
+            });
+        }
+        //分类更改
+        if (!isNaN(parseInt(cid)) && this.data.nowCid != cid) {
             this.historyCid = cid;
             if (this.data.categoryList.length) {
                 this.changeCategory(cid);
+            }
+            //地区更改需要刷新列表
+        } else if (!isNaN(parseInt(aid)) && this.data.nowAid != aid) {
+            this.setData({
+                nowAid: aid
+            });
+            if (this.data.categoryList.length) {
+                this.refreshCategory();
             }
         }
     },
@@ -65,22 +86,22 @@ Page({
         var cid = e.currentTarget.dataset.cid;
         var swiperData = this.data.swiperDataMap[cid];
         swiperData.scrollTop = scrollTop;
-        // var preScrollTop = this.preScrollTop || 0;
-        // this.preScrollTop = scrollTop;
+        var preScrollTop = this.preScrollTop || 0;
+        this.preScrollTop = scrollTop;
         //显/隐排序栏
-        // if (scrollTop < app.globalData.systemInfo.screenWidth / 375 * 40) {
-        //     this.setData({
-        //         [`swiperDataMap[${cid}].showSort`]: true
-        //     });
-        // } else if (preScrollTop - scrollTop < -10) {
-        //     this.setData({
-        //         [`swiperDataMap[${cid}].showSort`]: false
-        //     });
-        // } else if (preScrollTop - scrollTop > 10) {
-        //     this.setData({
-        //         [`swiperDataMap[${cid}].showSort`]: true
-        //     });
-        // }
+        if (scrollTop < app.globalData.systemInfo.screenWidth / 375 * 40) {
+            this.setData({
+                [`swiperDataMap[${cid}].showSort`]: true
+            });
+        } else if (preScrollTop - scrollTop < -10) {
+            this.setData({
+                [`swiperDataMap[${cid}].showSort`]: false
+            });
+        } else if (preScrollTop - scrollTop > 10) {
+            this.setData({
+                [`swiperDataMap[${cid}].showSort`]: true
+            });
+        }
         //切换中
         if (this.viewRending) {
             return;
@@ -172,6 +193,7 @@ Page({
             scrollTop[item] = this.data.swiperDataMap[item].scrollTop || 0;
         });
         this.setData({
+            nowAid: this.data.aidSelectMap[categoryList[current].cid] || 0,
             nowCid: categoryList[current].cid,
             nowCidIndex: current,
             renderCids: map,
@@ -187,12 +209,15 @@ Page({
         });
     },
     //显隐分类弹出框
-    toggleCategory(e) {
-        this.setData({
-            showCategoryDialog: !this.data.showCategoryDialog
+    gotoSubjectSelect(e) {
+        this.data.areaList.length && wx.setStorageSync('areaList', this.data.areaList);
+        wx.setStorageSync('categoryList', this.data.categoryList);
+        wx.setStorageSync('nowCid', this.data.nowCid);
+        wx.setStorageSync('nowAid', this.data.nowAid);
+        wx.navigateTo({
+            url: '/pages/subject_select/index',
         });
     },
-    //选择某个分类
     slectCategory(e) {
         var cid = e.currentTarget.dataset.category.cid;
         this.changeCategory(cid);
@@ -230,7 +255,6 @@ Page({
             animationDuration: 0
         }, () => {
             this.setData({
-                nowCid: cid,
                 nowCidIndex: index,
                 showCategoryDialog: false,
                 animationDuration: 300
@@ -247,7 +271,6 @@ Page({
                 this.setData({
                     toCategory: 'category_' + this.data.categoryList[index].cid
                 });
-                wx.setStorageSync('nowCid', cid);
                 break;
             }
         }
@@ -305,7 +328,7 @@ Page({
                 }
             });
             swiperData.endPage++;
-        } else if (!this.loading[cid] && (!swiperData || swiperData.total < 0 || swiperData.list.length < swiperData.total)) {
+        } else if (!this.loading[cid] && (!swiperData || swiperData.total < 0 || swiperData.list.length < swiperData.totalPage)) {
             if (!swiperData) {
                 var sortKey = `swiperDataMap[${cid}].sort`;
                 var statusKey = `swiperDataMap[${cid}].status`;
@@ -396,6 +419,27 @@ Page({
             }
         });
     },
+    //获取地区列表
+    getArea() {
+        var self = this;
+        request({
+            url: '/area',
+            success(res) {
+                if (res.statusCode == 200 && res.data && res.data.length) {
+                    var map = {};
+                    res.data.map((item)=>{
+                        map[item.aid] = item.name;
+                    });
+                    map[0] = '全部地区';
+                    self.setData({
+                        aidMap: map,
+                        areaList: res.data
+                    })
+                    wx.setStorageSync('areaList', res.data);
+                }
+            }
+        });
+    },
     //加载漫画列表
     getComicListByCategory(cid) {
         var self = this;
@@ -405,7 +449,8 @@ Page({
                 cid: cid,
                 page: self.data.swiperDataMap[cid].page,
                 pageSize: self.data.pageSize,
-                sort: self.data.swiperDataMap[cid].sort
+                sort: self.data.swiperDataMap[cid].sort,
+                aid: self.data.aidSelectMap[cid] || 0
             }
             if (self.data.swiperDataMap[cid].status) {
                 data.status = self.data.swiperDataMap[cid].status;

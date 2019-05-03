@@ -6,23 +6,15 @@
     bottom: 0;
     z-index: 2;
     width: 100%;
-    background: linear-gradient(#7e6353, #584d42);
     opacity: 0.98;
+    background-color: #fff;
 }
 
 .category_dialog_icon_close {
     position: absolute;
     top: 20rpx;
     left: 43rpx;
-}
-
-.category_dialog_icon_close:active {
-    background-color: rgba(256, 256, 256, 0.1);
-}
-
-.category_dialog_icon_close image {
-    width: 40rpx;
-    height: 40rpx;
+    font-size: 40rpx;
 }
 
 .category_dialog_list_w {
@@ -38,17 +30,16 @@
     padding: 0 20rpx;
     margin-right: 40rpx;
     margin-bottom: 40rpx;
-    background-color: rgba(256, 256, 256, 0.35);
+    border: 2rpx solid #f0f0f0;
     border-radius: 4rpx;
     font-size: 24rpx;
-    color: #fff;
     text-align: center;
     line-height: 60rpx;
 }
 
 .category_dialog_list_w .item:active, .scroll_to_top {
     background-color: rgba(256, 256, 256, 0.1);
-    color: #38ffff;
+    color: #fa9144;
 }
 
 .list_swiper_w {
@@ -104,7 +95,6 @@
     margin-right: 45rpx;
     display: inline-block;
     font-size: 26rpx;
-    color: #fff;
     transition: all 0.3s;
     vertical-align: middle;
 }
@@ -116,57 +106,68 @@
 .category_w .scroll_w .item.active {
     font-size: 34rpx;
     font-weight: bolder;
-    color: #38ffff;
+    color: #fa9144;
 }
 
 .category_w .scroll_w .item:active {
-    color: #38ffff;
+    color: #fa9144;
 }
 
 .fixed_menu {
     flex-shrink: 0;
     flex-grow: 0;
-    margin: 0 20rpx 0 20rpx;
-}
-
-.fixed_menu image {
-    width: 40rpx;
-    height: 34rpx;
-    vertical-align: top;
-    margin-top: 24rpx;
+    display: flex;
+    align-items: center;
+    padding: 20rpx;
+    font-size: 26rpx;
 }
 
 /* 分类列表-end */
 
 /* 排序-begin */
 
-.order_w {
+.order_area_w {
     position: absolute;
     top: -80rpx;
-    left: 20rpx;
-    right: 24rpx;
+    left: 0rpx;
+    right: 0rpx;
     z-index: 2;
-    height: 80rpx;
     display: flex;
-    font-size: 26rpx;
-    color: #fff;
+    align-items: center;
+    justify-content: space-between;
+    height: 80rpx;
+    padding: 0 20rpx;
     opacity: 0;
     transition: all 0.3s;
+    background-color: #fff;
+    font-size: 26rpx;
 }
 
-.order_w.active {
+.order_area_w.active {
     opacity: 1;
     top: 0;
 }
 
-.order_w .order_item {
+.order_w {
+    flex-grow: 1;
+    display: flex;
+}
+
+.order_item {
     height: 80rpx;
     line-height: 80rpx;
     margin-right: 45rpx;
 }
 
+.area {
+    padding: 6rpx 20rpx;
+    border: 2rpx solid #fa9144;
+    font-size: 22rpx;
+    border-radius: 20rpx;
+}
+
 .order_item.active, .order_item:active {
-    color: #38ffff;
+    color: #fa9144;
 }
 
 /* 排序-end */
@@ -175,7 +176,10 @@
 
 .category_comic_scroll {
     height: 100%;
-    padding-top: 80rpx;
+}
+
+.scroll_list_w {
+    margin-top: 80rpx;
 }
 
 .empty_w {
@@ -195,51 +199,38 @@
     float: left;
     position: relative;
     width: 224rpx;
-    height: 360rpx;
+    height: 410rpx;
     margin-left: 20rpx;
 }
 
 .comic_item_img {
     width: 100%;
-    height: 280rpx;
-    border: 4rpx solid #fff;
+    height: 300rpx;
+    border-radius: 8rpx;
+    border: 1rpx solid #f0f0f0;
+    overflow: hidden;
 }
 
 .comic_item_title {
-    position: absolute;
-    bottom: 84rpx;
-    height: 50rpx;
-    left: 4rpx;
-    right: 4rpx;
-    padding-left: 10rpx;
-    line-height: 50rpx;
-    background-color: rgba(0, 0, 0, 0.65);
-    overflow: hidden;
+    margin-top: 10rpx;
+    font-size: 28rpx;
+    line-height: 28rpx;
     white-space: nowrap;
+    overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 24rpx;
-    color: #fff;
 }
 
 .comic_item_bottom_w {
-    display: flex;
-    justify-content: space-between;
     height: 80rpx;
-    font-size: 24rpx;
-    line-height: 54rpx;
 }
 
 .comic_item_new {
-    flex-grow: 1;
+    margin-top: 10rpx;
+    font-size: 24rpx;
+    line-height: 24rpx;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: #d8d8d8;
-}
-
-.comic_item_time {
-    flex-shrink: 0;
-    color: #38ffff;
 }
 
 /* 漫画item-end */
@@ -252,12 +243,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #cdcdcd;
     font-size: 24rpx;
 }
 
-.loading_tip image {
-    width: 30rpx;
-    height: 30rpx;
+.loading_tip.nomore::before {
+    font-family: 'iconfont';
+    content: '\e61c';
+    display: inline-block;
     margin-right: 10rpx;
 }

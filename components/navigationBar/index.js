@@ -15,6 +15,10 @@ Component({
             type: String,
             value: 'transparent'
         },
+        color: {
+            type: String,
+            value: '#000'
+        },
         title: { //导航栏标题
             type: String,
             value: ''

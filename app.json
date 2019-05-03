@@ -1,8 +1,9 @@
 {
     "pages": [
         "pages/index/index",
-        "pages/picture/index",
         "pages/subject/index",
+        "pages/subject_select/index",
+        "pages/picture/index",
         "pages/feedback/index",
         "pages/search/index",
         "pages/center/index",
@@ -10,10 +11,10 @@
         "pages/history/index"
     ],
     "tabBar": {
-        "color": "#8a8a8a",
-        "selectedColor": "#fff",
+        "color": "#999",
+        "selectedColor": "#fa9144",
         "borderStyle": "black",
-        "backgroundColor": "#584d42",
+        "backgroundColor": "#fff",
         "list": [
             {
                 "pagePath": "pages/index/index",

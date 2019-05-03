@@ -1,0 +1,34 @@
+.column_w {
+    background-color: #fff;
+    margin-bottom: 10rpx;
+}
+
+.category_label, .area_label {
+    padding-left: 43rpx;
+    font-size: 30rpx;
+    line-height: 100rpx;
+}
+
+.category_list_w, .area_list_w {
+    padding-left: 43rpx;
+    text-align: justify;
+}
+
+.category_list_w .item, .area_list_w .item {
+    display: inline-block;
+    width: 136rpx;
+    height: 60rpx;
+    padding: 0 20rpx;
+    margin-right: 40rpx;
+    margin-bottom: 40rpx;
+    border: 2rpx solid #f0f0f0;
+    border-radius: 4rpx;
+    font-size: 24rpx;
+    text-align: center;
+    line-height: 60rpx;
+}
+
+.item.active, .item:active {
+    color: #fa9144;
+    border-color: #fa9144; 
+}

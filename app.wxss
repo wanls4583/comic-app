@@ -3,7 +3,38 @@
 page {
     height: 100%;
     overflow: hidden;
-    background: linear-gradient(#7e6353, #584d42);
+}
+
+.bg_color {
+    background-color: #f0f0f0;
+}
+
+.main_bg_color {
+    color: #fa9144;
+}
+
+.main_color {
+    color: #fa9144;
+}
+
+.strong_title_color {
+    color: #000;
+}
+
+.title_color {
+    color: #333;
+}
+
+.light_title_color {
+    color: #666;
+}
+
+.des_color {
+    color: #999;
+}
+
+.line_color {
+    color: #f0f0f0;
 }
 
 .container {
@@ -37,4 +68,90 @@ scroll-view {
     height: 90%;
     margin-top: 10%;
     opacity: 0.3;
+}
+
+@font-face {
+  font-family: 'iconfont';  /* project id 1091883 */
+  src: url('//at.alicdn.com/t/font_1091883_k675nblpbp.eot');
+  src: url('//at.alicdn.com/t/font_1091883_k675nblpbp.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1091883_k675nblpbp.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1091883_k675nblpbp.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1091883_k675nblpbp.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1091883_k675nblpbp.svg#iconfont') format('svg');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-weibiaoti3zhuanhuan:before {
+  content: "\e622";
+}
+
+.icon-meiyougengduoliao:before {
+  content: "\e61c";
+}
+
+.icon-menu:before {
+  content: "\e60a";
+}
+
+.icon-youjiantou:before {
+  content: "\e601";
+}
+
+.icon-searchclose:before {
+  content: "\ea13";
+}
+
+.icon-Personal-center:before {
+  content: "\e6f2";
+}
+
+.icon-menu1:before {
+  content: "\e684";
+}
+
+.icon-jindu:before {
+  content: "\e605";
+}
+
+.icon-paihang:before {
+  content: "\e63f";
+}
+
+.icon-shouye-:before {
+  content: "\e621";
+}
+
+.icon-shoucangdianjihou:before {
+  content: "\e648";
+}
+
+.icon-shanchu:before {
+  content: "\e75f";
+}
+
+.icon-classifi:before {
+  content: "\e600";
+}
+
+.icon-top:before {
+  content: "\e719";
+}
+
+.icon-liangdu:before {
+  content: "\e748";
+}
+
+.icon-shoucang:before {
+  content: "\e602";
+}
+
+.icon-seekicon:before {
+  content: "\e616";
 }

@@ -1,4 +1,4 @@
 <view class='navigation_bar external-classes' style='height:{{navHeight}}px;padding-top:{{statusBarHeight}}px;background:{{background}};'>
-    <view class='title_w' style='padding-left:{{back && showBack ? "40px" : "20rpx"}};'><view class='title' style='font-size:{{fontSize||defaultFontSize}}'>{{title}}</view><view wx:if='{{back && showBack}}' class='icon_back' bindtap='back'></view></view>
+    <view class='title_w' style='padding-left:{{back && showBack ? "40px" : "20rpx"}};'><view class='title' style='font-size:{{fontSize||defaultFontSize}};color:{{color}}'>{{title}}</view><view wx:if='{{back && showBack}}' class='icon_back' bindtap='back'></view></view>
 </view>
 <view wx:if='{{holder}}' class='navigation_bar_holder' style='height:{{navHeight+statusBarHeight}}px'></view>

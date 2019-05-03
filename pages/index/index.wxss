@@ -1,4 +1,3 @@
-/**index.wxss**/
 .custom_nav {
     padding-bottom: 10rpx;
 }
@@ -32,17 +31,15 @@
 }
 
 .search:active {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
-.search image{
-    width: 26rpx;
+.search .iconfont {
     margin-right: 16rpx;
 }
 
 .banner_w {
     position: relative;
-    /* height: 345rpx; *//* box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.5); */
 }
 
 .banner_item {
@@ -57,15 +54,18 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 62rpx;
-    padding: 0 30rpx;
-    background-color: rgba(0, 0, 0, 0.5);
+    height: 140rpx;
+    padding: 60rpx 30rpx 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.9));
     color: #fff;
     font-size: 26rpx;
 }
 
-.banner_now {
-    color: #38ffff;
+/* 栏目 */
+
+.column_w {
+    background-color: #fff;
+    margin-top: 10rpx;
 }
 
 /* 分类标题-begin */
@@ -78,7 +78,6 @@
     align-items: center;
     font-size: 34rpx;
     font-weight: bolder;
-    color: #fff;
 }
 
 .category_title_w .left_w {
@@ -86,27 +85,26 @@
     align-items: center;
 }
 
-.vertical_line {
-    width: 6rpx;
-    height: 36rpx;
-    background-color: #38ffff;
-}
-
 .category_title {
-    margin-left: 16rpx;
+    margin-left: 0rpx;
 }
 
-button.read_more {
+.read_more {
     display: inline-block;
-    padding: 0;
-    margin: 0;
-    border-style: none;
-    font-size: 26rpx;
-    color: #fff;
+    padding: 10rpx 16rpx;
+    border-radius: 24rpx;
+    /* background: rgba(250, 145, 68, 0.1); */
+    font-size: 24rpx;
+    color: rgba(250, 145, 68, 1);
 }
 
 .read_more:before {
-    content: '•••';
+    content: '更多 \e601';
+    font-family: "iconfont";
+}
+
+.read_more:active {
+    background: rgba(250, 145, 68, 0.2);
 }
 
 /* 分类标题-end */
@@ -124,24 +122,13 @@ button.read_more {
     position: relative;
 }
 
-.hot_item_w .hot_bottom_line {
-    margin: 25rpx 20rpx 0 20rpx;
-    height: 2rpx;
-    background-color: rgba(256, 256, 256, 0.1);
-}
-
 .hot_item_w:last-child {
-    padding-bottom: 80rpx;
-}
-
-.hot_item_w:last-child .hot_bottom_line {
-    display: none;
+    padding-bottom: 40rpx;
 }
 
 .hot_item {
     display: inline-block;
-    margin-left: 20rpx;
-    width: 180rpx;
+    margin-right: 20rpx;
 }
 
 .hot_item:first-child {
@@ -153,13 +140,11 @@ button.read_more {
 }
 
 .hot_img {
-    width: 180rpx;
-    height: 230rpx;
-    border: 4rpx solid #fff;
-}
-
-.hot_img:active {
-    border-color: #38ffff;
+    width: 224rpx;
+    height: 300rpx;
+    border-radius: 8rpx;
+    border: 1rpx solid #f0f0f0;
+    overflow: hidden;
 }
 
 .hot_title {
@@ -169,8 +154,7 @@ button.read_more {
     text-overflow: ellipsis;
     margin-top: 20rpx;
     line-height: 30rpx;
-    font-size: 30rpx;
-    color: #fff;
+    font-size: 28rpx;
     text-align: left;
 }
 
@@ -179,25 +163,7 @@ button.read_more {
     margin-top: 15rpx;
     line-height: 30rpx;
     font-size: 24rpx;
-    color: #38ffff;
     text-align: left;
 }
 
 /* 漫画item-end */
-
-/* 没有更多了 */
-
-.loading_tip {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #cdcdcd;
-    font-size: 24rpx;
-}
-
-.loading_tip image {
-    width: 30rpx;
-    margin-right: 10rpx;
-}

@@ -1,13 +1,13 @@
 <!--index.wxml-->
-<view class='container'>
+<view class='container bg_color'>
     <!-- 模糊背景 -->
     <view class='blur_bg'>
         <image src='{{"/image/bg.jpg"}}'></image>
     </view>
-    <navigationBar holder='{{false}}' background='rgba(126, 99, 83,{{searchOpacity}})' external-classes='custom_nav'></navigationBar>
+    <navigationBar holder='{{false}}' background='rgba(250, 145, 68,{{searchOpacity}})' external-classes='custom_nav'></navigationBar>
     <view class='search_w' style='top:{{statusBarHeight}}px;height:{{navHeight}}px;right:{{menuRect.right-menuRect.left+20}}px'>
         <view class='search' style='height:{{menuRect.height}}px' bindtap='gotoSearch'>
-            <image mode='widthFix' src='/image/icon_search.png'></image>
+            <view class='iconfont icon-seekicon'></view>
             <text>搜索漫画</text>
         </view>
     </view>
@@ -20,7 +20,7 @@
                         <view class='banner_bottom'>
                             <view>{{homeItem.title}}</view>
                             <view>
-                                <text class='banner_now'>{{currentBannerIndex+1}}</text>
+                                <text class='banner_now main_color'>{{currentBannerIndex+1}}</text>
                                 <text>/{{banner.length}}</text>
                             </view>
                         </view>
@@ -30,24 +30,24 @@
         </view>
         <!-- 各分类推荐列表 -->
         <block wx:if='{{homeCItem.category.cid}}' wx:for="{{recommend}}" wx:for-item="homeCItem" wx:key='{{homeCItem.cid}}'>
-            <view class='category_title_w'>
-                <view class='left_w'>
-                    <view class='vertical_line'></view>
-                    <text class='category_title'>{{homeCItem.category.name}}</text>
-                </view>
-                <button class='read_more' plain='{{true}}' data-category='{{homeCItem.category}}' bindtap='slectCategory'></button>
-            </view>
-            <view class='hot_item_w'>
-                <scroll-view class='hot_scroll' scroll-x>
-                    <view class='hot_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
-                        <view class='hot_img'>
-                            <image src='{{homeClistItem.cover_url}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
-                        </view>
-                        <view class='hot_title'>{{homeClistItem.title}}</view>
-                        <view class='hot_time'>{{homeClistItem.lastupdatetime}}</view>
+            <view class='column_w'>
+                <view class='category_title_w'>
+                    <view class='left_w'>
+                        <text class='category_title strong_title_color'>{{homeCItem.category.name}}</text>
                     </view>
-                </scroll-view>
-                <view class='hot_bottom_line'></view>
+                    <view class='read_more' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
+                </view>
+                <view class='hot_item_w'>
+                    <scroll-view class='hot_scroll' scroll-x>
+                        <view class='hot_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
+                            <view class='hot_img'>
+                                <image src='{{homeClistItem.cover_url}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
+                            </view>
+                            <view class='hot_title title_color'>{{homeClistItem.title}}</view>
+                            <view class='hot_time des_color'>{{homeClistItem.lastupdatetime}}</view>
+                        </view>
+                    </scroll-view>
+                </view>
             </view>
         </block>
     </scroll-view>
