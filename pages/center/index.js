@@ -7,6 +7,7 @@ Page({
         userInfo: {},
         hasUserInfo: false,
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
+        statusBarHeight: app.globalData.systemInfo.statusBarHeight
     },
     onLoad: function() {
         if (app.globalData.userInfo) {

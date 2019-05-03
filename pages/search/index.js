@@ -22,6 +22,7 @@ Page({
         overlappingPage: 5,
         statusBarHeight: app.globalData.systemInfo.statusBarHeight,
         navHeight: app.globalData.navHeight,
+        menuRect: app.globalData.menuRect
     },
     onLoad: function() {
         var history = wx.getStorageSync('search_history');
@@ -78,6 +79,7 @@ Page({
         var text = e.currentTarget.dataset.text;
         this.setData({
             searchKey: text,
+            viewArr: [],
             comicList: [],
             total: -1,
             page: 1,
@@ -88,14 +90,18 @@ Page({
     },
     //清除历史记录
     clearHistory() {
-        wx.removeStorageSync('search_history');
-        this.setData({
-            history: []
-        });
-    },
-    //点击搜索框
-    clickSearch() {
-        
+        wx.showModal({
+            title: '删除',
+            content: '确认删除历史记录？',
+            success: (res) => {
+                if (res.confirm) {
+                    wx.removeStorageSync('search_history');
+                    this.setData({
+                        history: []
+                    });
+                }
+            }
+        })
     },
     //输入内容
     searchInput(e) {
@@ -106,6 +112,7 @@ Page({
     //确认搜索
     searchConfirm(e) {
         this.setData({
+            viewArr: [],
             searchKey: e.detail.value,
             comicList: [],
             total: -1,
@@ -148,9 +155,9 @@ Page({
                 showPlace: true
             });
         }
-        if(this.data.comicList.length) {
+        if (this.data.comicList.length) {
             //延迟隐藏历史记录
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.setData({
                     showHistory: false
                 })
@@ -170,29 +177,24 @@ Page({
             url: '/comic?search=' + this.data.searchKey + '&page=' + this.data.page + '&size=' + this.data.pageSize,
             success(res) {
                 wx.stopPullDownRefresh();
-                if (res.statusCode == 200 && res.data.list) {
-                    res.data.list.map((item) => {
-                        item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
-                        // self.length = self.length || 0;
-                        // item.title = ++self.length+item.title;
-                    });
+                if (res.data.list.length) {
                     self.setData({
                         page: self.data.page,
                         [`comicList[${self.data.page-1}]`]: res.data.list
-                    }, ()=>{
+                    }, () => {
                         if (!self.hasGetScrollHeight) {
                             setTimeout(() => {
                                 var query = wx.createSelectorQuery()
                                 query.select('.comic_scroll').boundingClientRect()
-                                query.exec(function (rect) {
+                                query.exec(function(rect) {
                                     if (rect && rect[0]) {
                                         self.windowHeight = rect[0].height;
                                     }
                                 });
                                 var query = wx.createSelectorQuery()
                                 query.select('.item').boundingClientRect()
-                                query.exec(function (rect) {
-                                    if (rect && rect[0]){
+                                query.exec(function(rect) {
+                                    if (rect && rect[0]) {
                                         self.itemHeight = rect[0].height;
                                     }
                                 });
@@ -201,22 +203,22 @@ Page({
                         }
                     });
                     self.data.page++;
-                    if (self.data.total <= 0) {
-                        //总页数
-                        var totalPage = Math.ceil(res.data.size / self.data.pageSize);
-                        //视图数组
-                        var viewArr = [];
-                        //计算视图的个数
-                        for (var i = 0, len = Math.ceil(res.data.size / self.data.pageSize / self.data.viewSize); i < len; i++) {
-                            viewArr.push(i);
-                        };
-                        self.setData({
-                            totalPage: totalPage,
-                            viewArr: viewArr,
-                            nowView: 0,
-                            total: res.data.size
-                        })
-                    }
+                }
+                if (self.data.total <= 0) {
+                    //总页数
+                    var totalPage = Math.ceil(res.data.size / self.data.pageSize);
+                    //视图数组
+                    var viewArr = [];
+                    //计算视图的个数
+                    for (var i = 0, len = Math.ceil(res.data.size / self.data.pageSize / self.data.viewSize); i < len; i++) {
+                        viewArr.push(i);
+                    };
+                    self.setData({
+                        totalPage: totalPage,
+                        viewArr: viewArr,
+                        nowView: 0,
+                        total: res.data.size
+                    })
                 }
             }
         })

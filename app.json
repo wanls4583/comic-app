@@ -1,13 +1,13 @@
 {
     "pages": [
         "pages/index/index",
+        "pages/search/index",
         "pages/center/index",
         "pages/history/index",
         "pages/subject/index",
         "pages/subject_select/index",
         "pages/picture/index",
         "pages/feedback/index",
-        "pages/search/index",
         "pages/detail/index"
     ],
     "tabBar": {

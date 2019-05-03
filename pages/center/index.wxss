@@ -6,10 +6,11 @@
 .top_w {
     position: relative;
     z-index: 1;
-    height: 500rpx;
+    height: 400rpx;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background: linear-gradient(rgba(250, 145, 68, 1), rgba(250, 145, 68, 0.6))
 }
 
 button.head_btn {
@@ -41,10 +42,11 @@ button.button-hover {
 }
 
 .name {
-    margin-top: 30rpx;
+    margin-top: 16rpx;
     font-size: 30rpx;
     line-height: 30rpx;
     color: #fff;
+    text-shadow: 0 0 10rpx rgba(0, 0, 0, 0.8);
 }
 
 .menu_w {

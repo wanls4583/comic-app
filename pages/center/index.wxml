@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <view class='container bg_color'>
-    <view class='top_w main_bg_color'>
+    <view class='top_w' style='padding-top:{{statusBarHeight-10}}px'>
         <button class='head_btn' wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
         <view class='head_name_w' wx:else>
             <image class='head' src='{{userInfo.avatarUrl}}'></image>
