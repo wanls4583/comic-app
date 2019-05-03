@@ -19,7 +19,7 @@ Page({
             // 所以此处加入 callback 以防止这种情况
             app.userInfoReadyCallback = res => {
                 this.setData({
-                    userInfo: res.userInfo,
+                    userInfo: res,
                     hasUserInfo: true
                 })
             }

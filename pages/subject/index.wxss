@@ -182,17 +182,6 @@
     margin-top: 80rpx;
 }
 
-.empty_w {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    margin-top: -65rpx;
-    text-align: center;
-    font-size: 30rpx;
-    color: #d8d8d8;
-    line-height: 30rpx;
-}
-
 /* 漫画item-begin */
 
 .comic_item {

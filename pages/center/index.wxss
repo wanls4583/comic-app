@@ -6,11 +6,10 @@
 .top_w {
     position: relative;
     z-index: 1;
-    height: 400rpx;
+    height: 500rpx;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding-bottom: 40rpx;
 }
 
 button.head_btn {
@@ -18,13 +17,13 @@ button.head_btn {
     height: 90rpx;
     line-height: 90rpx;
     border: 1rpx solid #fff;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.8);
     font-size: 36rpx;
     color: #fff;
 }
 
 button.button-hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 1);
 }
 
 .head_name_w {
@@ -37,8 +36,8 @@ button.button-hover {
 .head {
     width: 180rpx;
     height: 180rpx;
-    border: 8rpx solid #be8959;
-    border-radius: 6rpx;
+    border: 8rpx solid #fff;
+    border-radius: 8rpx;
 }
 
 .name {
@@ -46,14 +45,11 @@ button.button-hover {
     font-size: 30rpx;
     line-height: 30rpx;
     color: #fff;
-    text-shadow: 0 0 10rpx #000;
 }
 
 .menu_w {
-    position: relative;
-    z-index: 1;
     flex-grow: 1;
-    background-color: #f0f0f0;
+    margin-top: 20rpx;
 }
 
 .menu_item {
@@ -61,20 +57,14 @@ button.button-hover {
     align-items: center;
     justify-content: space-between;
     height: 100rpx;
-    margin: 40rpx 20rpx;
     padding: 0 20rpx;
     background-color: #fff;
-    border-radius: 6rpx;
-    box-shadow: 4rpx 4rpx 4rpx rgba(0, 0, 0, 0.1);
     font-size: 30rpx;
-    color: #7f5d4f;
 }
 
-.menu_item image {
-    height: 40rpx;
-    width: 40rpx;
-}
-
-.menu_item:active {
-    background-color: #f6f6f6;
+.menu_item .title::before {
+    content: '\e643';
+    font-family: 'iconfont';
+    display: inline-block;
+    margin-right: 10rpx;
 }

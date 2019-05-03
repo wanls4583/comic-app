@@ -13,11 +13,11 @@ Component({
         },
         background: { //导航栏背景色
             type: String,
-            value: 'transparent'
+            value: '#fa9144'
         },
         color: {
             type: String,
-            value: '#000'
+            value: '#fff'
         },
         title: { //导航栏标题
             type: String,

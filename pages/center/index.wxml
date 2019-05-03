@@ -1,11 +1,6 @@
 <!--index.wxml-->
-<view class='container'>
-    <navigationBar></navigationBar>
-    <!-- 模糊背景 -->
-    <view class='blur_bg'>
-        <image src='/image/bg.jpg'></image>
-    </view>
-    <view class='top_w'>
+<view class='container bg_color'>
+    <view class='top_w main_bg_color'>
         <button class='head_btn' wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
         <view class='head_name_w' wx:else>
             <image class='head' src='{{userInfo.avatarUrl}}'></image>
@@ -13,6 +8,6 @@
         </view>
     </view>
     <scroll-view class='menu_w'>
-        <view class='menu_item' bindtap='gotoFeedBack'><text>意见反馈</text><image src='/image/icon_right_arrow.png'></image></view>
+        <view class='menu_item light_title_color' bindtap='gotoFeedBack'><text class='title'>意见反馈</text><text class='iconfont icon-youjiantou'></text></view>
     </scroll-view>
 </view>

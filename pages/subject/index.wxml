@@ -1,10 +1,6 @@
 <!--index.wxml-->
 <view class='container'>
-    <navigationBar wx:if='{{!showCategoryDialog}}' background='#fa9144' color='#fff' title='分类'></navigationBar>
-    <!-- 模糊背景 -->
-    <view class='blur_bg'>
-        <image src='{{"/image/bg.jpg"}}'></image>
-    </view>
+    <navigationBar wx:if='{{!showCategoryDialog}}' title='分类'></navigationBar>
     <!-- 分类列表 -->
     <view class='category_w'>
         <scroll-view scroll-x class='scroll_w' scroll-into-view="{{toCategory}}" scroll-with-animation="{{true}}">

@@ -1,7 +1,6 @@
 <!--index.wxml-->
 <view class='container bg_color'>
-    <navigationBar background='#fa9144' color='#fff' title='分类选择'></navigationBar>
-    <!-- 模糊背景 -->
+    <navigationBar title='分类选择'></navigationBar>
     <view class='column_w'>
         <view class='category_label title_color'>全部分类</view>
         <view class='category_list_w'>

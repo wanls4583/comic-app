@@ -13,7 +13,8 @@ Page({
         page: 0,
         pageSize: 27,
         totalPage: -1,
-        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        menuRect: app.globalData.menuRect,
+        systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
     },
     onShow: function() {
