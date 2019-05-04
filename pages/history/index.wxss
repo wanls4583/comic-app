@@ -1,3 +1,7 @@
+.custom_nav {
+    padding-bottom: 10rpx;
+}
+
 .tab_w {
     position: fixed;
     z-index: 100;
@@ -11,7 +15,6 @@
 .tab_item_w {
     display: flex;
     height: 100%;
-    padding-bottom: 2rpx;
 }
 
 .tab_item {
@@ -21,7 +24,7 @@
     width:100rpx;
     height: 100%;
     margin-right: 40rpx;
-    font-size: 30rpx;
+    font-size: 34rpx;
     color: rgba(256, 256, 256, 0.5);
     border-bottom: 4rpx solid rgb(250, 145, 68);
     transition: all 0.3s;
@@ -58,6 +61,7 @@
     z-index: 1;
     width: 100%;
     height: auto;
+    margin-top: 10rpx;
 }
 
 .swiper_item {

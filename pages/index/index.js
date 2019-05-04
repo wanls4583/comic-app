@@ -11,7 +11,7 @@ Page({
         recommend: [], //推荐列表
         currentBannerIndex: 0, //当前轮播图索引号
         banner: [], //轮播图
-        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
         menuRect: app.globalData.menuRect,
         searchOpacity: 0
@@ -31,7 +31,7 @@ Page({
     //滚动事件
     onScroll(e) {
         var scrollTop = e.detail.scrollTop;
-        var opacity = scrollTop / (170 + this.data.navHeight + this.data.statusBarHeight);
+        var opacity = scrollTop / (170 + this.data.navHeight + this.data.systemInfo.statusBarHeight);
         opacity = opacity > 1 ? 1 : opacity;
         opacity = opacity < 0 ? 0 : opacity;
         this.setData({

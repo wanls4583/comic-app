@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <view class='container'>
-    <navigationBar></navigationBar>
+    <navigationBar external-classes='custom_nav'></navigationBar>
     <view class='tab_w' style='top:{{systemInfo.statusBarHeight}}px;height:{{navHeight}}px;right:{{systemInfo.screenWidth-menuRect.left}}px'>
         <view class='tab_item_w'>
             <view class='tab_item {{nowSwiperIndex==0 ? "active" : ""}}' data-index='{{0}}' bindtap='changeSwiper'>历史</view>

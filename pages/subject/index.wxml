@@ -1,6 +1,9 @@
 <!--index.wxml-->
 <view class='container'>
-    <navigationBar wx:if='{{!showCategoryDialog}}' title='分类'></navigationBar>
+    <navigationBar title='漫画分类'></navigationBar>
+    <view class='search_w' bindtap='gotoSearch' style='top:{{systemInfo.statusBarHeight}}px;height:{{navHeight}}px;right:{{systemInfo.screenWidth-menuRect.left}}px'>
+        <view class='iconfont icon-seekicon'></view>
+    </view>
     <!-- 分类列表 -->
     <view class='category_w'>
         <scroll-view scroll-x class='scroll_w' scroll-into-view="{{toCategory}}" scroll-with-animation="{{true}}">
@@ -10,7 +13,7 @@
         </view>
         <view class='category_line'></view>
     </view>
-    <swiper class='list_swiper_w' style='margin-top:{{navHeight+statusBarHeight}}px;' bindanimationfinish='animationFinish' bindchange='swiperChange' current='{{nowCidIndex}}' duration='{{animationDuration}}' circular='{{false}}'>
+    <swiper class='list_swiper_w' style='margin-top:{{navHeight+systemInfo.statusBarHeight}}px;' bindanimationfinish='animationFinish' bindchange='swiperChange' current='{{nowCidIndex}}' duration='{{animationDuration}}' circular='{{false}}'>
         <swiper-item class='swiper_item' wx:for='{{categoryList}}' wx:for-item='cItem' wx:key='{{cItem.cid}}'>
             <view class='order_area_w {{swiperDataMap[cItem.cid] && swiperDataMap[cItem.cid].showSort ? "active" : ""}}'>
                 <view class='order_w'>

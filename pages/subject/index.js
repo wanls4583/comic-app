@@ -25,7 +25,8 @@ Page({
         overlappingPage: 5, //前后视图交叉的页数
         animationDuration: 300,
         stopSwiper: false,
-        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        systemInfo: app.globalData.systemInfo,
+        menuRect: app.globalData.menuRect,
         navHeight: app.globalData.navHeight,
         bgImage: ''
     },
@@ -200,6 +201,12 @@ Page({
             scrollTop: scrollTop
         });
         this.scrollToCategory(this.data.nowCid);
+    },
+    //跳转到搜索页
+    gotoSearch(e) {
+        wx.navigateTo({
+            url: '/pages/search/index'
+        });
     },
     //跳转到动漫详情页
     gotoDetail(e) {

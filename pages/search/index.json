@@ -1,6 +1,3 @@
 {
-    "backgroundColorTop": "#7e6353",
-    "backgroundColorBottom": "#584d42",
-    "usingComponents": {},
-    "navigationBarTitleText": "漫画搜索"
+    "usingComponents": {}
 }

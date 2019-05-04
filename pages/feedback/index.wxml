@@ -1,24 +1,20 @@
 <!--index.wxml-->
-<view class='container'>
+<view class='container bg_color'>
     <navigationBar title='意见反馈'></navigationBar>
-    <view class='block_title'>反馈类型</view>
+    <view class='block_title des_color'>反馈类型</view>
     <radio-group class='category_radio_group' bindchange='categoryRadioChange'>
-        <label class='category_radio' wx:for='{{categoryList}}' wx:key='{{index}}'>
+        <label class='category_radio light_title_color' wx:for='{{categoryList}}' wx:key='{{index}}'>
             <radio value='{{item.name}}' checked='{{item.checked}}'/> {{item.value}}
         </label>
     </radio-group>
-    <view class='block_title'>反馈内容</view>
-    <view class='textarea_wrap'>
-        <textarea class='textarea' auto-height maxlength='500' placeholder='请输入意见...' bindinput='contentInput'/>
-    </view>
-    <view class='block_title'>联系方式</view>
+    <view class='block_title des_color'>反馈内容</view>
+    <textarea class='textarea title_color' auto-height maxlength='500' placeholder='请输入意见...' bindinput='contentInput'/>
+    <view class='block_title des_color'>联系方式</view>
     <radio-group class='contact_radio_group' bindchange='contactRadioChange'>
-        <label class='contact_radio' wx:for='{{contactList}}' wx:key='{{index}}'>
+        <label class='contact_radio light_title_color' wx:for='{{contactList}}' wx:key='{{index}}'>
             <radio value='{{item.name}}' checked='{{item.checked}}'/> {{item.value}}
         </label>
     </radio-group>
-    <view class='input_wrap'>
-        <input class='input' placeholder='QQ/电话/邮箱' bindinput='contactInput'></input>
-    </view>
+    <input class='input title_color' placeholder='QQ/电话/邮箱' bindinput='contactInput'></input>
     <view class='submit' bindtap='submit'>提交</view>
 </view>

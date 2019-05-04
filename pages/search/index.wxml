@@ -1,8 +1,8 @@
 <!--index.wxml-->
 <view class='container'>
-    <navigationBar></navigationBar>
+    <navigationBar external-classes='custom_nav'></navigationBar>
     <!-- 搜索框 -->
-    <view class='search_w' style='top:{{statusBarHeight}}px;height:{{navHeight}}px;right:{{menuRect.right-menuRect.left+20}}px'>
+    <view class='search_w' style='top:{{systemInfo.statusBarHeight}}px;height:{{navHeight}}px;right:{{systemInfo.screenWidth-menuRect.left}}px'>
         <view class='search_input_w' style='height:{{menuRect.height}}px'>
             <view wx:if='{{showPlace}}' class='placeholder'>
                 <view class='iconfont icon-seekicon'></view>
@@ -13,17 +13,17 @@
         </view>
         <!-- <view wx:if='{{!comicList.length}}' class='cancel_search' bindtap='searchCancel'>取消</view> -->
     </view>
-    <view wx:if='{{showHistory && history.length}}' class='search_history_w' style='top:{{statusBarHeight+navHeight}}px'>
-        <view class='history_title light_title_color'>
+    <view wx:if='{{showHistory && history.length}}' class='search_history_w' style='top:{{systemInfo.statusBarHeight+navHeight}}px'>
+        <view class='history_title des_color'>
             <text>搜索历史</text>
             <view class='clear_history des_color iconfont icon-shanchu' bindtap='clearHistory'></view>
         </view>
         <view class='history_item_w'>
-            <view wx:for='{{history}}' wx:key='{{index}}' class='history_item bg_color title_color' data-text='{{item}}' bindtap='selectHistory'>{{item}}</view>
+            <view wx:for='{{history}}' wx:key='{{index}}' class='history_item bg_color light_title_color' data-text='{{item}}' bindtap='selectHistory'>{{item}}</view>
         </view>
     </view>
     <block wx:if="{{viewArr.length}}" wx:for='{{viewArr}}' wx:for-item="vItem" wx:for-index="vIndex" wx:key='{{vItem}}'>
-        <scroll-view wx:if='{{vItem==nowView}}' class='comic_scroll' style='top:{{statusBarHeight+navHeight}}px;' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx' bindscroll='onScroll' scroll-top='{{scrollTop}}'>
+        <scroll-view wx:if='{{vItem==nowView}}' class='comic_scroll' style='top:{{systemInfo.statusBarHeight+navHeight}}px;' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx' bindscroll='onScroll' scroll-top='{{scrollTop}}'>
             <block wx:if='{{pIndex >= vItem*viewSize && pIndex < (vItem+1)*viewSize+overlappingPage}}' wx:for='{{comicList}}' wx:for-item="pItem" wx:for-index="pIndex" wx:key='{{pIndex}}'>
                 <view class='comic_item' wx:for='{{pItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
                     <view class='comic_item_img' style='background:url({{item.cover_url}}) no-repeat center;background-size:cover'></view>

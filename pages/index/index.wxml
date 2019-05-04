@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class='container bg_color'>
     <navigationBar holder='{{false}}' background='rgba(250, 145, 68,{{searchOpacity}})' external-classes='custom_nav'></navigationBar>
-    <view class='search_w' style='top:{{statusBarHeight}}px;height:{{navHeight}}px;right:{{menuRect.right-menuRect.left+20}}px'>
+    <view class='search_w' style='top:{{systemInfo.statusBarHeight}}px;height:{{navHeight}}px;right:{{systemInfo.screenWidth-menuRect.left}}px'>
         <view class='search' style='height:{{menuRect.height}}px' bindtap='gotoSearch'>
             <view class='iconfont icon-seekicon'></view>
             <text>搜索漫画</text>
@@ -10,7 +10,7 @@
     <scroll-view class="recommend_comic_scroll" bindscroll='onScroll' scroll-y>
         <view class='top_w'>
             <!-- 轮播图 -->
-            <swiper class='banner_w' style='height:{{170+statusBarHeight+navHeight}}px' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
+            <swiper class='banner_w' style='height:{{170+systemInfo.statusBarHeight+navHeight}}px' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
                 <swiper-item wx:for="{{banner}}" wx:for-item='homeItem' wx:key='{{homeItem.comicid}}'>
                     <view class='banner_item' style='background:url({{homeItem.showconver}}) no-repeat center;background-size:cover' data-comic='{{homeItem}}' bindtap='gotoDetail'>
                         <view class='banner_bottom'>

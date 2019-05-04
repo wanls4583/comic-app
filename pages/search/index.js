@@ -20,7 +20,7 @@ Page({
         pageSize: 3 * 3 * 3, //一页的数量
         scrollTop: 0,
         overlappingPage: 5,
-        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
         menuRect: app.globalData.menuRect
     },

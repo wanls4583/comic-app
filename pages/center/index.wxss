@@ -64,6 +64,10 @@ button.button-hover {
     font-size: 30rpx;
 }
 
+.menu_item:active {
+    color: #fa9144;
+}
+
 .menu_item .title::before {
     content: '\e643';
     font-family: 'iconfont';

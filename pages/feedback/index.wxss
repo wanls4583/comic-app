@@ -7,40 +7,28 @@ radio .wx-radio-input {
 }
 
 radio .wx-radio-input.wx-radio-input-checked {
-    background: #989898 !important;
+    background: rgb(250, 145, 68) !important;
     border: none;
 }
 
 radio .wx-radio-input.wx-radio-input-checked::before {
-    background: #989898;
+    background: rgb(250, 145, 68);
     border-radius: 50%;
     width: 100%;
     height: 100%;
 }
 
 .block_title {
-    padding: 20rpx 30rpx;
-    margin: 20rpx 0;
-    background-color: rgba(256, 256, 256, 0.1);
-    line-height: 30rpx;
-    font-size: 30rpx;
-    color: #fff;
-}
-
-.block_title:before {
-    content: '';
-    display: inline-block;
-    width: 6rpx;
-    height: 28rpx;
-    background-color: #fff;
-    margin-right: 8rpx;
-    vertical-align: top;
+    line-height: 80rpx;
+    font-size: 24rpx;
+    padding-left: 20rpx;
 }
 
 .category_radio_group {
     position: relative;
     z-index: 1;
-    padding: 0 30rpx;
+    padding: 0 20rpx;
+    background: #fff;
 }
 
 .category_radio {
@@ -49,29 +37,23 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     height: 80rpx;
     line-height: 0;
     font-size: 24rpx;
-    color: #ddd;
 }
 
-.textarea_wrap {
-    margin: 48rpx 0;
-    padding: 0 30rpx;
-}
 
 .textarea {
     width: 100%;
     min-height: 200rpx;
-    padding: 10rpx 20rpx;
-    background-color: rgba(256, 256, 256, 0.98);
-    border-radius: 6rpx;
+    padding: 10rpx 20rpx 10rpx 12rpx;
+    background-color: #fff;
     font-size: 24rpx;
-    color: #333;
 }
 
 .contact_radio_group {
     position: relative;
     z-index: 1;
     display: flex;
-    padding: 0 30rpx;
+    padding: 0 20rpx;
+    background: #fff;
 }
 
 .contact_radio {
@@ -80,27 +62,19 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     align-items: center;
     margin-right: 30rpx;
     font-size: 24rpx;
-    color: #ddd;
-}
-
-.input_wrap {
-    padding: 0 30rpx;
-    margin-top: 20rpx;
 }
 
 .input {
     height: 80rpx;
     padding: 0 20rpx;
     border-radius: 6rpx;
-    background-color: rgba(256, 256, 256, 0.98);
+    background-color: #fff;
     font-size: 24rpx;
-    color: #333;
 }
 
 .submit {
     height: 80rpx;
-    background-color: rgba(256, 256, 256, 0.05);
-    border: 1px solid #fff;
+    background-color: rgb(250, 145, 68);
     border-radius: 6rpx;
     line-height: 80rpx;
     font-size: 30rpx;
@@ -110,5 +84,5 @@ radio .wx-radio-input.wx-radio-input-checked::before {
 }
 
 .submit:active {
-    background-color: rgba(256, 256, 256, 0.2);
+    background-color: rgba(250, 145, 68, 0.8);
 }
