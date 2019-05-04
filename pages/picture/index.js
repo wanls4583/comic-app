@@ -304,13 +304,13 @@ Page({
         //直接指定章节名称
         if (typeof nowChapterIndex != 'undefined') {
             title = this.chapterList[nowChapterIndex].name.replace(/\s/g, '');
+            if (this.data.title != title) {
+                this.setHistory(this.nowChapterIndex);
+            }
             this.setData({
                 title: title,
                 nowChapterIndex: this.nowChapterIndex
             });
-            if (this.data.title != title) {
-                this.setHistory(this.nowChapterIndex);
-            }
         } else { //通过计算得出当前章节名称
             _setTitle();
         }
