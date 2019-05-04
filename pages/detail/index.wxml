@@ -20,7 +20,7 @@
         </view>
         <view class='category_w'>
             <view style='width:100%'>
-                <view class='category_item main_color' wx:for='{{comic.categorys}}'>{{item.name}}</view>
+                <view class='category_item main_color' wx:for='{{comic.categorys}}' wx:key='{{index}}'>{{item.name}}</view>
             </view>
         </view>
     </view>
@@ -41,7 +41,7 @@
             </view>
             <view class='dir_w'>
                 <view class='dir_title strong_title_color'>{{comic.status}}<text class='dir_count des_color'>共{{chapterList.length}}话</text></view>
-                <view class='dir_item light_title_color {{index+1==historyNum ? "active" : ""}}' wx:for='{{chapterList}}' data-index='{{index}}' bindtap='gotoPicture'>{{item.name}}</view>
+                <view class='dir_item light_title_color {{index+1==historyNum ? "active" : ""}}' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' bindtap='gotoPicture'>{{item.name}}</view>
             </view>
         </view>
     </scroll-view>

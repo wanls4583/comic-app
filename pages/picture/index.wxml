@@ -9,7 +9,7 @@
                 <block wx:for='{{pics}}' wx:key='{{index}}' wx:for-item='pItem' wx:for-index='pIndex'>
                     <block wx:for='{{pItem}}' wx:key='{{item.url}}'>
                         <block wx:if='{{item.url}}'>
-                            <image wx:if='{{pIndex==0 && index<10}}' bindload='onImgLoad' binderror='onImgError' src='{{item.url}}' style='width:100%;height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{index==0 || item.chapterid!= pics[index-1].chapterid ? "chapter_"+item.chapterid : "pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
+                            <image wx:if='{{pIndex==0 && index<3}}' bindload='onImgLoad' binderror='onImgError' src='{{item.url}}' style='width:100%;height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{index==0 || item.chapterid!= pics[index-1].chapterid ? "chapter_"+item.chapterid : "pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
                             <image wx:else src='{{item.url}}' style='width:100%;height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{index==0 || item.chapterid!= pics[index-1].chapterid ? "chapter_"+item.chapterid : "pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
                         </block>
                         <view wx:else class='bad_chapter' style='height:{{systemInfo.screenHeight}}px' data-index='{{index}}' bindtap='clickToScale'>第{{item.chapterIndex+1}}章节被破坏</view>

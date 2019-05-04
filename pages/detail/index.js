@@ -122,6 +122,7 @@ Page({
         var obj = {}
         obj.chapterList = this.data.chapterList;
         obj.startChapterIndex = this.data.historyNum - 1;
+        obj.comic = this.data.comic;
         wx.setStorageSync('chapterList', JSON.stringify(obj));
         wx.navigateTo({
             url: '/pages/picture/index'
@@ -148,6 +149,7 @@ Page({
         var obj = {};
         obj.chapterList = this.data.chapterList;
         obj.startChapterIndex = index;
+        obj.comic = this.data.comic;
         wx.setStorageSync('chapterList', JSON.stringify(obj));
         wx.getStorage({
             key: 'comic_history',
