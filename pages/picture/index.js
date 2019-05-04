@@ -193,6 +193,7 @@ Page({
                 // mask: true,
                 title: '加载中'
             });
+            this.loadedImgCount = 0;
             this.requestTask && this.requestTask.abort();
             this.getPics(chapter.id).then((res) => {
                 this.allPic[chapterIndex] = res.data || [{ chapterid: chapter.id, chapterIndex: chapterIndex }];
@@ -250,7 +251,6 @@ Page({
                 success(res) {
                     resolve(res);
                     self.laoding = false;
-                    wx.hideLoading();
                 },
                 fail(err) {
                     reject(err);
@@ -443,5 +443,19 @@ Page({
             });
             query.exec();
         });
+    },
+    onImgLoad() {
+        if (this.loadedImgCount < 3) {
+            wx.hideLoading();
+        } else {
+            this.loadedImgCount++;
+        }
+    },
+    onImgError() {
+        if (this.loadedImgCount < 3) {
+            wx.hideLoading();
+        } else {
+            this.loadedImgCount++;
+        }
     }
 })

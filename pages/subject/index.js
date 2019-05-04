@@ -211,6 +211,8 @@ Page({
     //跳转到动漫详情页
     gotoDetail(e) {
         var comic = e.currentTarget.dataset.comic;
+        wx.setStorageSync('nowCid', this.data.nowCid);
+        wx.setStorageSync('nowAid', this.data.nowAid);
         wx.navigateTo({
             url: '/pages/detail/index?comic=' + encodeURIComponent(JSON.stringify(comic))
         });

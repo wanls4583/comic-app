@@ -9,6 +9,10 @@
     opacity: 1;
 }
 
+.container {
+    background: linear-gradient(rgba(250, 145, 68, 1), rgba(250, 145, 68, 0));
+}
+
 .scroll_w {
     height: 100%;
 }
@@ -29,23 +33,16 @@
 
 .bottom_loading {
     text-align: center;
-    background: #fff;
-    color: #333;
     font-size: 24rpx;
     line-height: 80rpx;
 }
 
 .top_loading {
-    background: #f0f0f0;
     font-size: 30rpx;
     line-height: 100rpx;
     height: 100rpx;
-    color: #d8d8d8;
+    color: #fff;
     text-align: center;
-}
-
-.top_loading:active {
-    color: fa9144;
 }
 
 /* 底部菜单-begin */
@@ -92,8 +89,10 @@
     opacity: 1;
 }
 
-.menu_item image {
-    width: 80rpx;
+.menu_item .iconfont {
+    flex-grow: 1;
+    display: flex;
+    font-size: 30rpx;
 }
 
 /* 底部菜单-end */
@@ -130,8 +129,9 @@
     padding-left: 60rpx;
 }
 
-.pre_chapter image, .next_chapter image {
-    width: 40rpx;
+.pre_chapter .iconfont, .next_chapter .iconfont {
+    display: block;
+    font-size: 40rpx;
 }
 
 /* 进度调整-end */
@@ -158,8 +158,9 @@
     opacity: 1;
 }
 
-.scroll_top image {
-    width: 40rpx;
+.scroll_top .iconfont {
+    font-size: 40rpx;
+    color: #fff;
 }
 
 /* 回到顶部按钮-end */
@@ -183,8 +184,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 80rpx;
+    height: 100rpx;
     padding: 0 40rpx;
+}
+
+.light_slider_w .small {
+    font-size: 40rpx;
+}
+
+.light_slider_w .big {
+    font-size: 60rpx;
 }
 
 .light_switch_w {
