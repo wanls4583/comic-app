@@ -68,14 +68,11 @@
 }
 
 .title {
-    height: 100rpx;
-    padding: 0 20rpx;
-    margin-left: -20rpx;
-    margin-top: -26rpx;
-    line-height: 100rpx;
+    height: 60rpx;
+    line-height: 60rpx;
     font-size: 40rpx;
     color: #fff;
-    text-shadow: 2rpx 2rpx 30rpx rgba(0, 0, 0, 1);
+    text-shadow: 4rpx 4rpx 10rpx rgba(0, 0, 0, 0.8);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -85,7 +82,7 @@
     margin-bottom: 6rpx;
     font-size: 28rpx;
     color: #fff;
-    text-shadow: 2rpx 2rpx 10rpx rgba(0, 0, 0, 1);
+    text-shadow: 4rpx 4rpx 10rpx rgba(0, 0, 0, 0.8);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
