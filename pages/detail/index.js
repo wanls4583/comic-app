@@ -31,7 +31,7 @@ Page({
         comic.author = comic.author.split(',');
         comic.area = '';
         comic.categorys = [];
-        comic.publishTime = util.formatTime(comic.publish_time, 'yyyy/MM/dd') + '发布';
+        comic.publishTime = util.formatTime(comic.publish_time, 'yyyy/MM/dd');
         this.setData({
             comic: comic,
             dirMenu: app.dirMenu

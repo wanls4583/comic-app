@@ -58,19 +58,20 @@
 .des_w {
     position: relative;
     margin-left: 30rpx;
+    overflow: hidden;
 }
 
 .des_bottom_w {
     position: absolute;
     left: 0;
-    bottom: 140rpx;
+    bottom: 130rpx;
 }
 
 .title {
     height: 100rpx;
     padding: 0 20rpx;
     margin-left: -20rpx;
-    margin-top: -28rpx;
+    margin-top: -26rpx;
     line-height: 100rpx;
     font-size: 40rpx;
     color: #fff;
@@ -80,14 +81,17 @@
     white-space: nowrap;
 }
 
-.area, .status, .publish_time {
+.area, .publish_time, .author_w {
     margin-bottom: 6rpx;
     font-size: 28rpx;
     color: #fff;
     text-shadow: 2rpx 2rpx 10rpx rgba(0, 0, 0, 1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.author_category_w {
+.category_w {
     position: absolute;
     z-index: 1;
     bottom: 0;
@@ -103,27 +107,14 @@
     justify-content: center;
 }
 
-.author_w {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 26rpx;
-}
-
-.category_w {
-    width: 100%;
-    white-space: nowrap;
-    margin-top: 10rpx;
-}
-
 .category_item {
     display: inline-block;
-    padding: 8rpx 20rpx;
+    padding: 10rpx 20rpx;
     background-color: rgba(250, 145, 68, 0.2);
     border-radius: 50rpx;
     margin-right: 30rpx;
-    font-size: 24rpx;
-    line-height: 24rpx;
+    font-size: 26rpx;
+    line-height: 26rpx;
 }
 
 /* 顶部封面栏-end */
