@@ -49,7 +49,7 @@
         <!-- 目录背景 -->
         <view class='catalog_bg' style='background:url({{pics[0][0].url}}) no-repeat center;background-size:cover'></view>
         <scroll-view scroll-y class='catalog_scroll_w'>
-            <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' style='color:{{nowChapterIndex==index ? "#38ffff" : "#fff"}}' bindtap='gotoChapter'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
+            <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' style='color:{{nowChapterIndex==index ? "#fa9144" : "#fff"}}' bindtap='gotoChapter'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
         </scroll-view>
     </view>
     <view class='scroll_top {{showBootomBtn?"active":""}}' bindtap='scrollToTop'><image mode='widthFix' src='/image/icon_top.png'></image></view>

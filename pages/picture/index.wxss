@@ -11,7 +11,6 @@
 
 .scroll_w {
     height: 100%;
-    background-color: #7e6353;
 }
 
 .image_horizontal_scroll_w {
@@ -37,7 +36,7 @@
 }
 
 .top_loading {
-    background: #7e6353;
+    background: #f0f0f0;
     font-size: 30rpx;
     line-height: 100rpx;
     height: 100rpx;
@@ -46,8 +45,7 @@
 }
 
 .top_loading:active {
-    color: #38ffff;
-    background: #584d42;
+    color: fa9144;
 }
 
 /* 底部菜单-begin */

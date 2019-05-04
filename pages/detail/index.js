@@ -13,8 +13,9 @@ Page({
         nowTab: 0,
         liked: false,
         logined: false,
-        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
+        expand: false
     },
     onLoad: function(option) {
         if (!option.comic) {
@@ -30,7 +31,7 @@ Page({
         comic.author = comic.author.split(',');
         comic.area = '';
         comic.categorys = [];
-        comic.publishTime = util.formatTime(comic.publish_time, 'yyyy/MM/dd');
+        comic.publishTime = util.formatTime(comic.publish_time, 'yyyy/MM/dd') + '发布';
         this.setData({
             comic: comic,
             dirMenu: app.dirMenu
@@ -45,7 +46,7 @@ Page({
         //存储漫画打开记录
         wx.getStorage({
             key: 'comic_history',
-            complete: function (res) {
+            complete: function(res) {
                 var list = [];
                 if (res.data) {
                     list = JSON.parse(res.data);
@@ -69,14 +70,14 @@ Page({
     },
     onShow() {
         var self = this;
-        loginUtil.checkLogin().then(()=>{
+        loginUtil.checkLogin().then(() => {
             self.setData({
                 logined: true
             });
-            if(!self.liked) {
+            if (!self.liked) {
                 self.getLiked();
             }
-        }).catch(()=>{
+        }).catch(() => {
             self.setData({
                 logined: false
             });
@@ -84,7 +85,7 @@ Page({
         //获取章节观看记录
         wx.getStorage({
             key: 'comic_history',
-            success: function (res) {
+            success: function(res) {
                 var list = JSON.parse(res.data);
                 for (var i = 0; i < list.length; i++) {
                     var obj = list[i];
@@ -99,6 +100,9 @@ Page({
         })
     },
     onPullDownRefresh() {
+        wx.showLoading({
+            title: '刷新中',
+        });
         this.getCategoryAndArea();
         this.getLiked();
         this.getChpater();
@@ -109,8 +113,10 @@ Page({
             nowTab: current
         });
     },
+    //继续阅读
     continueRead() {
-        if (!this.data.historyNum) {
+        if (!this.data.historyNum < 1) {
+            this.gotoFirst();
             return;
         }
         var obj = {}
@@ -125,8 +131,15 @@ Page({
         var index = e.currentTarget.dataset.index;
         this.gotoPictureByIndex(index);
     },
+    //阅读第一话
+    gotoFirst() {
+        if (this.data.chapterList.length) {
+            this.gotoPictureByIndex(0);
+        }
+    },
+    //阅读最后一话
     gotoLast() {
-        if(this.data.chapterList.length) {
+        if (this.data.chapterList.length) {
             this.gotoPictureByIndex(this.data.chapterList.length - 1);
         }
     },
@@ -171,6 +184,12 @@ Page({
             nowTab: e.currentTarget.dataset.tab
         })
     },
+    //展开或收起内容
+    toggleExpand() {
+        this.setData({
+            expand: !this.data.expand
+        });
+    },
     getCategoryAndArea() {
         var self = this;
         request({
@@ -191,6 +210,7 @@ Page({
             url: '/chapter/' + this.data.comic.comicid,
             success(res) {
                 wx.stopPullDownRefresh();
+                wx.hideLoading();
                 if (res.statusCode == 200) {
                     self.setData({
                         chapterList: res.data.sort((arg1, arg2) => {
@@ -225,6 +245,9 @@ Page({
             return;
         }
         this.changeLike = true;
+        wx.showLoading({
+            title: '收藏中',
+        })
         request({
             url: '/like/add',
             method: 'post',
@@ -233,7 +256,7 @@ Page({
             },
             success(res) {
                 self.changeLike = false;
-                if(res.data.status == 1) {
+                if (res.data.status == 1) {
                     wx.showToast({
                         title: '收藏成功'
                     });
@@ -241,7 +264,7 @@ Page({
                         liked: true
                     });
                     wx.setStorageSync('likeChange', true);
-                } else if(res.data.status == 403) {
+                } else if (res.data.status == 403) {
                     wx.showToast({
                         title: '请先登录'
                     });
@@ -253,16 +276,22 @@ Page({
                         title: '添加失败，服务器错误'
                     });
                 }
+            },
+            complete() {
+                wx.hideLoading();
             }
         })
     },
     //取消收藏
     unLike() {
         var self = this;
-        if(this.changeLike) {
+        if (this.changeLike) {
             return;
         }
         this.changeLike = true;
+        wx.showLoading({
+            title: '取消收藏中',
+        })
         request({
             url: '/like/del',
             method: 'post',
@@ -291,10 +320,13 @@ Page({
                         title: '添加失败，服务器错误'
                     });
                 }
+            },
+            complete() {
+                wx.hideLoading();
             }
         })
     },
-    getUserInfo: function (e) {
+    getUserInfo: function(e) {
         console.log(e)
         app.globalData.userInfo = e.detail.userInfo;
         wx.setStorageSync('userInfo', JSON.stringify(e.detail.userInfo));
