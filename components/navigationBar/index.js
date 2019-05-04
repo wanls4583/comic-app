@@ -46,7 +46,7 @@ Component({
             if (pages.length < 2) {
                 this.setData({
                     showBack: false,
-                    defaultFontSize: '48rpx'
+                    defaultFontSize: '40rpx'
                 })
             } else {
                 this.setData({
