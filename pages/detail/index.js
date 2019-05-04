@@ -115,7 +115,7 @@ Page({
     },
     //继续阅读
     continueRead() {
-        if (!this.data.historyNum < 1) {
+        if (this.data.historyNum < 1) {
             this.gotoFirst();
             return;
         }
