@@ -36,9 +36,11 @@
     z-index: 2;
     display: flex;
     margin: 30rpx 30rpx 0;
+    overflow: hidden;
 }
 
 .cover_w {
+    flex-shrink: 0;
     width: 300rpx;
     height: 370rpx;
     border: 2rpx solid rgb(250, 145, 68);
@@ -109,14 +111,13 @@
 }
 
 .category_w {
-    display: flex;
+    width: 100%;
+    white-space: nowrap;
     margin-top: 10rpx;
 }
 
 .category_item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: inline-block;
     padding: 8rpx 20rpx;
     background-color: rgba(250, 145, 68, 0.2);
     border-radius: 50rpx;

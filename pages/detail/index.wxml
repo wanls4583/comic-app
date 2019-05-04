@@ -20,9 +20,9 @@
         </view>
         <view class='author_category_w'>
             <view class='author_w des_color'>{{comic.author}}</view>
-            <view class='category_w'>
+            <scroll-view scroll-x class='category_w'>
                 <view class='category_item main_color' wx:for='{{comic.categorys}}'>{{item.name}}</view>
-            </view>
+            </scroll-view>
         </view>
     </view>
     <scroll-view scroll-y class='bottom_w' style='margin-top:{{systemInfo.statusBarHeight+navHeight}}px'>
