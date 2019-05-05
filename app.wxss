@@ -33,10 +33,6 @@ page {
     color: #999;
 }
 
-.line_color {
-    color: #f0f0f0;
-}
-
 .container {
     position: relative;
     overflow: auto;

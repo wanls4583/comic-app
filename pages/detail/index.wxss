@@ -42,7 +42,7 @@
     flex-shrink: 0;
     width: 300rpx;
     height: 370rpx;
-    border: 2rpx solid rgb(250, 145, 68);
+    border: 1rpx solid rgb(250, 145, 68);
     border-radius: 20rpx;
     overflow: hidden;
 }
@@ -232,8 +232,8 @@
 
 .dir_item {
     font-size: 26rpx;
-    line-height: 80rpx;
-    border-bottom: 2rpx solid #f0f0f0;
+    line-height: 100rpx;
+    border-bottom: 1rpx solid #ddd;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
