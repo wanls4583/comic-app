@@ -19,7 +19,6 @@ Page({
         scrollTop: 0
     },
     onLoad: function() {
-        wx.hideTabBar();
         this.itemHeight = 180 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
         this.getSwitch();
@@ -121,19 +120,11 @@ Page({
     },
     getSwitch() {
         var self = this;
-        // app.dirMenu = true;
-        // wx.showTabBar();
-        // return;
         request({
             url: '/switch',
             success(res) {
                 if (res.statusCode == 200) {
                     app.dirMenu = res.data.switch;
-                    if (res.data.switch) {
-                        wx.showTabBar();
-                    } else {
-                        wx.hideTabBar();
-                    }
                 }
             }
         })
