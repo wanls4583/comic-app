@@ -62,8 +62,8 @@ button.button-hover {
     padding: 0 20rpx;
     background-color: #fff;
     font-size: 30rpx;
-    border-top: 1rpx solid #ddd;
-    border-bottom: 1rpx solid #ddd;
+    border-top: 1rpx solid #ccc;
+    border-bottom: 1rpx solid #ccc;
 }
 
 .menu_item:active {

@@ -112,11 +112,6 @@
     font-size: 24rpx;
 }
 
-.clear_history:active {
-    font-size: 26rpx;
-    color: #eee;
-}
-
 .history_item_w {
     display: flex;
     flex-wrap: wrap;
@@ -133,7 +128,7 @@
 }
 
 .history_item:active {
-    background-color: #eee;
+    background-color: #ccc;
 }
 
 /* 搜索历史-end */
