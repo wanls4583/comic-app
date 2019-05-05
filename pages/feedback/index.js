@@ -4,6 +4,7 @@ const app = getApp();
 const request = require('../../utils/request.js');
 Page({
     data: {
+        dirMenu: app.dirMenu,
         categoryList: [{
             name: '求漫画',
             value: '求漫画',

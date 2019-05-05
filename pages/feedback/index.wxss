@@ -29,6 +29,8 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     z-index: 1;
     padding: 0 20rpx;
     background: #fff;
+    border-top: 2rpx solid #ddd;
+    border-bottom: 2rpx solid #ddd;
 }
 
 .category_radio {
@@ -39,13 +41,14 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     font-size: 24rpx;
 }
 
-
 .textarea {
     width: 100%;
     min-height: 200rpx;
     padding: 10rpx 20rpx 10rpx 12rpx;
     background-color: #fff;
     font-size: 24rpx;
+    border-top: 2rpx solid #ddd;
+    border-bottom: 2rpx solid #ddd;
 }
 
 .contact_radio_group {
@@ -54,6 +57,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     display: flex;
     padding: 0 20rpx;
     background: #fff;
+    border-top: 2rpx solid #ddd;
 }
 
 .contact_radio {
@@ -70,6 +74,7 @@ radio .wx-radio-input.wx-radio-input-checked::before {
     border-radius: 6rpx;
     background-color: #fff;
     font-size: 24rpx;
+    border-bottom: 2rpx solid #ddd;
 }
 
 .submit {

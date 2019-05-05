@@ -21,7 +21,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width:100rpx;
     height: 100%;
     margin-right: 40rpx;
     font-size: 34rpx;
@@ -43,16 +42,17 @@
     transition: all 0.3s;
 }
 
+.delete .iconfont {
+    font-size: 34rpx;
+    color: #fff;
+}
+
 .delete.active {
     opacity: 1;
 }
 
-.delete image{
-    width: 34rpx;
-}
-
 .delete:active {
-    background-color: rgba(256, 256, 256, 0.1)
+    background-color: rgba(256, 256, 256, 0.1);
 }
 
 .swiper {

@@ -14,12 +14,11 @@
     top: 0;
     width: 100%;
     height: 100%;
-    filter: blur(4rpx);
+    /* filter: blur(10rpx); */
 }
 
 .cover_bg image {
     width: 100%;
-    height: 100%;
 }
 
 .cover_bg::before {
@@ -28,7 +27,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(153, 153, 153, 0.8);
 }
 
 .cover_des_w {
@@ -58,7 +57,7 @@
 .des_w {
     flex-grow: 1;
     position: relative;
-    margin-left: 30rpx;
+    margin-left: 20rpx;
     overflow: hidden;
 }
 
@@ -73,20 +72,22 @@
     line-height: 60rpx;
     font-size: 40rpx;
     color: #fff;
-    text-shadow: 4rpx 4rpx 10rpx rgba(0, 0, 0, 0.8);
+    text-shadow: 4rpx 4rpx 10rpx rgba(0, 0, 0, 1);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding: 0 10rpx;
 }
 
 .area, .publish_time, .author_w {
     margin-bottom: 6rpx;
     font-size: 28rpx;
     color: #fff;
-    text-shadow: 4rpx 4rpx 10rpx rgba(0, 0, 0, 0.8);
+    text-shadow: 4rpx 4rpx 10rpx rgba(0, 0, 0, 1);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    padding: 0 10rpx;
 }
 
 .category_w {

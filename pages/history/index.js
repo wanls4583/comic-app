@@ -61,7 +61,7 @@ Page({
     //清除历史记录
     clearHistory() {
         var self = this;
-        if (this.data.nowSwiperIndex!=0) {
+        if (this.data.nowSwiperIndex!=1) {
             return;
         }
         wx.showModal({

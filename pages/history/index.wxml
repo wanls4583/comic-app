@@ -3,29 +3,14 @@
     <navigationBar external-classes='custom_nav'></navigationBar>
     <view class='tab_w' style='top:{{systemInfo.statusBarHeight}}px;height:{{navHeight}}px;right:{{systemInfo.screenWidth-menuRect.left}}px'>
         <view class='tab_item_w'>
-            <view class='tab_item {{nowSwiperIndex==0 ? "active" : ""}}' data-index='{{0}}' bindtap='changeSwiper'>历史</view>
-            <view class='tab_item {{nowSwiperIndex==1 ? "active" : ""}}' data-index='{{1}}' bindtap='changeSwiper'>收藏</view>
+            <view class='tab_item {{nowSwiperIndex==0 ? "active" : ""}}' data-index='{{0}}' bindtap='changeSwiper'>收藏</view>
+            <view class='tab_item {{nowSwiperIndex==1 ? "active" : ""}}' data-index='{{1}}' bindtap='changeSwiper'>历史</view>
         </view>
-        <view class='delete {{nowSwiperIndex==0 ? "active" : ""}}' bindtap='clearHistory'>
-            <image src='/image/icon_delete.png' mode='widthFix'></image>
+        <view class='delete {{nowSwiperIndex==1 ? "active" : ""}}' bindtap='clearHistory'>
+            <text class='iconfont icon-shanchu'></text>
         </view>
     </view>
     <swiper class='swiper' style='top:{{navHeight+systemInfo.statusBarHeight}}px;' bindchange='onChangeSwiper' current='{{nowSwiperIndex}}' duration='{{500}}' circular='{{false}}'>
-        <swiper-item class='swiper_item'>
-            <scroll-view wx:if='{{comicHistory.length}}' class='comic_scroll' scroll-y>
-                <view style='min-height:100%;margin-top:1px;'>
-                    <view class='comic_item' wx:for='{{comicHistory}}' wx:key='{{item.comicid}}' data-comic='{{item.comic}}' bindtap='gotoDetail'>
-                        <view class='comic_item_img' style='background:url({{item.comic.cover_url}}) no-repeat center;background-size:cover'></view>
-                        <view class='comic_item_bottom_w'>
-                            <view class='comic_item_title title_color'>{{item.comic.title}}</view>
-                            <view class='comic_item_new des_color'>{{item.comic.last_part_name}}</view>
-                        </view>
-                    </view>
-                    <view class='loading_tip des_color nomore'>没有更多了~</view>
-                </view>
-            </scroll-view>
-            <view wx:else class='empty_list des_color'>暂无历史记录~</view>
-        </swiper-item>
         <swiper-item class='swiper_item'>
             <button wx:if="{{!logined}}" class='login_btn' open-type="getUserInfo" bindgetuserinfo="getUserInfo">请先登录</button>
             <scroll-view wx:elif='{{favoriteList.length}}' class='comic_scroll' scroll-y>
@@ -44,6 +29,21 @@
             </scroll-view>
             <view wx:elif='{{totalPage==0}}' class='empty_list des_color'>暂无收藏记录~</view>
             <view wx:else class='loading_tip'>玩命加载中~</view>
+        </swiper-item>
+        <swiper-item class='swiper_item'>
+            <scroll-view wx:if='{{comicHistory.length}}' class='comic_scroll' scroll-y>
+                <view style='min-height:100%;margin-top:1px;'>
+                    <view class='comic_item' wx:for='{{comicHistory}}' wx:key='{{item.comicid}}' data-comic='{{item.comic}}' bindtap='gotoDetail'>
+                        <view class='comic_item_img' style='background:url({{item.comic.cover_url}}) no-repeat center;background-size:cover'></view>
+                        <view class='comic_item_bottom_w'>
+                            <view class='comic_item_title title_color'>{{item.comic.title}}</view>
+                            <view class='comic_item_new des_color'>{{item.comic.last_part_name}}</view>
+                        </view>
+                    </view>
+                    <view class='loading_tip des_color nomore'>没有更多了~</view>
+                </view>
+            </scroll-view>
+            <view wx:else class='empty_list des_color'>暂无历史记录~</view>
         </swiper-item>
     </swiper>
 </view>

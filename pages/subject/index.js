@@ -442,7 +442,7 @@ Page({
                         categoryList: res.data,
                         renderCids: cids
                     });
-                    self.preLoadData();
+                    // self.preLoadData();
                     for (var i = 0; i < self.data.categoryList.length; i++) {
                         if (self.data.categoryList[i].cid == nowCid) {
                             current = i;

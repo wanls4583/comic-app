@@ -89,7 +89,7 @@ scroll-view {
 }
 
 .scroll_top.active {
-    bottom: 100rpx;
+    bottom: 80rpx;
     opacity: 1;
 }
 

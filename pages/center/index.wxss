@@ -6,7 +6,7 @@
 .top_w {
     position: relative;
     z-index: 1;
-    height: 400rpx;
+    height: 450rpx;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -35,8 +35,8 @@ button.button-hover {
 }
 
 .head {
-    width: 180rpx;
-    height: 180rpx;
+    width: 140rpx;
+    height: 140rpx;
     border: 8rpx solid #fff;
     border-radius: 8rpx;
 }
@@ -62,6 +62,8 @@ button.button-hover {
     padding: 0 20rpx;
     background-color: #fff;
     font-size: 30rpx;
+    border-top: 1rpx solid #ddd;
+    border-bottom: 1rpx solid #ddd;
 }
 
 .menu_item:active {
