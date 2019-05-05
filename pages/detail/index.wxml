@@ -20,7 +20,10 @@
         </view>
         <view class='category_w'>
             <view style='width:100%'>
-                <view class='category_item main_color' wx:for='{{comic.categorys}}' wx:key='{{index}}'>{{item.name}}</view>
+                <block wx:for='{{comic.categorys}}' wx:key='{{index}}'>
+                    <!-- 最多显示6个分类标签 -->
+                    <view wx:if='{{index < 6}}' class='category_item main_color'>{{item.name}}</view>
+                </block>
             </view>
         </view>
     </view>
