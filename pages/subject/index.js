@@ -28,7 +28,9 @@ Page({
         systemInfo: app.globalData.systemInfo,
         menuRect: app.globalData.menuRect,
         navHeight: app.globalData.navHeight,
-        bgImage: ''
+        bgImage: '',
+        showScrollBtn: false,
+        scrollAnimation: false
     },
     onLoad: function() {
         this.itemHeight = 180 * app.globalData.systemInfo.screenWidth / 375;
@@ -101,6 +103,15 @@ Page({
         } else if (preScrollTop - scrollTop > 10) {
             this.setData({
                 [`swiperDataMap[${cid}].showSort`]: true
+            });
+        }
+        if (scrollTop > this.data.systemInfo.screenHeight / 2) {
+            this.setData({
+                showScrollBtn: true
+            });
+        } else {
+            this.setData({
+                showScrollBtn: false
             });
         }
         //切换中
@@ -201,6 +212,8 @@ Page({
             scrollTop: scrollTop
         });
         this.scrollToCategory(this.data.nowCid);
+        wx.setStorageSync('nowCid', this.data.nowCid);
+        wx.setStorageSync('nowAid', this.data.nowAid);
     },
     //跳转到搜索页
     gotoSearch(e) {
@@ -211,8 +224,6 @@ Page({
     //跳转到动漫详情页
     gotoDetail(e) {
         var comic = e.currentTarget.dataset.comic;
-        wx.setStorageSync('nowCid', this.data.nowCid);
-        wx.setStorageSync('nowAid', this.data.nowAid);
         wx.navigateTo({
             url: '/pages/detail/index?comic=' + encodeURIComponent(JSON.stringify(comic))
         });
@@ -221,8 +232,6 @@ Page({
     gotoSubjectSelect(e) {
         this.data.areaList.length && wx.setStorageSync('areaList', this.data.areaList);
         wx.setStorageSync('categoryList', this.data.categoryList);
-        wx.setStorageSync('nowCid', this.data.nowCid);
-        wx.setStorageSync('nowAid', this.data.nowAid);
         wx.navigateTo({
             url: '/pages/subject_select/index',
         });
@@ -283,6 +292,27 @@ Page({
                 break;
             }
         }
+    },
+    //滚动到顶部
+    scrollToTop() {
+        this.viewRending = true;
+        var scrollAnimation = false;
+        var swiperData = this.data.swiperDataMap[this.data.nowCid];
+        if (swiperData.nowView == 0 && swiperData.scrollTop < this.data.systemInfo.screenHeight * 10) {
+            scrollAnimation = true;
+        }
+        this.setData({
+            scrollAnimation: scrollAnimation,
+            [`swiperDataMap[${this.data.nowCid}].nowView`]: 0
+        }, () => {
+            this.setData({
+                [`scrollTop[${this.data.nowCid}]`]: 0
+            }, () => {
+                setTimeout(() => {
+                    this.viewRending = false;
+                }, 1000);
+            });
+        });
     },
     //刷新分类列表
     refreshCategory() {
@@ -436,7 +466,7 @@ Page({
             success(res) {
                 if (res.statusCode == 200 && res.data && res.data.length) {
                     var map = {};
-                    res.data.map((item)=>{
+                    res.data.map((item) => {
                         map[item.aid] = item.name;
                     });
                     map[0] = '全部地区';

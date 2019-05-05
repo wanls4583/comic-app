@@ -139,28 +139,11 @@
 /* 回到顶部按钮-begin */
 
 .scroll_top {
-    position: fixed;
-    bottom: -100rpx;
-    right: 30rpx;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.8);
-    opacity: 0;
-    transition: 0.3s;
 }
 
 .scroll_top.active {
     bottom: 300rpx;
-    opacity: 1;
-}
-
-.scroll_top .iconfont {
-    font-size: 40rpx;
-    color: #fff;
 }
 
 /* 回到顶部按钮-end */

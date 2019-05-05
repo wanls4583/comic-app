@@ -14,7 +14,9 @@ Page({
         systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
         menuRect: app.globalData.menuRect,
-        searchOpacity: 0
+        searchOpacity: 0,
+        showScrollBtn: false,
+        scrollTop: 0
     },
     onLoad: function() {
         wx.hideTabBar();
@@ -36,7 +38,16 @@ Page({
         opacity = opacity < 0 ? 0 : opacity;
         this.setData({
             searchOpacity: opacity
-        })
+        });
+        if(scrollTop > this.data.systemInfo.screenHeight / 2) {
+            this.setData({
+                showScrollBtn: true
+            });
+        } else {
+            this.setData({
+                showScrollBtn: false
+            });
+        }
     },
     //跳到搜索页
     gotoSearch() {
@@ -56,6 +67,11 @@ Page({
         this.setData({
             currentBannerIndex: e.detail.current
         })
+    },
+    scrollToTop(e) {
+        this.setData({
+            scrollTop: 0
+        });
     },
     //获取推荐列表
     getRecommend() {

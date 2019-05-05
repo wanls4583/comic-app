@@ -369,12 +369,19 @@ Page({
                 this.setTitleTimer = null;
             }, 30);
         }
+        this.scrollTop = e.detail.scrollTop;
     },
     //回到顶部
     scrollToTop() {
         wx.vibrateShort();
+        var scrollAnimation = false;
+        if (this.scrollTop < this.data.systemInfo.screenHeight * 10) {
+            scrollAnimation = true;
+        } else {
+            scrollAnimation = false;
+        }
         this.setData({
-            scrollAnimation: false
+            scrollAnimation: scrollAnimation
         }, () => {
             this.setData({
                 scrollTop: this.tipScrollTop

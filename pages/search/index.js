@@ -22,7 +22,9 @@ Page({
         overlappingPage: 5,
         systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
-        menuRect: app.globalData.menuRect
+        menuRect: app.globalData.menuRect,
+        showScrollBtn: false,
+        scrollAnimation: false
     },
     onLoad: function() {
         var history = wx.getStorageSync('search_history');
@@ -36,6 +38,26 @@ Page({
     },
     //滚动事件
     onScroll(e) {
+        //避免频繁计算
+        if (!this.scrollTimer) {
+            this.scrollTimer = setTimeout(() => {
+                this.scrollCompute(e);
+                this.scrollTimer = null;
+            }, 50);
+        }
+
+    },
+    scrollCompute(e) {
+        if (e.detail.scrollTop > this.data.systemInfo.screenHeight / 2) {
+            this.setData({
+                showScrollBtn: true
+            });
+        } else {
+            this.setData({
+                showScrollBtn: false
+            });
+        }
+        this.scrollTop = e.detail.scrollTop;
         if (this.viewRending) {
             return;
         }
@@ -163,6 +185,26 @@ Page({
                 })
             }, 100);
         }
+    },
+    //滚动到顶部
+    scrollToTop() {
+        this.viewRending = true;
+        var scrollAnimation = false;
+        if (this.data.nowView == 0 && this.scrollTop < this.data.systemInfo.screenHeight * 10) {
+            scrollAnimation = true;
+        }
+        this.setData({
+            scrollAnimation: scrollAnimation,
+            nowView: 0
+        }, () => {
+            this.setData({
+                scrollTop: 0
+            }, () => {
+                setTimeout(() => {
+                    this.viewRending = false;
+                }, 1000);
+            });
+        });
     },
     //加载更多
     loadMore() {

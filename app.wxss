@@ -70,6 +70,34 @@ scroll-view {
     opacity: 0.3;
 }
 
+/* 回到顶部按钮-begin */
+
+.scroll_top {
+    position: fixed;
+    z-index: 99;
+    bottom: -100rpx;
+    right: 30rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.scroll_top.active {
+    bottom: 100rpx;
+    opacity: 1;
+}
+
+.scroll_top .iconfont {
+    font-size: 40rpx;
+    color: #fff;
+}
+
 @font-face {
   font-family: 'iconfont';  /* project id 1091883 */
   src: url('//at.alicdn.com/t/font_1091883_s46duuxrsop.eot');
