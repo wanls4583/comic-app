@@ -41,30 +41,6 @@ Page({
         this.getCategoryAndArea();
         this.getLiked();
         this.getChpater();
-        //存储漫画打开记录
-        wx.getStorage({
-            key: 'comic_history',
-            complete: function(res) {
-                var list = [];
-                if (res.data) {
-                    list = JSON.parse(res.data);
-                }
-                for (var i = 0; i < list.length; i++) {
-                    var obj = list[i];
-                    //已经有记录了则更新该记录，并且移动到第一个位置
-                    if (obj.comic.comicid == self.data.comic.comicid) {
-                        obj.comic = self.data.comic;
-                        list.splice(i, 1);
-                        list.unshift(obj);
-                        wx.setStorage({
-                            key: 'comic_history',
-                            data: JSON.stringify(list),
-                        });
-                        break;
-                    }
-                }
-            }
-        });
     },
     onShow() {
         var self = this;
