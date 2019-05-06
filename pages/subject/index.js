@@ -173,7 +173,11 @@ Page({
         var categoryList = this.data.categoryList;
         var map = [];
         var scrollTop = [];
-        var showLoading = false;
+        if (!this.data.swiperDataMap[categoryList[current].cid] || this.data.swiperDataMap[categoryList[current].cid].total < 0) {
+            wx.showLoading({
+                title: '加载中'
+            });
+        }
         if (current == 0) {
             map.push(0);
             current + 1 < categoryList.length && map.push(current + 1);
@@ -193,12 +197,6 @@ Page({
         map.map((item) => {
             if (!this.data.swiperDataMap[item] || this.data.swiperDataMap[item].total < 0) {
                 this.loadNext(item);
-                if (!showLoading) {
-                    wx.showLoading({
-                        title: '加载中',
-                    });
-                    showLoading = true;
-                }
             }
         });
         map.map((item) => {
@@ -502,9 +500,11 @@ Page({
                 data: data,
                 success(res) {
                     wx.stopPullDownRefresh();
-                    wx.hideLoading();
                     self.loading[cid] = false;
                     self.loaded[cid] = true;
+                    if (cid == self.data.nowCid) {
+                        wx.hideLoading();
+                    }
                     res.data.list.map((item) => {
                         item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
                     });

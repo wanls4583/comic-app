@@ -171,8 +171,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin-top: 10rpx;
-    line-height: 30rpx;
+    margin-top: 15rpx;
+    line-height: 28rpx;
     font-size: 28rpx;
     text-align: left;
 }
@@ -181,9 +181,9 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin-top: 10rpx;
-    line-height: 30rpx;
-    font-size: 24rpx;
+    margin-top: 15rpx;
+    line-height: 22rpx;
+    font-size: 22rpx;
     text-align: left;
 }
 

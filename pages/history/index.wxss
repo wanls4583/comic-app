@@ -91,7 +91,7 @@
 }
 
 .comic_item_title {
-    margin-top: 10rpx;
+    margin-top: 15rpx;
     font-size: 28rpx;
     line-height: 28rpx;
     white-space: nowrap;
@@ -104,9 +104,9 @@
 }
 
 .comic_item_new {
-    margin-top: 10rpx;
-    font-size: 24rpx;
-    line-height: 24rpx;
+    margin-top: 15rpx;
+    font-size: 22rpx;
+    line-height: 22rpx;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
