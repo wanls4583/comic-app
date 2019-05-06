@@ -99,6 +99,9 @@ Page({
     },
     //获取收藏列表
     getLikeList() {
+        if (this.data.totalPage > -1 && this.data.pageSize >= this.data.totalPage) {
+            return;
+        }
         request({
             url: '/like/list',
             data: {
