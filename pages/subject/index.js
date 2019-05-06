@@ -33,7 +33,7 @@ Page({
         scrollAnimation: false
     },
     onLoad: function() {
-        this.itemHeight = 180 * app.globalData.systemInfo.screenWidth / 375;
+        this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
         this.loading = {};
         this.loaded = {};

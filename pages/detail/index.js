@@ -15,7 +15,9 @@ Page({
         logined: false,
         systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
-        expand: false
+        expand: false,
+        title: '',
+        blur: 0
     },
     onLoad: function(option) {
         if (!option.comic) {
@@ -39,10 +41,6 @@ Page({
         this.getCategoryAndArea();
         this.getLiked();
         this.getChpater();
-        //设置标题
-        this.setData({
-            title: comic.title
-        });
         //存储漫画打开记录
         wx.getStorage({
             key: 'comic_history',
@@ -107,10 +105,31 @@ Page({
         this.getLiked();
         this.getChpater();
     },
-    animationFinish(e) {
-        var current = e.detail.current;
+    //滚动事件
+    onScroll(e) {
+        if (!this.scrollTimer) {
+            this.scrollTimer = setTimeout(() => {
+                this.scrollCompute(e);
+                this.scrollTimer = null;
+            }, 50);
+        }
+    },
+    scrollCompute(e) {
+        var scrollTop = e.detail.scrollTop;
+        var topHeight = this.data.systemInfo.screenWidth / 750 * 400;
+        if (scrollTop > topHeight) {
+            this.setData({
+                title: this.data.comic.title
+            });
+        } else {
+            this.setData({
+                title: ''
+            });
+        }
+        var blur = scrollTop / topHeight * 8;
+        blur = blur > 8 ? 8 : blur;
         this.setData({
-            nowTab: current
+            blur: blur
         });
     },
     //继续阅读

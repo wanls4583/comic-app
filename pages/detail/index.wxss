@@ -12,9 +12,10 @@
     position: absolute;
     z-index: 0;
     top: 0;
-    width: 100%;
+    width: 106%;
     height: 100%;
-    /* filter: blur(10rpx); */
+    margin-top: -20px;
+    margin-left: -3%;
 }
 
 .cover_bg image {
@@ -27,7 +28,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(153, 153, 153, 0.8);
+    background: rgba(153, 153, 153, 0.7);
 }
 
 .cover_des_w {

@@ -33,7 +33,7 @@ Page({
             autoFocus: true,
             history: history
         });
-        this.itemHeight = 180 * app.globalData.systemInfo.screenWidth / 375;
+        this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
     },
     //滚动事件

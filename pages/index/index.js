@@ -19,7 +19,7 @@ Page({
         scrollTop: 0
     },
     onLoad: function() {
-        this.itemHeight = 180 * app.globalData.systemInfo.screenWidth / 375;
+        this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
         this.getSwitch();
         this.getRecommend();
@@ -120,6 +120,8 @@ Page({
     },
     getSwitch() {
         var self = this;
+        // app.dirMenu = true;
+        // return;
         request({
             url: '/switch',
             success(res) {
