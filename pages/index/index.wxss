@@ -90,18 +90,25 @@
     margin-left: 0rpx;
 }
 
+.read_more_w {
+    display: flex;
+    width: 100%;
+    padding-top: 20rpx;
+    padding-bottom: 50rpx;
+    justify-content: center;
+}
+
 .read_more {
-    display: inline-block;
-    padding: 10rpx 16rpx;
-    border-radius: 24rpx;
-    /* background: rgba(250, 145, 68, 0.1); */
+    padding: 20rpx 40rpx;
+    border-radius: 44rpx;
+    background: #f0f0f0;
     font-size: 24rpx;
-    color: rgba(250, 145, 68, 1);
+    line-height: 24rpx;
 }
 
 .read_more:before {
-    content: '更多 \e601';
-    font-family: "iconfont";
+    content: '\e604  查看更多';
+    font-family: 'iconfont';
 }
 
 .read_more:active {
@@ -123,17 +130,29 @@
     position: relative;
 }
 
-.hot_item_w:last-child {
-    padding-bottom: 40rpx;
+.hot_item_w_10 .hot_item {
+    width: 210rpx;
+}
+
+.hot_item_w_10 .hot_img {
+    width: 210rpx;
+    height: 280rpx;
+}
+
+.hot_item_w_4 .hot_item {
+    width: 345rpx;
+}
+
+.hot_item_w_4 .hot_img {
+    width: 345rpx;
+    height: 265rpx;
 }
 
 .hot_item {
     display: inline-block;
-    margin-right: 20rpx;
-}
-
-.hot_item:first-child {
+    width: 224rpx;
     margin-left: 20rpx;
+    margin-bottom: 30rpx;
 }
 
 .hot_item:last-child {
@@ -149,19 +168,20 @@
 }
 
 .hot_title {
-    width: 180rpx;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin-top: 20rpx;
+    margin-top: 10rpx;
     line-height: 30rpx;
     font-size: 28rpx;
     text-align: left;
 }
 
-.hot_time {
-    width: 180rpx;
-    margin-top: 15rpx;
+.hot_new {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-top: 10rpx;
     line-height: 30rpx;
     font-size: 24rpx;
     text-align: left;
