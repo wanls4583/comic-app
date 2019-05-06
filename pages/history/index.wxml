@@ -13,7 +13,7 @@
     <swiper class='swiper' style='top:{{navHeight+systemInfo.statusBarHeight}}px;' bindchange='onChangeSwiper' current='{{nowSwiperIndex}}' duration='{{500}}' circular='{{false}}'>
         <swiper-item class='swiper_item'>
             <button wx:if="{{!logined}}" class='login_btn' open-type="getUserInfo" bindgetuserinfo="getUserInfo">请先登录</button>
-            <scroll-view wx:elif='{{favoriteList.length}}' class='comic_scroll' scroll-y>
+            <scroll-view wx:elif='{{favoriteList.length}}' class='comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px'>
                 <view style='min-height:100%;margin-top:1px;'>
                     <block wx:for='{{favoriteList}}' wx:for-item='pageItem' wx:for-index='pageIndex' wx:key='{{pageIndex}}'>
                         <view class='comic_item' wx:for='{{pageItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
@@ -28,7 +28,7 @@
                 </view>
             </scroll-view>
             <view wx:elif='{{totalPage==0}}' class='empty_list des_color'>暂无收藏记录~</view>
-            <view wx:else class='loading_tip'>玩命加载中~</view>
+            <view wx:elif='{{totalPage>-1}}' class='loading_tip des_color'>正在加载中...</view>
         </swiper-item>
         <swiper-item class='swiper_item'>
             <scroll-view wx:if='{{comicHistory.length}}' class='comic_scroll' scroll-y>

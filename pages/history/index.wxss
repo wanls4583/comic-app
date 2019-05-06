@@ -138,17 +138,19 @@ button.login_btn {
     top: 50%;
     left: 50%;
     width: 300rpx;
-    height: 90rpx;
     margin: -45rpx 0 0 -150rpx;
+    height: 90rpx;
+    background-color: rgba(250, 145, 68, 0.8);
+    border: 1rpx solid #f0f0f0;
+    border-radius: 6rpx;
     line-height: 90rpx;
-    border: 1rpx solid #fff;
-    background-color: rgba(255, 255, 255, 0.1);
-    font-size: 36rpx;
+    font-size: 30rpx;
     color: #fff;
+    text-align: center;
 }
 
 button.login_btn.button-hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(250, 145, 68, 1);
 }
 
 /* 没有更多了 */

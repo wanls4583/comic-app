@@ -17,14 +17,14 @@ button.head_btn {
     width: 300rpx;
     height: 90rpx;
     line-height: 90rpx;
+    background-color: transparent;
     border: 1rpx solid #fff;
-    background-color: rgba(255, 255, 255, 0.8);
     font-size: 36rpx;
     color: #fff;
 }
 
 button.button-hover {
-    background-color: rgba(255, 255, 255, 1);
+    background-color: rgba(250, 145, 68, 0.8);
 }
 
 .head_name_w {
@@ -35,10 +35,16 @@ button.button-hover {
 }
 
 .head {
-    width: 140rpx;
-    height: 140rpx;
+    width: 160rpx;
+    height: 160rpx;
     border: 8rpx solid #fff;
     border-radius: 8rpx;
+    overflow: hidden;
+}
+
+.head image {
+    width: 100%;
+    height: 100%;
 }
 
 .name {

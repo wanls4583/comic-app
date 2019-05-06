@@ -328,6 +328,9 @@ Page({
             sort: swiperData.sort,
             status: swiperData.status
         };
+        this.setData({
+            [`swiperDataMap[${this.data.nowCid}].totalPage`]: -1
+        });
         this.renderSwiper(this.data.nowCidIndex);
     },
     //底部加载

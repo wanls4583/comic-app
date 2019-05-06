@@ -9,7 +9,7 @@ Page({
         comicHistory: [],
         favoriteList: [],
         nowSwiperIndex: 0,
-        logined: false,
+        logined: true,
         page: 0,
         pageSize: 27,
         totalPage: -1,
@@ -17,7 +17,12 @@ Page({
         systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
     },
-    onShow: function() {
+    onLoad() {
+        wx.showLoading({
+            title: '加载中',
+        });
+    },
+    onShow() {
         var self = this;
         loginUtil.checkLogin().then(() => {
             self.setData({
@@ -29,6 +34,7 @@ Page({
                 self.refresh();
             }
         }).catch(() => {
+            wx.hideLoading();
             self.setData({
                 logined: false
             });
@@ -50,6 +56,10 @@ Page({
     //下拉刷新
     onPullDownRefresh() {
         this.refresh();
+    },
+    //加载更多收藏列表
+    onLoadMore() {
+        this.getLikeList();
     },
     //跳转到动漫详情页
     gotoDetail(e) {
@@ -96,6 +106,9 @@ Page({
                 pageSize: this.data.pageSize
             },
             success: (res)=>{
+                wx.removeStorageSync('likeChange');
+                wx.stopPullDownRefresh();
+                wx.hideLoading();
                 res.data.list.map((item) => {
                     item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
                 });
@@ -108,8 +121,6 @@ Page({
                 this.setData({
                     totalPage: Math.ceil(res.data.total / this.data.pageSize)
                 });
-                wx.removeStorageSync('likeChange');
-                wx.stopPullDownRefresh();
             }
         })
     },
