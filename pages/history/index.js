@@ -20,9 +20,6 @@ Page({
     },
     onLoad() {
         var self = this;
-        wx.showLoading({
-            title: '加载中'
-        });
         wx.getStorage({
             key: 'comic_history',
             success: function (res) {
@@ -96,15 +93,17 @@ Page({
             totalPage: -1,
             favoriteList: []
         });
-        wx.showLoading({
-            title: '加载中',
-        });
         this.getLikeList();
     },
     //获取收藏列表
     getLikeList() {
         if (this.data.totalPage > -1 && this.data.pageSize >= this.data.totalPage) {
             return;
+        }
+        if(this.data.totalPage <= 0) {
+            wx.showLoading({
+                title: '加载中'
+            });
         }
         request({
             url: '/like/list',
