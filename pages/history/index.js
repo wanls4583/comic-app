@@ -37,7 +37,7 @@ Page({
                 logined: true
             });
             if (!self.data.favoriteList.length) {
-                self.getLikeList();
+                self.refresh();
             } else if(wx.getStorageSync('likeChange') && self.data.nowSwiperIndex == 0) {
                 self.refresh();
             }
