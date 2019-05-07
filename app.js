@@ -15,6 +15,9 @@ App({
         }).catch((err) => {
             console.log(err);
         });
+        wx.removeStorageSync('nowCid');
+        wx.removeStorageSync('nowAid');
+        wx.removeStorageSync('likeChange');
     },
     onShow() {
         this.updateCheck();
