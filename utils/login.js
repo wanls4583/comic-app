@@ -5,23 +5,23 @@ function checkLogin() {
         if (wx.getStorageSync('sessionid') && wx.getStorageSync('userInfo')) {
             return checkLoginStatus().then((result)=>{
                 if(!result) {
+                    wx.removeStorageSync('sessionid');
                     return login();
                 }
             });
         } else if (wx.getStorageSync('userInfo')) {
-            wx.removeStorageSync('sessionid');
             return login();
         } else {
             return Promise.reject('数据错误');
         }
     }).catch(()=>{
+        wx.removeStorageSync('userInfo');
+        wx.removeStorageSync('sessionid');
         return checkAuthorize().then(()=>{
             return getUserInfo();
         }).then(()=>{
             return login();
-        }).catch((err)=>{
-            return Promise.reject(err);
-        })
+        });
     });
 }
 
@@ -82,7 +82,7 @@ function getUserInfo() {
         wx.getUserInfo({
             success: (res)=>{
                 resolve(res.userInfo);
-                wx.setStorageSync('userInfo', JSON.stringify(res.userInfo));
+                wx.setStorageSync('userInfo', res.userInfo);
             },
             fail: (err)=>{
                 reject(err);
@@ -105,15 +105,18 @@ function login() {
     }).then((code)=>{
         return new Promise((resolve, reject)=>{
             var userInfo = wx.getStorageSync('userInfo');
-            userInfo = JSON.parse(userInfo);
             userInfo.code = code;
             request({
                 url: '/users/login',
                 method: 'post',
                 data: userInfo,
                 success: (res)=>{
-                    wx.setStorageSync('sessionid', res.data.sessionid);
-                    resolve(res);
+                    if(res.data.status == 1) {
+                        wx.setStorageSync('sessionid', res.data.sessionid);
+                        resolve(res);
+                    } else {
+                        reject(res);
+                    }
                 },
                 fail: (err)=>{
                     reject(err);

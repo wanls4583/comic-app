@@ -18,19 +18,29 @@ Page({
         navHeight: app.globalData.navHeight,
     },
     onLoad() {
+        var self = this;
         wx.showLoading({
             title: '加载中',
+        });
+        wx.getStorage({
+            key: 'comic_history',
+            success: function (res) {
+                self.setData({
+                    comicHistory: res.data
+                });
+            }
         });
     },
     onShow() {
         var self = this;
+        app.historyPage = self;
         loginUtil.checkLogin().then(() => {
             self.setData({
                 logined: true
             });
             if (!self.data.favoriteList.length) {
                 self.getLikeList();
-            } else if(wx.getStorageSync('likeChange')) {
+            } else if(wx.getStorageSync('likeChange') && self.data.nowSwiperIndex == 0) {
                 self.refresh();
             }
         }).catch(() => {
@@ -39,19 +49,6 @@ Page({
                 logined: false
             });
         });
-        wx.getStorage({
-            key: 'comic_history',
-            success: function(res) {
-                var comicHistory = JSON.parse(res.data);
-                comicHistory.map((item)=>{
-                    item.comic.author = item.comic.author.join(',');
-                    item.comic.lastupdatetime = util.formatTime(item.comic.update_time, 'yyyy/MM/dd').slice(2);
-                });
-                self.setData({
-                    comicHistory: comicHistory
-                });
-            },
-        })
     },
     //下拉刷新
     onPullDownRefresh() {
@@ -95,6 +92,9 @@ Page({
             totalPage: -1,
             favoriteList: []
         });
+        wx.showLoading({
+            title: '加载中',
+        });
         this.getLikeList();
     },
     //获取收藏列表
@@ -133,6 +133,9 @@ Page({
         this.setData({
             nowSwiperIndex: index
         });
+        if(index == 0 && wx.getStorageSync('likeChange')) {
+            this.refresh();
+        }
     },
     //滑动
     onChangeSwiper(e) {
@@ -140,11 +143,14 @@ Page({
         this.setData({
             nowSwiperIndex: index
         });
+        if (index == 0 && wx.getStorageSync('likeChange')) {
+            this.refresh();
+        }
     },
     getUserInfo: function (e) {
         console.log(e)
         app.globalData.userInfo = e.detail.userInfo;
-        wx.setStorageSync('userInfo', JSON.stringify(e.detail.userInfo));
+        wx.setStorageSync('userInfo', e.detail.userInfo);
         wx.showLoading({
             title: '登录中',
         });

@@ -30,7 +30,9 @@ Page({
         } else if (comic.status == 0) {
             comic.status = '连载中';
         }
-        comic.author = comic.author.split(',');
+        if (typeof comic.author == 'string') {
+            comic.author = comic.author.split(',');
+        }
         comic.area = '';
         comic.categorys = [];
         comic.publishTime = util.formatTime(comic.publish_time, 'yyyy/MM/dd');
@@ -60,7 +62,7 @@ Page({
         wx.getStorage({
             key: 'comic_history',
             success: function(res) {
-                var list = JSON.parse(res.data);
+                var list = res.data;
                 for (var i = 0; i < list.length; i++) {
                     var obj = list[i];
                     //已经有记录了则将该记录移除
@@ -118,7 +120,7 @@ Page({
         obj.chapterList = this.data.chapterList;
         obj.startChapterIndex = this.data.historyNum - 1;
         obj.comic = this.data.comic;
-        wx.setStorageSync('chapterList', JSON.stringify(obj));
+        wx.setStorageSync('chapterList', obj);
         wx.navigateTo({
             url: '/pages/picture/index'
         });
@@ -145,14 +147,11 @@ Page({
         obj.chapterList = this.data.chapterList;
         obj.startChapterIndex = index;
         obj.comic = this.data.comic;
-        wx.setStorageSync('chapterList', JSON.stringify(obj));
+        wx.setStorageSync('chapterList', obj);
         wx.getStorage({
             key: 'comic_history',
             complete: function(res) {
-                var list = [];
-                if (res.data) {
-                    list = JSON.parse(res.data);
-                }
+                var list = res.data || [];
                 for (var i = 0; i < list.length; i++) {
                     var obj = list[i];
                     //已经有记录了则将该记录移除
@@ -168,8 +167,13 @@ Page({
                 });
                 wx.setStorage({
                     key: 'comic_history',
-                    data: JSON.stringify(list),
+                    data: list
                 });
+                if(app.historyPage) {
+                    app.historyPage.setData({
+                        comicHistory: list
+                    });
+                }
             },
         });
         wx.navigateTo({
@@ -326,7 +330,7 @@ Page({
     getUserInfo: function(e) {
         console.log(e)
         app.globalData.userInfo = e.detail.userInfo;
-        wx.setStorageSync('userInfo', JSON.stringify(e.detail.userInfo));
+        wx.setStorageSync('userInfo', e.detail.userInfo);
         this.setData({
             userInfo: e.detail.userInfo
         });

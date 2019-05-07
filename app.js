@@ -9,7 +9,7 @@ App({
         this.globalData.menuRect = menuRect;
         //登录检测
         loginUtil.checkLogin().then(() => {
-            var userInfo = JSON.parse(wx.getStorageSync('userInfo'));
+            var userInfo = wx.getStorageSync('userInfo');
             this.globalData.userInfo = userInfo;
             this.userInfoReadyCallback && this.userInfoReadyCallback(userInfo);
         }).catch((err) => {

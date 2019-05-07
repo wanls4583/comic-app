@@ -8,6 +8,7 @@ Page({
         searchKey: '',
         comicList: [],
         total: -1,
+        totalPage: -1,
         page: 1,
         pageSize: 27,
         showPlace: false,
@@ -27,8 +28,7 @@ Page({
         scrollAnimation: false
     },
     onLoad: function() {
-        var history = wx.getStorageSync('search_history');
-        history = history && JSON.parse(history) || [];
+        var history = wx.getStorageSync('search_history') || [];
         this.setData({
             autoFocus: true,
             history: history
@@ -104,9 +104,14 @@ Page({
             viewArr: [],
             comicList: [],
             total: -1,
+            totalPage: -1,
             page: 1,
             showPlace: false,
             showHistory: false
+        });
+        wx.showLoading({
+            title: '加载中',
+            icon: 'none'
         });
         this.getComicList();
     },
@@ -138,6 +143,7 @@ Page({
             searchKey: e.detail.value,
             comicList: [],
             total: -1,
+            totalPage: -1,
             page: 1,
             showHistory: false,
         });
@@ -145,8 +151,12 @@ Page({
             this.setData({
                 history: this.data.history.concat([this.data.searchKey])
             })
-            wx.setStorageSync('search_history', JSON.stringify(this.data.history))
+            wx.setStorageSync('search_history', this.data.history);
         }
+        wx.showLoading({
+            title: '加载中',
+            icon: 'none'
+        });
         this.getComicList();
     },
     //清空输入框
@@ -219,6 +229,7 @@ Page({
             url: '/comic?search=' + this.data.searchKey + '&page=' + this.data.page + '&size=' + this.data.pageSize,
             success(res) {
                 wx.stopPullDownRefresh();
+                wx.hideLoading();
                 if (res.data.list.length) {
                     self.setData({
                         page: self.data.page,

@@ -25,12 +25,11 @@ Page({
         switchChecked: true
     },
     init() {
-        var objStr = wx.getStorageSync('chapterList');
+        var obj = wx.getStorageSync('chapterList');
         var self = this;
-        if (!objStr) {
+        if (!obj) {
             return;
         }
-        var obj = JSON.parse(objStr);
         this.comic = obj.comic;
         this.chapterList = obj.chapterList; //章节列表
         this.nowChapterIndex = obj.startChapterIndex; //当前章节索引
@@ -501,11 +500,8 @@ Page({
         this.historyTimer = setTimeout(() => {
             wx.getStorage({
                 key: 'comic_history',
-                complete: function(res) {
-                    var list = [];
-                    if (res.data) {
-                        list = JSON.parse(res.data);
-                    }
+                success: function(res) {
+                    var list = res.data;
                     for (var i = 0; i < list.length; i++) {
                         var obj = list[i];
                         //已经有记录了则将该记录移除
@@ -521,7 +517,7 @@ Page({
                     });
                     wx.setStorage({
                         key: 'comic_history',
-                        data: JSON.stringify(list),
+                        data: list
                     });
                 },
             });
