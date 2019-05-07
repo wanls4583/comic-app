@@ -9,7 +9,7 @@ Page({
         canIUse: wx.canIUse('button.open-type.getUserInfo'),
         statusBarHeight: app.globalData.systemInfo.statusBarHeight
     },
-    onLoad: function() {
+    onLoad() {
         if (app.globalData.userInfo) {
             this.setData({
                 userInfo: app.globalData.userInfo,
@@ -37,7 +37,15 @@ Page({
             })
         }
     },
-    getUserInfo: function(e) {
+    onShow() {
+        if (!this.data.hasUserInfo && app.globalData.userInfo) {
+            this.setData({
+                userInfo: app.globalData.userInfo,
+                hasUserInfo: true
+            });
+        }
+    },
+    getUserInfo(e) {
         console.log(e)
         app.globalData.userInfo = e.detail.userInfo;
         wx.setStorageSync('userInfo', e.detail.userInfo);
