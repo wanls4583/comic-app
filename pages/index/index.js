@@ -120,13 +120,13 @@ Page({
     },
     getSwitch() {
         var self = this;
-        // app.dirMenu = true;
+        // app.canRead = true;
         // return;
         request({
             url: '/switch',
             success(res) {
                 if (res.statusCode == 200) {
-                    app.dirMenu = res.data.switch;
+                    app.canRead = res.data.switch;
                 }
             }
         })

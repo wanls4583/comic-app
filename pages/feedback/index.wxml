@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class='container bg_color'>
     <navigationBar title='意见反馈'></navigationBar>
-    <block wx:if='{{dirMenu}}'>
+    <block wx:if='{{canRead}}'>
         <view class='block_title des_color'>反馈类型</view>
         <radio-group class='category_radio_group' bindchange='categoryRadioChange'>
             <label class='category_radio light_title_color' wx:for='{{categoryList}}' wx:key='{{index}}'>

@@ -34,7 +34,7 @@
                     <view  wx:if='{{!liked}}' bindtap='like'><text class='iconfont icon-shoucang main_color'></text>收藏漫画</view>
                     <view wx:else bindtap='unLike'><text class='iconfont icon-shoucangdianjihou main_color'></text>已收藏</view>
                 </view>
-                <view wx:if='{{dirMenu}}' class='conitnu_read' bindtap='continueRead'>
+                <view wx:if='{{canRead}}' class='conitnu_read' bindtap='continueRead'>
                     <text wx:if='{{historyNum> 0}}'>继续阅读</text>
                     <text wx:else>开始阅读</text>
                 </view>
@@ -43,11 +43,11 @@
                 </view> -->
             </view>
             <view class='detail_w'>
-                <view class='detail light_title_color {{expand || !dirMenu ? "expand" : ""}}' bindtap='toggleExpand'>{{comic.content}}<view wx:if='{{dirMenu}}' class='iconfont icon-zhankai des_color'></view></view>
+                <view class='detail light_title_color {{expand || !canRead ? "expand" : ""}}' bindtap='toggleExpand'>{{comic.content}}<view wx:if='{{canRead}}' class='iconfont icon-zhankai des_color'></view></view>
             </view>
             <view class='dir_w'>
                 <view class='dir_title strong_title_color'>{{comic.status}}<text class='dir_count des_color'>共{{chapterList.length}}话</text></view>
-                <view wx:if='{{dirMenu}}' class='dir_item light_title_color {{index+1==historyNum ? "active" : ""}}' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' bindtap='gotoPicture'>{{item.name}}</view>
+                <view wx:if='{{canRead}}' class='dir_item light_title_color {{index+1==historyNum ? "active" : ""}}' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' bindtap='gotoPicture'>{{item.name}}</view>
             </view>
         </view>
     </scroll-view>

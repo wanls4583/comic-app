@@ -4,7 +4,7 @@
     <view class='tab_w' style='top:{{systemInfo.statusBarHeight}}px;height:{{navHeight}}px;right:{{systemInfo.screenWidth-menuRect.left}}px'>
         <view class='tab_item_w'>
             <view class='tab_item {{nowSwiperIndex==0 ? "active" : ""}}' data-index='{{0}}' bindtap='changeSwiper'>收藏</view>
-            <view class='tab_item {{nowSwiperIndex==1 ? "active" : ""}}' data-index='{{1}}' bindtap='changeSwiper'>历史</view>
+            <view wx:if='{{canRead}}' class='tab_item {{nowSwiperIndex==1 ? "active" : ""}}' data-index='{{1}}' bindtap='changeSwiper'>历史</view>
         </view>
         <view class='delete {{nowSwiperIndex==1 ? "active" : ""}}' bindtap='clearHistory'>
             <text class='iconfont icon-shanchu'></text>
@@ -30,7 +30,7 @@
             <view wx:elif='{{totalPage==0}}' class='empty_list des_color'>暂无收藏记录~</view>
             <view wx:elif='{{totalPage>-1}}' class='loading_tip des_color'>正在加载中...</view>
         </swiper-item>
-        <swiper-item class='swiper_item'>
+        <swiper-item wx:if='{{canRead}}' class='swiper_item'>
             <scroll-view wx:if='{{comicHistory.length}}' class='comic_scroll' scroll-y>
                 <view style='min-height:100%;margin-top:1px;'>
                     <view class='comic_item' wx:for='{{comicHistory}}' wx:key='{{item.comicid}}' data-comic='{{item.comic}}' bindtap='gotoDetail'>

@@ -9,7 +9,7 @@ Page({
         chapterList: [],
         loadingStatus: 0,
         historyNum: 0,
-        dirMenu: false,
+        canRead: false,
         nowTab: 0,
         liked: false,
         logined: false,
@@ -38,7 +38,7 @@ Page({
         comic.publishTime = util.formatTime(comic.publish_time, 'yyyy/MM/dd');
         this.setData({
             comic: comic,
-            dirMenu: app.dirMenu
+            canRead: app.canRead
         });
         this.getCategoryAndArea();
         this.getLiked();

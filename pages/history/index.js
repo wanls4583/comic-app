@@ -16,11 +16,12 @@ Page({
         menuRect: app.globalData.menuRect,
         systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
+        canRead: false
     },
     onLoad() {
         var self = this;
         wx.showLoading({
-            title: '加载中',
+            title: '加载中'
         });
         wx.getStorage({
             key: 'comic_history',
@@ -48,6 +49,9 @@ Page({
             self.setData({
                 logined: false
             });
+        });
+        this.setData({
+            canRead: app.canRead
         });
     },
     //下拉刷新

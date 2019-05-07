@@ -4,7 +4,7 @@ const app = getApp();
 const request = require('../../utils/request.js');
 Page({
     data: {
-        dirMenu: app.dirMenu,
+        canRead: false,
         categoryList: [{
             name: '求漫画',
             value: '求漫画',
@@ -44,6 +44,11 @@ Page({
         //设置标题
         wx.setNavigationBarTitle({
             title: '意见反馈'
+        });
+    },
+    onShow() {
+        this.setData({
+            canRead: app.canRead
         });
     },
     categoryRadioChange(e) {
