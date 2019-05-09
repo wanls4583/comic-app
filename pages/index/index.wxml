@@ -7,7 +7,7 @@
             <text>搜索漫画</text>
         </view>
     </view>
-    <scroll-view class="recommend_comic_scroll" bindscroll='onScroll' scroll-top='{{scrollTop}}' scroll-with-animation='{{true}}' scroll-y>
+    <pull-scroll-view external-classes="recommend_comic_scroll" bindscroll='onScroll' bindrefresh='onRefresh' scrollToTop='{{toTop}}' stopRefresh='{{stopRefresh}}' topPadding='{{topPadding}}' topHeight='{{topHeight}}'>
         <view class='top_w'>
             <!-- 轮播图 -->
             <swiper class='banner_w' style='height:{{170+systemInfo.statusBarHeight+navHeight}}px' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
@@ -72,7 +72,7 @@
                 </view>
             </view>
         </block>
-    </scroll-view>
+    </pull-scroll-view>
     <view class='scroll_top {{showScrollBtn?"active":""}}' bindtap='scrollToTop'>
         <text class='iconfont icon-top'></text>
     </view>

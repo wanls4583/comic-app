@@ -1,0 +1,13 @@
+<view class='pull_scroll_view external-classes'>
+    <scroll-view class='scroll_view' bindscroll='onScroll' bindtouchstart='touchStart' bindtouchend='touchEnd' scroll-top='{{scrollTop}}' scroll-with-animation='{{animation}}' scroll-y>
+        <view class='pull_down' style='height:{{topHeight}}px;padding-top:{{topPadding}}px'>
+            <view class='loader-ring'>
+                <view class='loader-ring-light'></view>
+                <view class='loader-ring-track'></view>
+            </view>
+        </view>
+        <view class='content}'>
+            <slot></slot>
+        </view>
+    </scroll-view>
+</view>

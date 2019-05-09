@@ -16,7 +16,10 @@ Page({
         menuRect: app.globalData.menuRect,
         searchOpacity: 0,
         showScrollBtn: false,
-        scrollTop: 0
+        toTop: false,
+        stopRefresh: false,
+        topHeight: app.globalData.navHeight * 2,
+        topPadding: app.globalData.systemInfo.statusBarHeight > 25 ? app.globalData.systemInfo.statusBarHeight : 0
     },
     onLoad: function() {
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
@@ -25,20 +28,20 @@ Page({
         this.getRecommend();
     },
     //顶部下拉刷新
-    onPullDownRefresh() {
+    onRefresh() {
         this.getSwitch();
         this.getRecommend();
     },
     //滚动事件
     onScroll(e) {
-        var scrollTop = e.detail.scrollTop;
+        var scrollTop = e.detail.scrollTop - this.data.topHeight - this.data.topPadding;
         var opacity = scrollTop / (170 + this.data.navHeight + this.data.systemInfo.statusBarHeight);
         opacity = opacity > 1 ? 1 : opacity;
         opacity = opacity < 0 ? 0 : opacity;
         this.setData({
             searchOpacity: opacity
         });
-        if(scrollTop > this.data.systemInfo.screenHeight / 2) {
+        if (scrollTop > this.data.systemInfo.screenHeight / 2) {
             this.setData({
                 showScrollBtn: true
             });
@@ -69,20 +72,24 @@ Page({
     },
     scrollToTop(e) {
         this.setData({
-            scrollTop: 0
+            toTop: true
         });
     },
     //获取推荐列表
     getRecommend() {
         var self = this;
         wx.showLoading({
-            title: '加载中'
+            title: '加载中',
+            mask: true
         });
         request({
             url: '/recommend',
             success(res) {
                 wx.stopPullDownRefresh();
                 wx.hideLoading();
+                self.setData({
+                    stopRefresh: true
+                });
                 if (res.statusCode == 200 && res.data && res.data.length) {
                     var allRec = [];
                     var banner = [];
