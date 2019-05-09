@@ -115,11 +115,12 @@ Page({
             });
         }
         //切换中
-        if (this.viewRending) {
+        // if (this.viewRending) {
             return;
-        }
+        // }
         //切换到下一个视图
         if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight && e.detail.scrollHeight - scrollTop <= this.windowHeight + 50 && swiperData.nowView < swiperData.viewArr.length - 1) {
+            console.log('next view', swiperData.nowView + 1)
             this.viewRending = true;
             this.setData({
                 [`swiperDataMap[${cid}].nowView`]: swiperData.nowView + 1
@@ -134,6 +135,7 @@ Page({
             });
             //切换到上一个视图
         } else if (scrollTop < 3 * this.itemHeight && swiperData.nowView > 0) {
+            console.log('pre view', swiperData.nowView - 1)
             this.viewRending = true;
             this.setData({
                 [`swiperDataMap[${cid}].nowView`]: swiperData.nowView - 1

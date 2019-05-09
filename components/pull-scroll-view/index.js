@@ -40,12 +40,9 @@ Component({
                 //防止频繁刷新，导致画面闪烁
                 this.stopTimer = setTimeout(() => {
                     this.refreshing = false;
-                    if (this.canSetTop) {
-                        this.setData({
-                            scrollTop: this.properties.topHeight
-                        });
-                        this.canSetTop = false;
-                    }
+                    this.setData({
+                        scrollTop: this.data.scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
+                    });
                     this.setData({
                         upText: this.properties.uploadTipText
                     });
@@ -54,7 +51,7 @@ Component({
         },
         topHeight: {
             type: Number,
-            value: app.globalData.navHeight * 1
+            value: app.globalData.navHeight * 1.5
         },
         topPadding: {
             type: Number,
@@ -79,7 +76,6 @@ Component({
     },
     lifetimes: {
         attached() {
-            this.canSetTop = true;
             this.properties.topHeight += this.properties.topPadding;
             this.setData({
                 upText: this.properties.uploadTipText,
@@ -88,7 +84,6 @@ Component({
         }
     },
     attached: function(option) {
-        this.canSetTop = true;
         this.properties.topHeight += this.properties.topPadding;
         this.setData({
             upText: this.properties.uploadTipText,
@@ -99,12 +94,11 @@ Component({
         onScroll(e) {
             var scrollTop = e.detail.scrollTop;
             this.triggerEvent('scroll', e.detail);
-            if (!this.touching && !this.refreshing && !this.readyToRefresh && !this.gettingRect && this.canSetTop) {
+            if (!this.touching && !this.refreshing && !this.readyToRefresh && !this.gettingRect) {
                 if (scrollTop < this.properties.topHeight) {
                     this.setData({
-                        scrollTop: this.properties.topHeight
+                        scrollTop: this.data.scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
                     });
-                    this.canSetTop = false;
                 }
             }
             clearTimeout(this.scrollTimer);
@@ -114,8 +108,7 @@ Component({
                     this.refresh();
                 }
                 this.readyToRefresh = false;
-                this.canSetTop = true;
-            }, 60);
+            }, 500);
         },
         touchStart(e) {
             this.touching = true;
@@ -123,22 +116,24 @@ Component({
         },
         touchEnd(e) {
             this.touching = false;
-            //时间太短，不触发更新
-            // if(new Date().getTime() - this.startTime < 100) {
-            //     return;
-            // }
+            this.endTime = new Date().getTime();
             this.getRect().then((res) => {
                 if (!res || this.refreshing || this.readyToRefresh) {
                     return;
                 }
-                if (res.scrollTop <= 0) {
+                //时间太短，不触发更新
+                if (res.scrollTop <= 0 && !(app.globalData.systemInfo.platform == 'android' && this.endTime - this.startTime < 300)) {
                     //准备更新
                     this.readyToRefresh = true;
-                } else if (res.scrollTop < this.data.topHeight && this.canSetTop) {
+                    //滚动停止时再刷新
+                    this.scrollTimer = setTimeout(() => {
+                        this.refresh();
+                        this.readyToRefresh = false;
+                    }, 100);
+                } else if (res.scrollTop < this.data.topHeight) {
                     this.setData({
-                        scrollTop: this.properties.topHeight
+                        scrollTop: this.data.scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
                     });
-                    this.canSetTop = false;
                 }
             });
         },
