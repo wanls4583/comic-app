@@ -54,7 +54,7 @@ Component({
         },
         topHeight: {
             type: Number,
-            value: app.globalData.navHeight * 2
+            value: app.globalData.navHeight * 1
         },
         topPadding: {
             type: Number,

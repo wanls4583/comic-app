@@ -16,6 +16,7 @@
     height: 100%;
     margin-top: -20px;
     margin-left: -3%;
+    box-sizing: content-box;
 }
 
 .cover_bg image {

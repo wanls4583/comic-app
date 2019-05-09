@@ -2,5 +2,6 @@
     "usingComponents": {
         "navigationBar": "/components/navigationBar/index"
     },
+    "enablePullDownRefresh": false,
     "disableScroll": true
 }

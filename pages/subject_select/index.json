@@ -1,5 +1,5 @@
 {
-    "backgroundColorTop": "#fa9144",
-    "backgroundColorBottom": "#f0f0f0",
-    "usingComponents": {}
+    "usingComponents": {},
+    "enablePullDownRefresh": false,
+    "disableScroll": true
 }

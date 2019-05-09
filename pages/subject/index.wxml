@@ -15,7 +15,7 @@
     </view>
     <swiper class='list_swiper_w' style='margin-top:{{navHeight+systemInfo.statusBarHeight}}px;' bindanimationfinish='animationFinish' bindchange='swiperChange' current='{{nowCidIndex}}' duration='{{animationDuration}}' circular='{{false}}'>
         <swiper-item class='swiper_item' wx:for='{{categoryList}}' wx:for-item='cItem' wx:key='{{cItem.cid}}'>
-            <view class='order_area_w {{swiperDataMap[cItem.cid] && swiperDataMap[cItem.cid].showSort ? "active" : ""}}'>
+            <view class='order_area_w {{(swiperDataMap[cItem.cid] && swiperDataMap[cItem.cid].showSort) || systemInfo.platform == "android" ? "active" : ""}}'>
                 <view class='order_w'>
                     <view class='order_item light_title_color {{swiperDataMap[cItem.cid].sort=="read_count" ? "active" : ""}}' data-sort='read_count' data-cid='{{cItem.cid}}' bindtap='selectSort'>热门</view>
                     <view class='order_item light_title_color {{swiperDataMap[cItem.cid].sort=="update_time" && swiperDataMap[cItem.cid].status!=1 ? "active" : ""}}' data-sort='update_time' data-cid='{{cItem.cid}}' bindtap='selectSort'>更新</view>

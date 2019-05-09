@@ -13,6 +13,7 @@ Page({
         nowTab: 0,
         liked: false,
         logined: false,
+        menuRect: app.globalData.menuRect,
         systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
         expand: false,

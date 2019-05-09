@@ -18,7 +18,7 @@ Page({
         showScrollBtn: false,
         toTop: false,
         stopRefresh: false,
-        topHeight: app.globalData.navHeight * 2,
+        topHeight: app.globalData.navHeight * 1,
         topPadding: app.globalData.systemInfo.statusBarHeight > 25 ? app.globalData.systemInfo.statusBarHeight : 0
     },
     onLoad: function() {

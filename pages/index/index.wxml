@@ -7,33 +7,47 @@
             <text>搜索漫画</text>
         </view>
     </view>
-    <pull-scroll-view external-classes="recommend_comic_scroll" bindscroll='onScroll' bindrefresh='onRefresh' scrollToTop='{{toTop}}' stopRefresh='{{stopRefresh}}' topPadding='{{topPadding}}' topHeight='{{topHeight}}'>
-        <view class='top_w'>
-            <!-- 轮播图 -->
-            <swiper class='banner_w' style='height:{{170+systemInfo.statusBarHeight+navHeight}}px' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
-                <swiper-item wx:for="{{banner}}" wx:for-item='homeItem' wx:key='{{homeItem.comicid}}'>
-                    <view class='banner_item' style='background:url({{homeItem.showconver}}) no-repeat center;background-size:cover' data-comic='{{homeItem}}' bindtap='gotoDetail'>
-                        <view class='banner_bottom'>
-                            <view>{{homeItem.title}}</view>
-                            <view>
-                                <text class='banner_now main_color'>{{currentBannerIndex+1}}</text>
-                                <text>/{{banner.length}}</text>
+    <view class='recommend_comic_scroll' style='padding-top:{{systemInfo.statusBarHeight > menuRect.top ? systemInfo.statusBarHeight : 0}}px'>
+        <pull-scroll-view bindscroll='onScroll' bindrefresh='onRefresh' scrollToTop='{{toTop}}' stopRefresh='{{stopRefresh}}' topPadding='{{topPadding}}' topHeight='{{topHeight}}'>
+            <view class='top_w'>
+                <!-- 轮播图 -->
+                <swiper class='banner_w' style='height:{{170+systemInfo.statusBarHeight+navHeight}}px' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
+                    <swiper-item wx:for="{{banner}}" wx:for-item='homeItem' wx:key='{{homeItem.comicid}}'>
+                        <view class='banner_item' style='background:url({{homeItem.showconver}}) no-repeat center;background-size:cover' data-comic='{{homeItem}}' bindtap='gotoDetail'>
+                            <view class='banner_bottom'>
+                                <view>{{homeItem.title}}</view>
+                                <view>
+                                    <text class='banner_now main_color'>{{currentBannerIndex+1}}</text>
+                                    <text>/{{banner.length}}</text>
+                                </view>
                             </view>
                         </view>
+                    </swiper-item>
+                </swiper>
+            </view>
+            <!-- 各分类推荐列表 -->
+            <block wx:if='{{homeCItem.category.cid}}' wx:for="{{recommend}}" wx:for-item="homeCItem" wx:key='{{homeCItem.category.cid}}'>
+                <view class='column_w'>
+                    <view class='category_title_w'>
+                        <view class='left_w'>
+                            <text class='category_title strong_title_color'>{{homeCItem.category.name}}</text>
+                        </view>
                     </view>
-                </swiper-item>
-            </swiper>
-        </view>
-        <!-- 各分类推荐列表 -->
-        <block wx:if='{{homeCItem.category.cid}}' wx:for="{{recommend}}" wx:for-item="homeCItem" wx:key='{{homeCItem.category.cid}}'>
-            <view class='column_w'>
-                <view class='category_title_w'>
-                    <view class='left_w'>
-                        <text class='category_title strong_title_color'>{{homeCItem.category.name}}</text>
+                    <view wx:if="{{homeCItem.list.length > 6}}" class='hot_item_w hot_item_w_10'>
+                        <scroll-view class='hot_scroll' scroll-x>
+                            <view class='hot_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
+                                <view class='hot_img'>
+                                    <image src='{{homeClistItem.cover_url}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
+                                </view>
+                                <view class='hot_title title_color'>{{homeClistItem.title}}</view>
+                                <view class='hot_new des_color'>{{homeClistItem.last_part_name}}</view>
+                            </view>
+                        </scroll-view>
+                        <view class='read_more_w'>
+                            <view class='read_more title_color bg_color' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
+                        </view>
                     </view>
-                </view>
-                <view wx:if="{{homeCItem.list.length > 6}}" class='hot_item_w hot_item_w_10'>
-                    <scroll-view class='hot_scroll' scroll-x>
+                    <view wx:elif="{{homeCItem.list.length > 4}}" class='hot_item_w_6'>
                         <view class='hot_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
                             <view class='hot_img'>
                                 <image src='{{homeClistItem.cover_url}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
@@ -41,38 +55,26 @@
                             <view class='hot_title title_color'>{{homeClistItem.title}}</view>
                             <view class='hot_new des_color'>{{homeClistItem.last_part_name}}</view>
                         </view>
-                    </scroll-view>
-                    <view class='read_more_w'>
-                        <view class='read_more title_color bg_color' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
-                    </view>
-                </view>
-                <view wx:elif="{{homeCItem.list.length > 4}}" class='hot_item_w_6'>
-                    <view class='hot_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
-                        <view class='hot_img'>
-                            <image src='{{homeClistItem.cover_url}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
+                        <view class='read_more_w'>
+                            <view class='read_more title_color bg_color' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
                         </view>
-                        <view class='hot_title title_color'>{{homeClistItem.title}}</view>
-                        <view class='hot_new des_color'>{{homeClistItem.last_part_name}}</view>
                     </view>
-                    <view class='read_more_w'>
-                        <view class='read_more title_color bg_color' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
-                    </view>
-                </view>
-                <view wx:else class='hot_item_w' class='hot_item_w_4'>
-                    <view class='hot_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
-                        <view class='hot_img'>
-                            <image src='{{homeClistItem.cover_url_big}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
+                    <view wx:else class='hot_item_w' class='hot_item_w_4'>
+                        <view class='hot_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
+                            <view class='hot_img'>
+                                <image src='{{homeClistItem.cover_url_big}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
+                            </view>
+                            <view class='hot_title title_color'>{{homeClistItem.title}}</view>
+                            <view class='hot_new des_color'>{{homeClistItem.last_part_name}}</view>
                         </view>
-                        <view class='hot_title title_color'>{{homeClistItem.title}}</view>
-                        <view class='hot_new des_color'>{{homeClistItem.last_part_name}}</view>
-                    </view>
-                    <view class='read_more_w'>
-                        <view class='read_more title_color bg_color' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
+                        <view class='read_more_w'>
+                            <view class='read_more title_color bg_color' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
+                        </view>
                     </view>
                 </view>
-            </view>
-        </block>
-    </pull-scroll-view>
+            </block>
+        </pull-scroll-view>
+    </view>
     <view class='scroll_top {{showScrollBtn?"active":""}}' bindtap='scrollToTop'>
         <text class='iconfont icon-top'></text>
     </view>

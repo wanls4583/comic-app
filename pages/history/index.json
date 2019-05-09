@@ -1,7 +1,6 @@
 {
-    "backgroundColorTop": "#fa9144",
-    "backgroundColorBottom": "#ffffff",
     "usingComponents": {},
     "navigationBarTitleText": "书架",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": false,
+    "disableScroll": true
 }

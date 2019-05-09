@@ -5,7 +5,7 @@ App({
         var menuRect = wx.getMenuButtonBoundingClientRect();
         var systemInfo = wx.getSystemInfoSync();
         this.globalData.systemInfo = systemInfo;
-        this.globalData.navHeight = menuRect.height + (menuRect.top - systemInfo.statusBarHeight) * 2;
+        this.globalData.navHeight = menuRect.height + (menuRect.top - (systemInfo.statusBarHeight < menuRect.top ? systemInfo.statusBarHeight : 0)) * 2;
         this.globalData.menuRect = menuRect;
         //登录检测
         loginUtil.checkLogin().then(() => {
@@ -15,6 +15,7 @@ App({
         }).catch((err) => {
             console.log(err);
         });
+        console.log(systemInfo, menuRect)
         wx.removeStorageSync('nowCid');
         wx.removeStorageSync('nowAid');
         wx.removeStorageSync('likeChange');

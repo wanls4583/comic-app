@@ -192,6 +192,7 @@
 
 .scroll_list_w {
     margin-top: 80rpx;
+    overflow: auto;
 }
 
 /* 漫画item-begin */
