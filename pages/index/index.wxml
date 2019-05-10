@@ -7,7 +7,7 @@
             <text>搜索漫画</text>
         </view>
     </view>
-    <view class='recommend_comic_scroll' style='padding-top:{{systemInfo.statusBarHeight > menuRect.top ? systemInfo.statusBarHeight : 0}}px'>
+    <view class='recommend_comic_scroll'>
         <pull-scroll-view bindscroll='onScroll' bindrefresh='onRefresh' scrollToTop='{{toTop}}' stopRefresh='{{stopRefresh}}' topPadding='{{topPadding}}' topHeight='{{topHeight}}'>
             <view class='top_w'>
                 <!-- 轮播图 -->

@@ -7,14 +7,14 @@
     <!-- 分类列表 -->
     <view class='category_w'>
         <scroll-view scroll-x class='scroll_w' scroll-into-view="{{toCategory}}" scroll-with-animation="{{true}}">
-            <view id='category_{{item.cid}}' class='item light_title_color {{nowCid == item.cid ? "active" : ""}}' wx:for='{{categoryList}}' wx:key='{{item.cid}}' data-category='{{item}}' bindtap='slectCategory'>{{item.name}}</view>
+            <view id='category_{{item.cid}}' class='item light_title_color {{nowCid == item.cid ? "active" : ""}}' wx:for='{{categoryList}}' wx:key='{{item.cid}}' data-category='{{item}}' bindtap='selectCategory'>{{item.name}}</view>
         </scroll-view>
         <view wx:if='{{categoryList.length}}' class='fixed_menu iconfont icon-menu1 main_color' bindtap='gotoSubjectSelect'>
         </view>
         <view class='category_line'></view>
     </view>
-    <swiper class='list_swiper_w' style='margin-top:{{navHeight+systemInfo.statusBarHeight}}px;' bindanimationfinish='animationFinish' bindchange='swiperChange' current='{{nowCidIndex}}' duration='{{animationDuration}}' circular='{{false}}'>
-        <swiper-item class='swiper_item' wx:for='{{categoryList}}' wx:for-item='cItem' wx:key='{{cItem.cid}}'>
+    <view class='list_swiper_w' style='margin-top:{{navHeight+systemInfo.statusBarHeight}}px;'>
+        <view class='swiper_item' wx:for='{{categoryList}}' wx:for-item='cItem' wx:key='{{cItem.cid}}' wx:if='{{cItem.cid==nowCid}}'>
             <view class='order_area_w {{(swiperDataMap[cItem.cid] && swiperDataMap[cItem.cid].showSort) || systemInfo.platform == "android" ? "active" : ""}}'>
                 <view class='order_w'>
                     <view class='order_item light_title_color {{swiperDataMap[cItem.cid].sort=="read_count" ? "active" : ""}}' data-sort='read_count' data-cid='{{cItem.cid}}' bindtap='selectSort'>热门</view>
@@ -25,11 +25,11 @@
                 <view class='area main_color' bindtap='gotoSubjectSelect'>{{aidMap[aidSelectMap[cItem.cid]||0]}}</view>
             </view>
             <!-- 各分类下的列表 -->
-            <block wx:if='{{(renderCids[0]===cItem.cid || renderCids[1]===cItem.cid || renderCids[2]===cItem.cid)}}' wx:for='{{swiperDataMap[cItem.cid].viewArr}}' wx:for-item='vItem' wx:key='{{vItem}}'>
-                <scroll-view wx:if='{{vItem==swiperDataMap[cItem.cid].nowView}}' class='category_comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}' scroll-with-animation="{{scrollAnimation}}">
+            <block wx:for='{{swiperDataMap[cItem.cid].viewArr}}' wx:for-item='vItem' wx:key='{{vItem}}' wx:if='{{vItem==swiperDataMap[cItem.cid].nowView}}'>
+                <scroll-view class='category_comic_scroll' scroll-y bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' bindscroll='onScroll' scroll-top='{{scrollTop[cItem.cid]}}' scroll-with-animation="{{scrollAnimation}}">
                     <view class='scroll_list_w'>
-                        <block wx:for='{{swiperDataMap[cItem.cid].renderData}}' wx:for-item='rItem' wx:for-index='rIndex' wx:key='{{rIndex}}'>
-                            <view wx:if='{{rIndex >= vItem*viewSize && rIndex < (vItem+1)*viewSize+overlappingPage}}' class='comic_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>
+                        <block wx:for='{{swiperDataMap[cItem.cid].renderData}}' wx:for-item='rItem' wx:for-index='rIndex' wx:key='{{rIndex}}' wx:if='{{rIndex >= vItem*viewSize && rIndex < (vItem+1)*viewSize+overlappingPage}}'>
+                            <view class='comic_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>
                                 <view class='comic_item_img'>
                                     <image src='{{comicItem.showpicurlb}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
                                 </view>
@@ -40,14 +40,14 @@
                             </view>
                         </block>
                     </view>
-                    <view wx:if='{{swiperDataMap[cItem.cid].totalPage <= swiperDataMap[cItem.cid].endPage+1}}' class='loading_tip des_color nomore'>没有更多了~</view>
+                    <view wx:if='{{swiperDataMap[cItem.cid].totalPage > -1 && swiperDataMap[cItem.cid].totalPage <= swiperDataMap[cItem.cid].endPage+1}}' class='loading_tip des_color nomore'>没有更多了~</view>
                     <view wx:elif='{{swiperDataMap[cItem.cid].totalPage > -1}}' class='loading_tip des_color'>
                         <text>正在加载中...</text>
                     </view>
                 </scroll-view>
             </block>
-        </swiper-item>
-    </swiper>
+        </view>
+    </view>
     <cover-view wx:if='{{stopSwiper}}' class='list_swiper_cover'></cover-view>
     <view class='scroll_top {{showScrollBtn?"active":""}}' bindtap='scrollToTop'><text class='iconfont icon-top'></text></view>
 </view>

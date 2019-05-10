@@ -63,6 +63,10 @@
     height: auto;
 }
 
+.swiper_item {
+    height: 100%;
+}
+
 /* 滑块遮罩层 */
 
 .list_swiper_cover {
@@ -172,10 +176,11 @@
 }
 
 .area {
+    min-height: 34rpx;
     padding: 6rpx 20rpx;
     border: 2rpx solid #fa9144;
     font-size: 22rpx;
-    border-radius: 20rpx;
+    border-radius: 34rpx;
 }
 
 .order_item.active, .order_item:active {

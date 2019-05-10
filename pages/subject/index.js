@@ -11,7 +11,6 @@ Page({
         categoryList: [], //分类列表
         nowAid: 0, //当前地区ID
         nowCid: 0, //当前分类ID
-        nowCidIndex: 0, //当前滑块的索引
         pageSize: 3 * 3 * 3, //一页的数量
         toCategory: 'category_0', //分类列表滚动到指定位置
         showCategoryDialog: false, //选择分类弹框
@@ -19,7 +18,6 @@ Page({
         swiperDataMap: [], //所有漫画列表
         aidSelectMap: [], //存储地区选择
         aidMap: [], //存储所有地区
-        renderCids: [], //当前可渲染的列表对应的分类ID
         scrollTop: [], //列表对应的滚动距离
         viewSize: 40, //scroll-view中最多同时存在40页
         overlappingPage: 5, //前后视图交叉的页数
@@ -54,7 +52,7 @@ Page({
         if (!isNaN(parseInt(cid)) && this.data.nowCid != cid) {
             this.historyCid = cid;
             if (this.data.categoryList.length) {
-                this.changeCategory(cid);
+                this.renderSwiper(cid);
             }
             //地区更改需要刷新列表
         } else if (!isNaN(parseInt(aid)) && this.data.nowAid != aid) {
@@ -77,11 +75,16 @@ Page({
     //滚动事件
     onScroll(e) {
         //避免频繁计算
+        var time = 50;
+        //低端安卓机性能不太好
+        if (this.data.systemInfo.platform == 'android') {
+            time = 100;
+        }
         if (!this.scrollTimer) {
             this.scrollTimer = setTimeout(() => {
                 this.scrollCompute(e);
                 this.scrollTimer = null;
-            }, 50);
+            }, time);
         }
     },
     scrollCompute(e) {
@@ -92,42 +95,51 @@ Page({
         var preScrollTop = this.preScrollTop || 0;
         this.preScrollTop = scrollTop;
         //显/隐排序栏
-        if (scrollTop < app.globalData.systemInfo.screenWidth / 375 * 40) {
-            this.setData({
-                [`swiperDataMap[${cid}].showSort`]: true
-            });
-        } else if (preScrollTop - scrollTop < -10) {
-            this.setData({
-                [`swiperDataMap[${cid}].showSort`]: false
-            });
-        } else if (preScrollTop - scrollTop > 10) {
-            this.setData({
-                [`swiperDataMap[${cid}].showSort`]: true
-            });
+        if (this.data.systemInfo.platform != 'android') {
+            if (scrollTop < app.globalData.systemInfo.screenWidth / 375 * 40) {
+                this.setData({
+                    [`swiperDataMap[${cid}].showSort`]: true
+                });
+            } else if (preScrollTop - scrollTop < -10) {
+                this.setData({
+                    [`swiperDataMap[${cid}].showSort`]: false
+                });
+            } else if (preScrollTop - scrollTop > 10) {
+                this.setData({
+                    [`swiperDataMap[${cid}].showSort`]: true
+                });
+            }
         }
         if (scrollTop > this.data.systemInfo.screenHeight / 2) {
-            this.setData({
+            !this.data.showScrollBtn && this.setData({
                 showScrollBtn: true
             });
-        } else {
+        } else if(this.data.showScrollBtn) {
             this.setData({
                 showScrollBtn: false
             });
         }
         //切换中
-        // if (this.viewRending) {
+        if (this.viewRending) {
             return;
-        // }
+        }
+        this.viewHeight = this.viewHeight || this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight;
+        this.nextViewScrollTop = this.nextViewScrollTop || this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight;
+        this.preViewScrollTop = this.preViewScrollTop || this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 3 * this.itemHeight;
         //切换到下一个视图
-        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight && e.detail.scrollHeight - scrollTop <= this.windowHeight + 50 && swiperData.nowView < swiperData.viewArr.length - 1) {
-            console.log('next view', swiperData.nowView + 1)
+        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.viewHeight && e.detail.scrollHeight - scrollTop <= this.windowHeight + 50 && swiperData.nowView < swiperData.viewArr.length - 1) {
+            wx.showLoading({
+                title: '切换视图中',
+                mask: true
+            });
             this.viewRending = true;
             this.setData({
                 [`swiperDataMap[${cid}].nowView`]: swiperData.nowView + 1
             }, () => {
                 this.setData({
-                    [`scrollTop[${cid}]`]: this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
+                    [`scrollTop[${cid}]`]: this.nextViewScrollTop
                 }, () => {
+                    wx.hideLoading();
                     setTimeout(() => {
                         this.viewRending = false;
                     }, 1000);
@@ -135,14 +147,18 @@ Page({
             });
             //切换到上一个视图
         } else if (scrollTop < 3 * this.itemHeight && swiperData.nowView > 0) {
-            console.log('pre view', swiperData.nowView - 1)
+            wx.showLoading({
+                title: '切换视图中',
+                mask: true
+            });
             this.viewRending = true;
             this.setData({
                 [`swiperDataMap[${cid}].nowView`]: swiperData.nowView - 1
             }, () => {
                 this.setData({
-                    [`scrollTop[${cid}]`]: this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 3 * this.itemHeight
+                    [`scrollTop[${cid}]`]: this.preViewScrollTop
                 }, () => {
+                    wx.hideLoading();
                     setTimeout(() => {
                         this.viewRending = false;
                     }, 1000);
@@ -157,59 +173,23 @@ Page({
             this.loadNext(cid);
         }
     },
-    //左右滑动切换完成事件
-    animationFinish(e) {
-        var current = e.detail.current;
-        this.renderSwiper(current);
-        this.setData({
-            stopSwiper: false
-        });
-    },
-    swiperChange(e) {
-        this.setData({
-            stopSwiper: true
-        });
-    },
     //渲染swiper-item，每次只渲染三个
-    renderSwiper(current) {
-        var categoryList = this.data.categoryList;
-        var map = [];
+    renderSwiper(cid) {
         var scrollTop = [];
-        if (!this.data.swiperDataMap[categoryList[current].cid] || this.data.swiperDataMap[categoryList[current].cid].total < 0) {
+        if (!this.data.swiperDataMap[cid] || this.data.swiperDataMap[cid].total < 0) {
             wx.showLoading({
                 title: '加载中'
             });
         }
-        if (current == 0) {
-            map.push(0);
-            current + 1 < categoryList.length && map.push(current + 1);
-            current + 2 < categoryList.length && map.push(current + 2);
-        } else if (current == categoryList.length - 1) {
-            current - 1 > -1 && map.push(current - 1);
-            current - 2 > -1 && map.push(current - 2);
-            map.push(current);
-        } else {
-            current - 1 > -1 && map.push(current - 1);
-            map.push(current);
-            current + 1 < categoryList.length && map.push(current + 1);
+        if (!this.data.swiperDataMap[cid] || this.data.swiperDataMap[cid].total < 0) {
+            this.loadNext(cid);
         }
-        map = map.map((item) => {
-            return categoryList[item].cid;
-        });
-        map.map((item) => {
-            if (!this.data.swiperDataMap[item] || this.data.swiperDataMap[item].total < 0) {
-                this.loadNext(item);
-            }
-        });
-        map.map((item) => {
-            scrollTop[item] = this.data.swiperDataMap[item].scrollTop || 0;
-        });
+        scrollTop[cid] = this.data.swiperDataMap[cid].scrollTop || 0;
         this.setData({
-            nowAid: this.data.aidSelectMap[categoryList[current].cid] || 0,
-            nowCid: categoryList[current].cid,
-            nowCidIndex: current,
-            renderCids: map,
-            scrollTop: scrollTop
+            nowAid: this.data.aidSelectMap[cid] || 0,
+            nowCid: cid,
+            scrollTop: scrollTop,
+            showCategoryDialog: false,
         });
         this.scrollToCategory(this.data.nowCid);
         wx.setStorageSync('nowCid', this.data.nowCid);
@@ -236,9 +216,9 @@ Page({
             url: '/pages/subject_select/index',
         });
     },
-    slectCategory(e) {
+    selectCategory(e) {
         var cid = e.currentTarget.dataset.category.cid;
-        this.changeCategory(cid);
+        this.renderSwiper(cid);
     },
     selectSort(e) {
         var status = e.currentTarget.dataset.status;
@@ -260,24 +240,6 @@ Page({
             });
             this.refreshCategory();
         }
-    },
-    changeCategory(cid) {
-        var index = 0;
-        for (var i = 0; i < this.data.categoryList.length; i++) {
-            if (this.data.categoryList[i].cid == cid) {
-                index = i;
-                break;
-            }
-        }
-        this.setData({
-            animationDuration: 0
-        }, () => {
-            this.setData({
-                nowCidIndex: index,
-                showCategoryDialog: false,
-                animationDuration: 300
-            });
-        });
     },
     //导航栏菜单滚动到指定item
     scrollToCategory(cid) {
@@ -331,7 +293,7 @@ Page({
         this.setData({
             [`swiperDataMap[${this.data.nowCid}].totalPage`]: -1
         });
-        this.renderSwiper(this.data.nowCidIndex);
+        this.renderSwiper(this.data.nowCid);
     },
     //底部加载
     loadNext(cid) {
@@ -438,25 +400,16 @@ Page({
                     var cids = [];
                     var nowCid = self.historyCid || res.data[0].cid;
                     var current = 0;
-                    for (var i = 0; i < 3 && i < res.data.length; i++) {
-                        cids.push(res.data[i].cid);
-                    }
                     self.setData({
-                        categoryList: res.data,
-                        renderCids: cids
+                        categoryList: res.data
                     });
-                    // self.preLoadData();
                     for (var i = 0; i < self.data.categoryList.length; i++) {
                         if (self.data.categoryList[i].cid == nowCid) {
                             current = i;
                             break;
                         }
                     }
-                    if (current == 0) {
-                        self.renderSwiper(current);
-                    } else {
-                        self.changeCategory(nowCid);
-                    }
+                    self.renderSwiper(nowCid);
                 }
             }
         });
@@ -519,23 +472,5 @@ Page({
                 }
             });
         })
-    },
-    //预加载列表数据
-    preLoadData() {
-        var categoryList = this.data.categoryList.slice(3);
-        var cid = 0;
-        for (var i = 0; i < categoryList.length; i++) {
-            if (!this.loaded[categoryList[i].cid]) {
-                cid = categoryList[i].cid;
-                break;
-            }
-        }
-        if (cid) {
-            this.loadNext(categoryList[i].cid).then(() => {
-                setTimeout(() => {
-                    this.preLoadData();
-                }, 100);
-            });
-        }
     }
 })

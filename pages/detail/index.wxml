@@ -15,7 +15,7 @@
                 </view>
             </view>
         </view>
-        <view class='cover_bg' style='filter:blur({{blur}}px)' style='padding-top:{{systemInfo.statusBarHeight > menuRect.top ? systemInfo.statusBarHeight : 0}}px'>
+        <view class='cover_bg' style='filter:blur({{blur}}px)'>
             <image mode='widthFix' src='{{comic.cover_url_big}}'></image>
         </view>
         <view class='category_w'>

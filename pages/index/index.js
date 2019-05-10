@@ -19,7 +19,7 @@ Page({
         toTop: false,
         stopRefresh: false,
         topHeight: app.globalData.navHeight * 1.5,
-        topPadding: app.globalData.systemInfo.statusBarHeight > 25 && app.globalData.menuRect.top > app.globalData.systemInfo.statusBarHeight  ? app.globalData.systemInfo.statusBarHeight : 0
+        topPadding: app.globalData.systemInfo.statusBarHeight
     },
     onLoad: function() {
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
@@ -42,10 +42,10 @@ Page({
             searchOpacity: opacity
         });
         if (scrollTop > this.data.systemInfo.screenHeight / 2) {
-            this.setData({
+            !this.data.showScrollBtn && this.setData({
                 showScrollBtn: true
             });
-        } else {
+        } else if(this.data.showScrollBtn) {
             this.setData({
                 showScrollBtn: false
             });

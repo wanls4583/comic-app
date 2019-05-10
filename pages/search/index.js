@@ -49,10 +49,10 @@ Page({
     },
     scrollCompute(e) {
         if (e.detail.scrollTop > this.data.systemInfo.screenHeight / 2) {
-            this.setData({
+            !this.data.showScrollBtn && this.setData({
                 showScrollBtn: true
             });
-        } else {
+        } else if(this.data.showScrollBtn) {
             this.setData({
                 showScrollBtn: false
             });
@@ -61,13 +61,16 @@ Page({
         if (this.viewRending) {
             return;
         }
-        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && this.data.nowView < this.data.viewArr.length - 1) {
+        this.viewHeight = this.viewHeight || this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight;
+        this.nextViewScrollTop = this.nextViewScrollTop || this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight;
+        this.preViewScrollTop = this.preViewScrollTop || this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 3 * this.itemHeight;
+        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.viewHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && this.data.nowView < this.data.viewArr.length - 1) {
             this.viewRending = true;
             this.setData({
                 nowView: this.data.nowView + 1
             }, () => {
                 this.setData({
-                    scrollTop: this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight
+                    scrollTop: this.nextViewScrollTop
                 }, () => {
                     setTimeout(() => {
                         this.viewRending = false;
@@ -80,7 +83,7 @@ Page({
                 nowView: this.data.nowView - 1
             }, () => {
                 this.setData({
-                    scrollTop: this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 3 * this.itemHeight
+                    scrollTop: this.preViewScrollTop
                 }, () => {
                     setTimeout(() => {
                         this.viewRending = false;
