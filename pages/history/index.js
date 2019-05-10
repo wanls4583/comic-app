@@ -36,7 +36,7 @@ Page({
             self.setData({
                 logined: true
             });
-            if (!self.data.favoriteList.length) {
+            if (!self.data.totalPage < 0) {
                 self.refresh();
             } else if(wx.getStorageSync('likeChange') && self.data.nowSwiperIndex == 0) {
                 self.refresh();
