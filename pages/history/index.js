@@ -16,13 +16,14 @@ Page({
         menuRect: app.globalData.menuRect,
         systemInfo: app.globalData.systemInfo,
         navHeight: app.globalData.navHeight,
-        canRead: false
+        canRead: false,
+        stopRefresh: false
     },
     onLoad() {
         var self = this;
         wx.getStorage({
             key: 'comic_history',
-            success: function (res) {
+            success: function(res) {
                 self.setData({
                     comicHistory: res.data
                 });
@@ -36,9 +37,9 @@ Page({
             self.setData({
                 logined: true
             });
-            if (!self.data.totalPage < 0) {
+            if (self.data.totalPage < 0) {
                 self.refresh();
-            } else if(wx.getStorageSync('likeChange') && self.data.nowSwiperIndex == 0) {
+            } else if (wx.getStorageSync('likeChange') && self.data.nowSwiperIndex == 0) {
                 self.refresh();
             }
         }).catch(() => {
@@ -52,11 +53,15 @@ Page({
         });
     },
     //下拉刷新
-    onPullDownRefresh() {
+    onRefresh() {
+        this.refreshing = true;
         this.refresh();
     },
     //加载更多收藏列表
     onLoadMore() {
+        if (this.data.totalPage > -1 && this.data.page >= this.data.totalPage || this.refreshing) {
+            return;
+        }
         this.getLikeList();
     },
     //跳转到动漫详情页
@@ -69,7 +74,7 @@ Page({
     //清除历史记录
     clearHistory() {
         var self = this;
-        if (this.data.nowSwiperIndex!=1) {
+        if (this.data.nowSwiperIndex != 1) {
             return;
         }
         wx.showModal({
@@ -91,16 +96,13 @@ Page({
         this.setData({
             page: 0,
             totalPage: -1,
-            favoriteList: []
         });
+        this.data.favoriteList = [];
         this.getLikeList();
     },
     //获取收藏列表
     getLikeList() {
-        if (this.data.totalPage > -1 && this.data.pageSize >= this.data.totalPage) {
-            return;
-        }
-        if(this.data.totalPage <= 0) {
+        if (!this.refreshing && this.data.page == 1) {
             wx.showLoading({
                 title: '加载中'
             });
@@ -111,14 +113,19 @@ Page({
                 page: this.data.page + 1,
                 pageSize: this.data.pageSize
             },
-            success: (res)=>{
+            success: (res) => {
                 wx.removeStorageSync('likeChange');
                 wx.stopPullDownRefresh();
                 wx.hideLoading();
                 res.data.list.map((item) => {
                     item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
                 });
-                if(res.data.list.length) {
+                if (this.refreshing) {
+                    this.setData({
+                        favoriteList: []
+                    });
+                }
+                if (res.data.list.length) {
                     this.setData({
                         [`favoriteList[${this.data.favoriteList.length}]`]: res.data.list,
                         page: this.data.page + 1,
@@ -127,6 +134,21 @@ Page({
                 this.setData({
                     totalPage: Math.ceil(res.data.total / this.data.pageSize)
                 });
+                if (this.refreshing) {
+                    this.setData({
+                        stopRefresh: true
+                    });
+                    this.refreshing = false;
+                }
+            },
+            fail: (err) => {
+                console.log(err);
+                if (this.refreshing) {
+                    this.setData({
+                        stopRefresh: true
+                    });
+                    this.refreshing = false;
+                }
             }
         })
     },
@@ -136,7 +158,7 @@ Page({
         this.setData({
             nowSwiperIndex: index
         });
-        if(index == 0 && wx.getStorageSync('likeChange')) {
+        if (index == 0 && wx.getStorageSync('likeChange')) {
             this.refresh();
         }
     },
@@ -150,7 +172,7 @@ Page({
             this.refresh();
         }
     },
-    getUserInfo: function (e) {
+    getUserInfo: function(e) {
         console.log(e)
         app.globalData.userInfo = e.detail.userInfo;
         wx.setStorageSync('userInfo', e.detail.userInfo);

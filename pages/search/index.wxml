@@ -23,7 +23,7 @@
         </view>
     </view>
     <block wx:if="{{viewArr.length}}" wx:for='{{viewArr}}' wx:for-item="vItem" wx:for-index="vIndex" wx:key='{{vItem}}'>
-        <scroll-view wx:if='{{vItem==nowView}}' class='comic_scroll' style='top:{{systemInfo.statusBarHeight+navHeight}}px;' scroll-y bindscrolltolower='loadMore' lower-threshold='1400rpx' bindscroll='onScroll' scroll-top='{{scrollTop}}' scroll-with-animation='{{scrollAnimation}}'>
+        <pull-scroll-view wx:if='{{vItem==nowView}}' external-classes='comic_scroll' style='top:{{systemInfo.statusBarHeight+navHeight}}px;' bindscroll='onScroll' bindrefresh='onRefresh' bindscrolltolower='loadMore' lower-threshold='1400rpx' scroll-top='{{scrollTop}}' scrll-to-top='{{ifScrllToTop}}' stop-refresh='{{stopRefresh}}'>
             <block wx:if='{{pIndex >= vItem*viewSize && pIndex < (vItem+1)*viewSize+overlappingPage}}' wx:for='{{comicList}}' wx:for-item="pItem" wx:for-index="pIndex" wx:key='{{pIndex}}'>
                 <view class='comic_item' wx:for='{{pItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
                     <view class='comic_item_img' style='background:url({{item.cover_url}}) no-repeat center;background-size:cover'></view>
@@ -35,7 +35,7 @@
             </block>
             <view wx:if='{{totalPage && page >= totalPage && nowView==viewArr.length-1}}' class='loading_tip nomore des_color'>没有更多了~</view>
             <view wx:else class='loading_tip des_color'>正在加载中...</view>
-        </scroll-view>
+        </pull-scroll-view>
     </block>
     <view wx:if='{{total==0}}' class='empty_list des_color'>暂无搜索结果~</view>
     <view class='scroll_top {{showScrollBtn?"active":""}}' bindtap='scrollToTop'><text class='iconfont icon-top'></text></view>

@@ -1,4 +1,4 @@
-<view class='pull_scroll_view external-classes'>
+<view class='pull_scroll_view external-classes' style='{{style}}'>
     <scroll-view class='scroll_view' lower-threshold='{{lowerThreshold}}' upper-threshold='{{upperThreshold}}' bindscrolltolower='onScrolltolower' bindscrolltoupper='onScrolltoupper' bindscroll='onScroll' bindtouchstart='touchStart' bindtouchend='touchEnd' scroll-top='{{_scrollTop}}' scroll-with-animation='{{animation}}' scroll-y>
         <view class='pull_down' style='height:{{topHeight}}px;padding-top:{{topPadding}}px'>
             <image class='loading_gif' src='/image/loading.gif'></image>

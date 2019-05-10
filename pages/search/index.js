@@ -25,7 +25,8 @@ Page({
         navHeight: app.globalData.navHeight,
         menuRect: app.globalData.menuRect,
         showScrollBtn: false,
-        scrollAnimation: false
+        scrollAnimation: false,
+        stopRefresh: false
     },
     onLoad: function() {
         var history = wx.getStorageSync('search_history') || [];
@@ -35,6 +36,12 @@ Page({
         });
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
+    },
+    onRefresh() {
+        this.data.page = 1;
+        this.data.total = -1;
+        this.refreshing = true;
+        this.getComicList();
     },
     //滚动事件
     onScroll(e) {
@@ -62,7 +69,7 @@ Page({
             return;
         }
         this.viewHeight = this.viewHeight || this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight;
-        this.nextViewScrollTop = this.nextViewScrollTop || this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight;
+        this.nextViewScrollTop = this.nextViewScrollTop || this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) + this.data.navHeight + this.data.systemInfo.statusBarHeight - this.windowHeight;
         this.preViewScrollTop = this.preViewScrollTop || this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 3 * this.itemHeight;
         if (e.detail.scrollHeight + 3 * this.itemHeight >= this.viewHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && this.data.nowView < this.data.viewArr.length - 1) {
             this.viewRending = true;
@@ -202,26 +209,18 @@ Page({
     //滚动到顶部
     scrollToTop() {
         this.viewRending = true;
-        var scrollAnimation = false;
-        if (this.data.nowView == 0 && this.scrollTop < this.data.systemInfo.screenHeight * 10) {
-            scrollAnimation = true;
-        }
         this.setData({
-            scrollAnimation: scrollAnimation,
-            nowView: 0
+            ifScrllToTop: true,
+            nowView: 0,
         }, () => {
-            this.setData({
-                scrollTop: 0
-            }, () => {
-                setTimeout(() => {
-                    this.viewRending = false;
-                }, 1000);
-            });
+            setTimeout(() => {
+                this.viewRending = false;
+            }, 1000);
         });
     },
     //加载更多
     loadMore() {
-        if ((this.data.nowView + 1) * this.data.viewSize + this.data.overlappingPage + 1 >= this.data.comicList.length) {
+        if (!this.refreshing && (this.data.nowView + 1) * this.data.viewSize + this.data.overlappingPage + 1 >= this.data.comicList.length) {
             this.getComicList();
         }
     },
@@ -233,6 +232,29 @@ Page({
             success(res) {
                 wx.stopPullDownRefresh();
                 wx.hideLoading();
+                if (self.data.total <= 0) {
+                    //总页数
+                    var totalPage = Math.ceil(res.data.size / self.data.pageSize);
+                    //视图数组
+                    var viewArr = [];
+                    //计算视图的个数
+                    for (var i = 0, len = Math.ceil(res.data.size / self.data.pageSize / self.data.viewSize); i < len; i++) {
+                        viewArr.push(i);
+                    };
+                    self.setData({
+                        totalPage: totalPage,
+                        viewArr: viewArr,
+                        nowView: 0,
+                        total: res.data.size,
+                        comicList: []
+                    });
+                    if(self.refreshing) {
+                        self.setData({
+                            stopRefresh: true
+                        });
+                        self.refreshing = false;
+                    }
+                }
                 if (res.data.list.length) {
                     self.setData({
                         page: self.data.page,
@@ -260,21 +282,14 @@ Page({
                     });
                     self.data.page++;
                 }
-                if (self.data.total <= 0) {
-                    //总页数
-                    var totalPage = Math.ceil(res.data.size / self.data.pageSize);
-                    //视图数组
-                    var viewArr = [];
-                    //计算视图的个数
-                    for (var i = 0, len = Math.ceil(res.data.size / self.data.pageSize / self.data.viewSize); i < len; i++) {
-                        viewArr.push(i);
-                    };
+            },
+            fail(err) {
+                console.log(err);
+                if(self.refreshing) {
                     self.setData({
-                        totalPage: totalPage,
-                        viewArr: viewArr,
-                        nowView: 0,
-                        total: res.data.size
-                    })
+                        stopRefresh: true
+                    });
+                    self.refreshing = false;
                 }
             }
         })

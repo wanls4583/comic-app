@@ -2,6 +2,10 @@ const app = getApp();
 Component({
     externalClasses: ['external-classes'],
     properties: {
+        style: {
+            type: String,
+            value: ''
+        },
         scrollTop: {
             type: Number,
             value: 0,
@@ -58,10 +62,12 @@ Component({
                 this.stopTimer = setTimeout(() => {
                     this.refreshing = false;
                     this.setData({
+                        upText: this.properties.uploadTipText,
                         _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
                     });
-                    this.setData({
-                        upText: this.properties.uploadTipText
+                    wx.showToast({
+                        title: '刷新完成',
+                        duration: 1000
                     });
                 }, 500);
             }
@@ -80,7 +86,7 @@ Component({
         },
         topPadding: {
             type: Number,
-            value: 0
+            value: app.globalData.statusBarHeight
         },
         uploadTipText: {
             type: String,
@@ -110,10 +116,11 @@ Component({
                     _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
                 },()=>{
                     this.setData({
-                        animation: false
+                        animation: true
                     });
                 });
             });
+            this.hasAttached = true;
         }
     },
     attached: function(option) {
@@ -126,10 +133,11 @@ Component({
                 _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
             },()=>{
                 this.setData({
-                    animation: false
+                    animation: true
                 });
             });
         });
+        this.hasAttached = true;
     },
     methods: {
         onScroll(e) {

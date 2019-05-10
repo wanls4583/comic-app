@@ -16,7 +16,7 @@ Page({
         menuRect: app.globalData.menuRect,
         searchOpacity: 0,
         showScrollBtn: false,
-        toTop: false,
+        ifScrollToTop: false,
         stopRefresh: false,
         topHeight: app.globalData.navHeight * 1.5,
         topPadding: app.globalData.systemInfo.statusBarHeight
@@ -29,6 +29,7 @@ Page({
     },
     //顶部下拉刷新
     onRefresh() {
+        this.refreshing = true;
         this.getSwitch();
         this.getRecommend();
     },
@@ -72,13 +73,13 @@ Page({
     },
     scrollToTop(e) {
         this.setData({
-            toTop: true
+            ifScrollToTop: true
         });
     },
     //获取推荐列表
     getRecommend() {
         var self = this;
-        if(!this.data.stopRefresh) {
+        if(!this.refreshing) {
             wx.showLoading({
                 title: '加载中',
                 mask: true
@@ -89,9 +90,12 @@ Page({
             success(res) {
                 wx.stopPullDownRefresh();
                 wx.hideLoading();
-                self.setData({
-                    stopRefresh: true
-                });
+                if(self.refreshing) {
+                    self.setData({
+                        stopRefresh: true
+                    });
+                    self.refreshing = false;
+                }
                 if (res.statusCode == 200 && res.data && res.data.length) {
                     var allRec = [];
                     var banner = [];
@@ -115,7 +119,15 @@ Page({
                         banner: banner
                     });
                 }
-
+            },
+            fail(err) {
+                console.log(err);
+                if(self.refreshing) {
+                    self.setData({
+                        stopRefresh: true
+                    });
+                    self.refreshing = false;
+                }
             }
         })
     },

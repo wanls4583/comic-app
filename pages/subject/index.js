@@ -29,7 +29,8 @@ Page({
         bgImage: '',
         showScrollBtn: false,
         scrollAnimation: false,
-        ifScrollToTop: false
+        ifScrollToTop: false,
+        stopRefresh: false
     },
     onLoad: function() {
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
@@ -126,7 +127,7 @@ Page({
             return;
         }
         this.viewHeight = this.viewHeight || this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight;
-        this.nextViewScrollTop = this.nextViewScrollTop || this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) - this.windowHeight;
+        this.nextViewScrollTop = this.nextViewScrollTop || this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) + this.data.navHeight + this.data.systemInfo.statusBarHeight - this.windowHeight;
         this.preViewScrollTop = this.preViewScrollTop || this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 3 * this.itemHeight;
         //切换到下一个视图
         if (e.detail.scrollHeight + 3 * this.itemHeight >= this.viewHeight && e.detail.scrollHeight - scrollTop <= this.windowHeight + 50 && swiperData.nowView < swiperData.viewArr.length - 1) {
@@ -171,7 +172,7 @@ Page({
     //加载更多
     onLoadMore(e) {
         var cid = e.currentTarget.dataset.cid;
-        if ((this.data.swiperDataMap[cid].nowView + 1) * this.data.viewSize + this.data.overlappingPage + 1 >= this.data.swiperDataMap[cid].renderData.length) {
+        if (!this.refreshing && (this.data.swiperDataMap[cid].nowView + 1) * this.data.viewSize + this.data.overlappingPage + 1 >= this.data.swiperDataMap[cid].renderData.length) {
             this.loadNext(cid);
         }
     },
@@ -393,6 +394,10 @@ Page({
     //获取所有分类
     getCategory() {
         var self = this;
+        wx.showLoading({
+            title: '加载中',
+            mask: true
+        });
         request({
             url: '/category',
             success(res) {
@@ -412,8 +417,15 @@ Page({
                     self.renderSwiper(nowCid);
                 }
             },
-            fail() {
+            fail(err) {
+                console.log(err);
                 wx.hideLoading();
+                if(self.refreshing) {
+                    self.setData({
+                        stopRefresh: true
+                    });
+                    self.refreshing = false;
+                }
             }
         });
     },
@@ -467,8 +479,14 @@ Page({
                     resolve(res.data);
                 },
                 fail(err) {
-                    wx.hideLoading();
                     console.log(err);
+                    wx.hideLoading();
+                    if(self.refreshing) {
+                        self.setData({
+                            stopRefresh: true
+                        });
+                        self.refreshing = false;
+                    }
                     self.loading[cid] = false;
                     reject(err);
                 }
