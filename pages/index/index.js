@@ -78,10 +78,12 @@ Page({
     //获取推荐列表
     getRecommend() {
         var self = this;
-        wx.showLoading({
-            title: '加载中',
-            mask: true
-        });
+        if(!this.data.stopRefresh) {
+            wx.showLoading({
+                title: '加载中',
+                mask: true
+            });
+        }
         request({
             url: '/recommend',
             success(res) {

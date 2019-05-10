@@ -68,7 +68,7 @@ Page({
     //顶部下拉刷新
     onRefresh() {
         this.refreshing = true;
-        if (this.data.nowCid) {
+        if (this.data.categoryList.length) {
             this.refreshCategory();
         } else {
             this.getCategory();
@@ -179,17 +179,13 @@ Page({
     renderSwiper(cid) {
         var scrollTop = [];
         if (!this.data.swiperDataMap[cid] || this.data.swiperDataMap[cid].total < 0) {
-            wx.showLoading({
-                title: '加载中'
-            });
-        }
-        if (!this.data.swiperDataMap[cid] || this.data.swiperDataMap[cid].total < 0) {
+            if(!this.refreshing) {
+                wx.showLoading({
+                    title: '加载中',
+                    mask: true
+                });
+            }
             this.loadNext(cid);
-        } else if(this.refreshing){
-            this.setData({
-                stopRefresh: true
-            });
-            this.refreshing = false;
         }
         scrollTop[cid] = this.data.swiperDataMap[cid].scrollTop || 0;
         this.setData({
@@ -415,6 +411,9 @@ Page({
                     }
                     self.renderSwiper(nowCid);
                 }
+            },
+            fail() {
+                wx.hideLoading();
             }
         });
     },
@@ -459,17 +458,16 @@ Page({
                 data: data,
                 success(res) {
                     wx.stopPullDownRefresh();
+                    wx.hideLoading();
                     self.loading[cid] = false;
                     self.loaded[cid] = true;
-                    if (cid == self.data.nowCid) {
-                        wx.hideLoading();
-                    }
                     res.data.list.map((item) => {
                         item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
                     });
                     resolve(res.data);
                 },
                 fail(err) {
+                    wx.hideLoading();
                     console.log(err);
                     self.loading[cid] = false;
                     reject(err);
