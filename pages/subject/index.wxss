@@ -65,6 +65,7 @@
 
 .swiper_item {
     height: 100%;
+    padding-top: 80rpx;
 }
 
 /* 滑块遮罩层 */
@@ -196,7 +197,6 @@
 }
 
 .scroll_list_w {
-    margin-top: 80rpx;
     overflow: auto;
 }
 

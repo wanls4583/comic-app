@@ -28,7 +28,8 @@ Page({
         navHeight: app.globalData.navHeight,
         bgImage: '',
         showScrollBtn: false,
-        scrollAnimation: false
+        scrollAnimation: false,
+        ifScrollToTop: false
     },
     onLoad: function() {
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
@@ -65,7 +66,8 @@ Page({
         }
     },
     //顶部下拉刷新
-    onPullDownRefresh() {
+    onRefresh() {
+        this.refreshing = true;
         if (this.data.nowCid) {
             this.refreshCategory();
         } else {
@@ -183,6 +185,11 @@ Page({
         }
         if (!this.data.swiperDataMap[cid] || this.data.swiperDataMap[cid].total < 0) {
             this.loadNext(cid);
+        } else if(this.refreshing){
+            this.setData({
+                stopRefresh: true
+            });
+            this.refreshing = false;
         }
         scrollTop[cid] = this.data.swiperDataMap[cid].scrollTop || 0;
         this.setData({
@@ -258,22 +265,13 @@ Page({
     //滚动到顶部
     scrollToTop() {
         this.viewRending = true;
-        var scrollAnimation = false;
-        var swiperData = this.data.swiperDataMap[this.data.nowCid];
-        if (swiperData.nowView == 0 && swiperData.scrollTop < this.data.systemInfo.screenHeight * 10) {
-            scrollAnimation = true;
-        }
         this.setData({
-            scrollAnimation: scrollAnimation,
+            ifScrollToTop: true,
             [`swiperDataMap[${this.data.nowCid}].nowView`]: 0
         }, () => {
-            this.setData({
-                [`scrollTop[${this.data.nowCid}]`]: 0
-            }, () => {
-                setTimeout(() => {
-                    this.viewRending = false;
-                }, 1000);
-            });
+            setTimeout(() => {
+                this.viewRending = false;
+            }, 1000);
         });
     },
     //刷新分类列表
@@ -307,6 +305,12 @@ Page({
                 [key]: swiperData.list[swiperData.endPage],
                 [endPage]: swiperData.endPage
             }, () => {
+                if(this.refreshing) {
+                    this.setData({
+                        stopRefresh: true
+                    });
+                    this.refreshing = false;
+                }
                 if (!self.hasGetScrollHeight) {
                     setTimeout(() => {
                         var query = wx.createSelectorQuery()

@@ -2,13 +2,30 @@ const app = getApp();
 Component({
     externalClasses: ['external-classes'],
     properties: {
+        scrollTop: {
+            type: Number,
+            value: 0,
+            observer: function(newVal, oldVal) {
+                this.properties.scrollTop = newVal + 1;
+                if(!this.hasAttached) {
+                    return;
+                }
+                //使下次相同的scrollTop能触发observer
+                this.setData({
+                    _scrollTop: newVal
+                });
+            }
+        },
         scrollToTop: {
             type: Boolean,
             value: false,
             observer: function(newVal, oldVal) {
-                //使下次能触发observer
+                //使下次能再触发observer
                 this.properties.scrollToTop = false;
                 this.getRect().then((res) => {
+                    if(!res) {
+                        return;
+                    }
                     var animation = true;
                     //滚动距离过大时不再使用过度动画
                     if (res.scrollTop > app.globalData.systemInfo.screenHeight * 10) {
@@ -19,7 +36,7 @@ Component({
                     }, () => {
                         //滚动到顶部
                         this.setData({
-                            scrollTop: this.properties.topHeight + newVal
+                            _scrollTop: this.properties.topHeight + newVal
                         }, () => {
                             this.setData({
                                 animation: true
@@ -41,13 +58,21 @@ Component({
                 this.stopTimer = setTimeout(() => {
                     this.refreshing = false;
                     this.setData({
-                        scrollTop: this.data.scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
+                        _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
                     });
                     this.setData({
                         upText: this.properties.uploadTipText
                     });
                 }, 500);
             }
+        },
+        lowerThreshold: {
+            type: String,
+            value: '100px',
+        },
+        upperThreshold: {
+            type: String,
+            value: '100px',
         },
         topHeight: {
             type: Number,
@@ -70,7 +95,7 @@ Component({
         systemInfo: app.globalData.systemInfo,
         statusBarHeight: app.globalData.systemInfo.statusBarHeight,
         navHeight: app.globalData.navHeight,
-        scrollTop: 0,
+        _scrollTop: 0,
         upText: '',
         animation: true
     },
@@ -78,16 +103,32 @@ Component({
         attached() {
             this.properties.topHeight += this.properties.topPadding;
             this.setData({
-                upText: this.properties.uploadTipText,
-                scrollTop: this.properties.topHeight
+                animation: false
+            },()=>{
+                this.setData({
+                    upText: this.properties.uploadTipText,
+                    _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
+                },()=>{
+                    this.setData({
+                        animation: false
+                    });
+                });
             });
         }
     },
     attached: function(option) {
         this.properties.topHeight += this.properties.topPadding;
         this.setData({
-            upText: this.properties.uploadTipText,
-            scrollTop: this.properties.topHeight
+            animation: false
+        },()=>{
+            this.setData({
+                upText: this.properties.uploadTipText,
+                _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
+            },()=>{
+                this.setData({
+                    animation: false
+                });
+            });
         });
     },
     methods: {
@@ -97,7 +138,7 @@ Component({
             if (!this.touching && !this.refreshing && !this.readyToRefresh && !this.gettingRect) {
                 if (scrollTop < this.properties.topHeight) {
                     this.setData({
-                        scrollTop: this.data.scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
+                        _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
                     });
                 }
             }
@@ -109,6 +150,12 @@ Component({
                 }
                 this.readyToRefresh = false;
             }, 500);
+        },
+        onScrolltolower(e) {
+            this.triggerEvent('scrolltolower', e.detail);
+        },
+        onScrolltoupper(e) {
+            this.triggerEvent('scrolltoupper', e.detail);
         },
         touchStart(e) {
             this.touching = true;
@@ -132,7 +179,7 @@ Component({
                     }, 100);
                 } else if (res.scrollTop < this.data.topHeight) {
                     this.setData({
-                        scrollTop: this.data.scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
+                        _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
                     });
                 }
             });
