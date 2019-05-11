@@ -57,19 +57,23 @@ Component({
             observer: function(newVal, oldVal) {
                 //使下次能再触发observer
                 this.properties.stopRefresh = false;
-                clearTimeout(this.stopTimer);
+                this.setData({
+                    finished: true
+                });
+                clearTimeout(this.returnTimer);
+                clearTimeout(this.hideTipTimer);
                 //防止频繁刷新，导致画面闪烁
-                this.stopTimer = setTimeout(() => {
-                    this.refreshing = false;
+                this.returnTimer = setTimeout(() => {
                     this.setData({
-                        upText: this.properties.uploadTipText,
                         _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
                     });
-                    wx.showToast({
-                        title: '刷新完成',
-                        duration: 1000
-                    });
                 }, 500);
+                this.hideTipTimer = setTimeout(() => {
+                    this.setData({
+                        finished: false
+                    });
+                    this.refreshing = false;
+                }, 1000);
             }
         },
         lowerThreshold: {
@@ -82,37 +86,24 @@ Component({
         },
         topHeight: {
             type: Number,
-            value: app.globalData.navHeight * 1.5
-        },
-        topPadding: {
-            type: Number,
-            value: app.globalData.statusBarHeight
-        },
-        uploadTipText: {
-            type: String,
-            value: '松手刷新'
-        },
-        uploadingText: {
-            type: String,
-            value: '刷新中'
-        },
+            value: 20
+        }
     },
     data: {
         systemInfo: app.globalData.systemInfo,
         statusBarHeight: app.globalData.systemInfo.statusBarHeight,
         navHeight: app.globalData.navHeight,
         _scrollTop: 0,
-        upText: '',
-        animation: true
+        animation: true,
+        finished: false
     },
     lifetimes: {
         attached() {
-            this.properties.topHeight += this.properties.topPadding;
+            this.properties.topHeight += this.data.statusBarHeight * 2;
             this.setData({
                 animation: false
             },()=>{
                 this.setData({
-                    upText: this.properties.uploadTipText,
                     _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
                 },()=>{
                     this.setData({
@@ -124,12 +115,11 @@ Component({
         }
     },
     attached: function(option) {
-        this.properties.topHeight += this.properties.topPadding;
+        this.properties.topHeight += this.data.statusBarHeight * 2;
         this.setData({
             animation: false
         },()=>{
             this.setData({
-                upText: this.properties.uploadTipText,
                 _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
             },()=>{
                 this.setData({
@@ -194,11 +184,7 @@ Component({
         },
         refresh() {
             this.refreshing = true;
-            this.setData({
-                upText: this.properties.uploadingText,
-            }, () => {
-                this.triggerEvent('refresh');
-            });
+            this.triggerEvent('refresh');
         },
         getRect() {
             clearTimeout(this.rectTimer);

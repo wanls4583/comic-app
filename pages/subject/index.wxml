@@ -26,7 +26,7 @@
             </view>
             <!-- 各分类下的列表 -->
             <block wx:for='{{swiperDataMap[cItem.cid].viewArr}}' wx:for-item='vItem' wx:key='{{vItem}}' wx:if='{{vItem==swiperDataMap[cItem.cid].nowView}}'>
-                <pull-scroll-view external-classes='category_comic_scroll' bindscroll='onScroll' bindrefresh='onRefresh' bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' scroll-top='{{scrollTop[cItem.cid]}}' scroll-to-top='{{ifScrollToTop}}' stop-refresh='{{stopRefresh}}'>
+                <pull-scroll-view  wx:key='pull_scroll_{{vItem}}' bindscroll='onScroll' bindrefresh='onRefresh' bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' scroll-top='{{scrollTop[cItem.cid]}}' scroll-to-top='{{ifScrollToTop}}' stop-refresh='{{stopRefresh}}'>
                     <view class='scroll_list_w'>
                         <block wx:for='{{swiperDataMap[cItem.cid].renderData}}' wx:for-item='rItem' wx:for-index='rIndex' wx:key='{{rIndex}}' wx:if='{{rIndex >= vItem*viewSize && rIndex < (vItem+1)*viewSize+overlappingPage}}'>
                             <view class='comic_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>

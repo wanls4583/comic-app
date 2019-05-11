@@ -26,7 +26,8 @@ Page({
         menuRect: app.globalData.menuRect,
         showScrollBtn: false,
         scrollAnimation: false,
-        stopRefresh: false
+        stopRefresh: false,
+        ifScrllToTop: false
     },
     onLoad: function() {
         var history = wx.getStorageSync('search_history') || [];

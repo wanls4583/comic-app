@@ -1,7 +1,8 @@
 <view class='pull_scroll_view external-classes' style='{{style}}'>
     <scroll-view class='scroll_view' lower-threshold='{{lowerThreshold}}' upper-threshold='{{upperThreshold}}' bindscrolltolower='onScrolltolower' bindscrolltoupper='onScrolltoupper' bindscroll='onScroll' bindtouchstart='touchStart' bindtouchend='touchEnd' scroll-top='{{_scrollTop}}' scroll-with-animation='{{animation}}' scroll-y>
-        <view class='pull_down' style='height:{{topHeight}}px;padding-top:{{topPadding}}px'>
-            <image class='loading_gif' src='/image/loading.gif'></image>
+        <view class='pull_down' style='height:{{topHeight}}px;padding:{{statusBarHeight}}px 0'>
+        	<view wx:if='{{finished}}' class='loading_tip'><text class='iconfont icon-chenggong'></text>刷新完成</view>
+            <image wx:else class='loading_gif' src='/image/loading.gif'></image>
         </view>
         <view class='content}'>
             <slot></slot>

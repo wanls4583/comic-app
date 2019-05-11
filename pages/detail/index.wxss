@@ -235,7 +235,7 @@
 .dir_item {
     font-size: 26rpx;
     line-height: 100rpx;
-    border-bottom: 1rpx solid #ddd;
+    border-bottom: 1rpx solid #ccc;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

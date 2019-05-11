@@ -16,15 +16,38 @@
 }
 
 .pull_down {
-    transform: translateZ(0);
+    position: relative;
     overflow: hidden;
     box-sizing: content-box;
+    transform: translateZ(0);
+}
+
+.loading_tip {
+    height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    line-height: 0;
+    font-size: 26rpx;
+    color: #fa9144;
+}
+
+.loading_tip .iconfont{
+    margin-right: 10rpx;
+    font-family: 'iconfont';
+    font-size: 36rpx;
+}
+
+.icon-chenggong:before {
+  content: '\e638';
 }
 
 .loading_gif {
-    width: 68rpx;
-    height: 68rpx;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px;
+    margin-left: -20px;
+    width: 40px;
+    height: 40px;
 }

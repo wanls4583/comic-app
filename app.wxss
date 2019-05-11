@@ -94,14 +94,102 @@ scroll-view {
     color: #fff;
 }
 
+/* 漫画item-begin */
+
+.comic_item {
+    display: inline-block;
+    position: relative;
+    width: 224rpx;
+    height: 410rpx;
+    margin-left: 20rpx;
+}
+
+.comic_item_img {
+    width: 100%;
+    height: 300rpx;
+    border-radius: 8rpx;
+    border: 1rpx solid #ccc;
+    overflow: hidden;
+}
+
+.comic_item_title {
+    margin-top: 15rpx;
+    font-size: 28rpx;
+    line-height: 28rpx;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comic_item_bottom_w {
+    height: 80rpx;
+    overflow: hidden;
+}
+
+.comic_item_new {
+    margin-top: 15rpx;
+    font-size: 22rpx;
+    line-height: 22rpx;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 漫画item-end */
+
+/* 没有更多了-begin */
+
+.loading_tip {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24rpx;
+}
+
+.loading_tip.nomore::before {
+    font-family: 'iconfont';
+    content: '\e61c';
+    display: inline-block;
+    margin-right: 10rpx;
+}
+
+/* 没有更多了-end */
+
+/*空列表-begin*/
+
+.empty_list {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -80rpx;
+    line-height: 30rpx;
+    font-size: 30rpx;
+    text-align: center;
+}
+
+.empty_list:before {
+    content: "\e608";
+    display: block;
+    height: 100rpx;
+    margin-bottom: 40rpx;
+    line-height: 100rpx;
+    font-size: 100rpx;
+    font-family: 'iconfont';
+    text-align: center;
+}
+
+/*空列表-end*/
+
 @font-face {
   font-family: 'iconfont';  /* project id 1091883 */
-  src: url('//at.alicdn.com/t/font_1091883_rqnzz5dpg39.eot');
-  src: url('//at.alicdn.com/t/font_1091883_rqnzz5dpg39.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_1091883_rqnzz5dpg39.woff2') format('woff2'),
-  url('//at.alicdn.com/t/font_1091883_rqnzz5dpg39.woff') format('woff'),
-  url('//at.alicdn.com/t/font_1091883_rqnzz5dpg39.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_1091883_rqnzz5dpg39.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_1091883_d490qd7pucj.eot');
+  src: url('//at.alicdn.com/t/font_1091883_d490qd7pucj.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_1091883_d490qd7pucj.woff2') format('woff2'),
+  url('//at.alicdn.com/t/font_1091883_d490qd7pucj.woff') format('woff'),
+  url('//at.alicdn.com/t/font_1091883_d490qd7pucj.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_1091883_d490qd7pucj.svg#iconfont') format('svg');
 }
 
 .iconfont {
@@ -198,4 +286,8 @@ scroll-view {
 
 .icon-gengduo:before {
     content: '\e604';
+}
+
+.icon-chenggong:before {
+  content: '\e638';
 }
