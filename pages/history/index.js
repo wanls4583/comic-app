@@ -24,6 +24,7 @@ Page({
         wx.getStorage({
             key: 'comic_history',
             success: function(res) {
+                console.log(res.data);
                 self.setData({
                     comicHistory: res.data
                 });
@@ -98,16 +99,17 @@ Page({
             totalPage: -1,
         });
         this.data.favoriteList = [];
+        this.requestTask && this.requestTask.abort();
         this.getLikeList();
     },
     //获取收藏列表
     getLikeList() {
-        if (!this.refreshing && this.data.page == 1) {
+        if (!this.refreshing && this.data.page == 0) {
             wx.showLoading({
                 title: '加载中'
             });
         }
-        request({
+        this.requestTask = request({
             url: '/like/list',
             data: {
                 page: this.data.page + 1,

@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20rpx;
+    padding: 6rpx 20rpx;
 }
 
 .tab_item_w {
@@ -21,13 +21,13 @@
     margin-right: 40rpx;
     font-size: 34rpx;
     color: rgba(256, 256, 256, 0.5);
-    border-bottom: 4rpx solid rgb(250, 145, 68);
+    border-bottom: 6rpx solid rgb(250, 145, 68);
     transition: all 0.3s;
 }
 
 .tab_item.active {
     color: #fff;
-    border-bottom: 4rpx solid rgba(256, 256, 256, 1);
+    border-bottom: 6rpx solid rgba(256, 256, 256, 1);
 }
 
 .delete {

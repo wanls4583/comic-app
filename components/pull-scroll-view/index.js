@@ -6,6 +6,11 @@ Component({
             type: String,
             value: ''
         },
+        //全屏时适配顶部状态栏
+        fullScreen: {
+            type: Boolean,
+            value: false
+        },
         scrollTop: {
             type: Number,
             value: 0,
@@ -86,7 +91,7 @@ Component({
         },
         topHeight: {
             type: Number,
-            value: 20
+            value: app.globalData.navHeight * 1.5
         }
     },
     data: {
@@ -99,7 +104,9 @@ Component({
     },
     lifetimes: {
         attached() {
-            this.properties.topHeight += this.data.statusBarHeight * 2;
+            if(this.properties.fullScreen) {
+                this.properties.topHeight += this.data.statusBarHeight;
+            }
             this.setData({
                 animation: false
             },()=>{
@@ -115,7 +122,9 @@ Component({
         }
     },
     attached: function(option) {
-        this.properties.topHeight += this.data.statusBarHeight * 2;
+        if(this.properties.fullScreen) {
+            this.properties.topHeight += this.data.statusBarHeight;
+        }
         this.setData({
             animation: false
         },()=>{
@@ -133,7 +142,7 @@ Component({
         onScroll(e) {
             var scrollTop = e.detail.scrollTop;
             this.triggerEvent('scroll', e.detail);
-            if (!this.touching && !this.refreshing && !this.readyToRefresh && !this.gettingRect) {
+            if (!this.touching && !this.refreshing && !this.readyToRefresh && !this.gettingRect && !this.returnToTop) {
                 if (scrollTop < this.properties.topHeight) {
                     this.setData({
                         _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
@@ -145,9 +154,19 @@ Component({
                 //滚动停止时候执行更新
                 if (this.readyToRefresh) {
                     this.refresh();
+                    this.readyToRefresh = false;
                 }
-                this.readyToRefresh = false;
             }, 500);
+            if(this.returnToTop) {
+                clearTimeout(this.returnToTopTimer);
+                //惯性滚动停止时再滚动到顶部
+                this.returnToTopTimer = setTimeout(()=>{
+                    this.setData({
+                        _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
+                    });
+                    this.returnToTop = false;
+                }, 50);
+            }
         },
         onScrolltolower(e) {
             this.triggerEvent('scrolltolower', e.detail);
@@ -160,14 +179,17 @@ Component({
             this.startTime = new Date().getTime();
         },
         touchEnd(e) {
-            this.touching = false;
             this.endTime = new Date().getTime();
+            if(this.refreshing || this.readyToRefresh) {
+                return;
+            }
             this.getRect().then((res) => {
-                if (!res || this.refreshing || this.readyToRefresh) {
+                this.touching = false;
+                if (!res) {
                     return;
                 }
                 //时间太短，不触发更新
-                if (res.scrollTop <= 0 && !(app.globalData.systemInfo.platform == 'android' && this.endTime - this.startTime < 300)) {
+                if (res.scrollTop <= 0 && !(this.endTime - this.startTime < 200)) {
                     //准备更新
                     this.readyToRefresh = true;
                     //滚动停止时再刷新
@@ -176,9 +198,21 @@ Component({
                         this.readyToRefresh = false;
                     }, 100);
                 } else if (res.scrollTop < this.data.topHeight) {
-                    this.setData({
-                        _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
-                    });
+                    //防止 IOS 回弹怪异现象，惯性滚动停止时再滚动到顶部
+                    if(app.globalData.systemInfo.platform == 'ios') {
+                        this.returnToTop = true;
+                        clearTimeout(this.returnToTopTimer);
+                        this.returnToTopTimer = setTimeout(()=>{
+                            this.setData({
+                                _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
+                            });
+                            this.returnToTop = false;
+                        }, 100);
+                    } else {
+                        this.setData({
+                            _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
+                        });
+                    }
                 }
             });
         },

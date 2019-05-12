@@ -18,7 +18,7 @@ Page({
         showScrollBtn: false,
         ifScrollToTop: false,
         stopRefresh: false,
-        topHeight: app.globalData.navHeight,
+        topHeight: app.globalData.navHeight * 1.5
     },
     onLoad: function() {
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
@@ -34,7 +34,7 @@ Page({
     },
     //滚动事件
     onScroll(e) {
-        var scrollTop = e.detail.scrollTop - this.data.topHeight - app.globalData.systemInfo.statusBarHeight * 2;
+        var scrollTop = e.detail.scrollTop - this.data.topHeight - app.globalData.systemInfo.statusBarHeight;
         var opacity = scrollTop / (170 + this.data.navHeight + this.data.systemInfo.statusBarHeight);
         opacity = opacity > 1 ? 1 : opacity;
         opacity = opacity < 0 ? 0 : opacity;
@@ -140,8 +140,8 @@ Page({
     },
     getSwitch() {
         var self = this;
-        // app.canRead = true;
-        // return;
+        app.canRead = true;
+        return;
         request({
             url: '/switch',
             success(res) {

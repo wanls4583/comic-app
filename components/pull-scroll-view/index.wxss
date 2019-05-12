@@ -17,6 +17,9 @@
 
 .pull_down {
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
     box-sizing: content-box;
     transform: translateZ(0);
@@ -27,7 +30,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 0;
     font-size: 26rpx;
     color: #fa9144;
 }
@@ -43,11 +45,6 @@
 }
 
 .loading_gif {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -20px;
-    margin-left: -20px;
-    width: 40px;
-    height: 40px;
+    width: 68rpx;
+    height: 68rpx;
 }

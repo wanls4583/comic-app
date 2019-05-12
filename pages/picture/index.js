@@ -501,7 +501,8 @@ Page({
             wx.getStorage({
                 key: 'comic_history',
                 success: function(res) {
-                    var list = res.data;
+                    var list = res.data || [];
+                    list = list.splice(-100);
                     for (var i = 0; i < list.length; i++) {
                         var obj = list[i];
                         //已经有记录了则将该记录移除

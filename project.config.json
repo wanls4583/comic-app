@@ -12,7 +12,7 @@
 		"autoAudits": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.4.3",
+	"libVersion": "2.1.0",
 	"appid": "wx07f53120a8b0f214",
 	"projectname": "comic-app",
 	"debugOptions": {
