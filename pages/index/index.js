@@ -140,8 +140,8 @@ Page({
     },
     getSwitch() {
         var self = this;
-        app.canRead = true;
-        return;
+        // app.canRead = true;
+        // return;
         request({
             url: '/switch',
             success(res) {
