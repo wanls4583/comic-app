@@ -64,6 +64,10 @@
     padding-top: 20rpx;
 }
 
+.comic_scroll {
+  height: 100%;
+}
+
 button.login_btn {
     position: absolute;
     top: 50%;

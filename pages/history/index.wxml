@@ -13,7 +13,7 @@
     <swiper class='swiper' style='top:{{navHeight+systemInfo.statusBarHeight}}px;' bindchange='onChangeSwiper' current='{{nowSwiperIndex}}' duration='{{500}}' circular='{{false}}'>
         <swiper-item class='swiper_item'>
             <button wx:if="{{!logined}}" class='login_btn' open-type="getUserInfo" bindgetuserinfo="getUserInfo">请先登录</button>
-            <pull-scroll-view bindscrolltolower='onLoadMore' bindrefresh='onRefresh' lower-threshold='3000px' stop-refresh='{{stopRefresh}}'>
+            <pull-scroll-view wx:else bindscrolltolower='onLoadMore' bindrefresh='onRefresh' lower-threshold='3000px' stop-refresh='{{stopRefresh}}'>
                 <view style='min-height:100%;margin-top:1px;'>
                     <block wx:for='{{favoriteList}}' wx:for-item='pageItem' wx:for-index='pageIndex' wx:key='{{pageIndex}}'>
                         <view class='comic_item' wx:for='{{pageItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
