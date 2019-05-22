@@ -119,7 +119,7 @@ Page({
                 wx.removeStorageSync('likeChange');
                 wx.stopPullDownRefresh();
                 wx.hideLoading();
-                res.data.list.map((item) => {
+                res.data.list && res.data.list.map((item) => {
                     item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
                 });
                 if (this.refreshing) {

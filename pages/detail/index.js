@@ -67,7 +67,7 @@ Page({
                 for (var i = 0; i < list.length; i++) {
                     var obj = list[i];
                     //已经有记录了则将该记录移除
-                    if (obj.comic.comicid == self.data.comic.comicid) {
+                  if (obj.comic && obj.comic.comicid == self.data.comic.comicid) {
                         self.setData({
                             historyNum: obj.chapter.c_order
                         });
