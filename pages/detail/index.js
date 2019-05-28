@@ -26,6 +26,7 @@ Page({
         }
         var self = this;
         var comic = JSON.parse(decodeURIComponent(option.comic));
+        this.option = option;
         if (comic.status == 1) {
             comic.status = '完结';
         } else if (comic.status == 0) {
@@ -44,6 +45,12 @@ Page({
         this.getCategoryAndArea();
         this.getLiked();
         this.getChpater();
+    },
+    onShareAppMessage: function (res) {
+      return {
+        title: this.data.comic.title,
+        path: '/pages/detail/index?comic=' + this.option.comic
+      }
     },
     onShow() {
         var self = this;

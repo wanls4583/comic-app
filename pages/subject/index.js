@@ -32,14 +32,27 @@ Page({
         ifScrollToTop: false,
         stopRefresh: false
     },
-    onLoad: function() {
+    onLoad: function(option) {
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
         this.loading = {};
         this.loaded = {};
         this.getCategory();
         this.getArea();
+      if (option.aid) {
+        wx.setStorageSync('nowAid', option.aid);
+      } else {
         wx.removeStorageSync('nowAid');
+      }
+      if (option.cid) {
+        wx.setStorageSync('nowCid', option.cid);
+      }
+    },
+    onShareAppMessage: function (res) {
+      return {
+        title: 'M画大全',
+        path: '/pages/index/index'
+      }
     },
     onShow() {
         var cid = wx.getStorageSync('nowCid');

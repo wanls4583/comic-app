@@ -62,6 +62,12 @@ Page({
   onUnload() {
     clearTimeout(this.loadingTimer);
   },
+  onShareAppMessage: function(res) {
+    return {
+      title: 'M画大全',
+      path: '/pages/index/index'
+    }
+  },
   //到顶部了
   onUpper() {},
   //到底底部了

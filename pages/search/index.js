@@ -38,6 +38,12 @@ Page({
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
     },
+    onShareAppMessage: function (res) {
+      return {
+        title: 'M画大全',
+        path: '/pages/index/index'
+      }
+    },
     onRefresh() {
         this.data.page = 1;
         this.data.total = -1;

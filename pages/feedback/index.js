@@ -51,6 +51,12 @@ Page({
             canRead: app.canRead
         });
     },
+    onShareAppMessage: function (res) {
+      return {
+        title: 'M画大全',
+        path: '/pages/index/index'
+      }
+    },
     categoryRadioChange(e) {
         this.category = e.detail.value;
     },

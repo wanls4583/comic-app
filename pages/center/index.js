@@ -45,6 +45,12 @@ Page({
             });
         }
     },
+    onShareAppMessage: function (res) {
+      return {
+        title: 'M画大全',
+        path: '/pages/index/index'
+      }
+    },
     getUserInfo(e) {
         console.log(e)
         app.globalData.userInfo = e.detail.userInfo;

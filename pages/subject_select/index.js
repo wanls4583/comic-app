@@ -37,6 +37,12 @@ Page({
             this.getArea();
         }
     },
+    onShareAppMessage: function (res) {
+      return {
+        title: 'M画大全',
+        path: '/pages/index/index'
+      }
+    },
     //选择某个分类
     slectCategory(e) {
         var cid = e.currentTarget.dataset.category.cid;

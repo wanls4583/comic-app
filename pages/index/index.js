@@ -32,6 +32,16 @@ Page({
         this.getSwitch();
         this.getRecommend();
     },
+    onShareAppMessage: function (res) {
+      if (res.from === 'button') {
+        // 来自页面内转发按钮
+        console.log(res.target)
+      }
+      return {
+        title: 'M画大全',
+        path: '/pages/index/index'
+      }
+    },
     //滚动事件
     onScroll(e) {
         var scrollTop = e.detail.scrollTop - this.data.topHeight - app.globalData.systemInfo.statusBarHeight;
