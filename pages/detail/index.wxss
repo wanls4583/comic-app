@@ -221,15 +221,26 @@
     padding: 0 20rpx 80rpx;
 }
 
+.dir_top_w {
+   margin-bottom: 20rpx;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
 .dir_title {
-    margin-bottom: 20rpx;
     font-size: 40rpx;
+    align-items: center;
 }
 
 .dir_count {
     display: inline-block;
     margin-left: 10rpx;
     font-size: 30rpx;
+}
+
+.order_w {
+  font-size: 34rpx;
 }
 
 .dir_item {

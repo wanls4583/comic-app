@@ -46,8 +46,11 @@
                 <view class='detail light_title_color {{expand || !canRead ? "expand" : ""}}' bindtap='toggleExpand'>{{comic.content}}<view wx:if='{{canRead}}' class='iconfont icon-zhankai des_color'></view></view>
             </view>
             <view class='dir_w'>
-                <view class='dir_title strong_title_color'>{{comic.status}}<text class='dir_count des_color'>共{{chapterList.length}}话</text></view>
-                <view wx:if='{{canRead}}' class='dir_item light_title_color {{index+1==historyNum ? "active" : ""}}' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-index='{{index}}' bindtap='gotoPicture'>{{item.name}}</view>
+                <view class='dir_top_w'>
+                  <view class='strong_title_color dir_title'>{{comic.status}}<text class='dir_count des_color'>共{{chapterList.length}}话</text></view>
+                  <view class='order_w main_color' bindtap='changeOrder'><text class='iconfont icon-order'></text><text>{{reverseOrder ? '倒序' : '正序'}}</text></view>
+                </view>
+                <view wx:if='{{canRead}}' class='dir_item light_title_color {{item.c_order==historyNum ? "active" : ""}}' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-order='{{item.c_order}}' bindtap='gotoPicture'>{{item.name}}</view>
             </view>
         </view>
     </scroll-view>

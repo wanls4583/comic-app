@@ -24,6 +24,7 @@ App({
     this.globalData.systemInfo = systemInfo;
     this.globalData.navHeight = menuRect.height + (menuRect.top - (systemInfo.statusBarHeight < menuRect.top ? systemInfo.statusBarHeight : 0)) * 2;
     this.globalData.menuRect = menuRect;
+    console.log(systemInfo, menuRect);
   },
   //版本检测
   updateCheck() {

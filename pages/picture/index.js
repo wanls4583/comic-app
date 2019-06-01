@@ -18,11 +18,13 @@ Page({
     title: '',
     showTitle: true,
     chapterList: [],
-    nowChapterIndex: 1,
+    nowChapterIndex: 0,
     scrollAnimation: false,
     nowMenu: 1,
     light: 0,
-    switchChecked: true
+    switchChecked: true,
+    reverseOrder: false,
+    comicTitle: ''
   },
   init() {
     var obj = wx.getStorageSync('chapterList');
@@ -32,18 +34,19 @@ Page({
     }
     this.comic = obj.comic;
     this.chapterList = obj.chapterList; //章节列表
-    this.nowChapterIndex = obj.startChapterIndex; //当前章节索引
-    this.startChapterIndex = obj.startChapterIndex; //已请求章节的开始索引
-    this.endChapterIndex = obj.startChapterIndex; //已请求章节的结束(不包含)索引
+    this.nowChapterIndex = obj.startChapterOrder - 1; //当前章节索引
+    this.startChapterIndex = obj.startChapterOrder - 1; //已请求章节的开始索引
+    this.endChapterIndex = obj.startChapterOrder - 1; //已请求章节的结束(不包含)索引
     this.allPic = []; //存储已经从网络获取到的图片链接
     this.tipScrollTop = 0 //this.data.systemInfo.screenWidth / 750 * this.data.topLoadingHeight;
     this.picTotal = 0; //图片计数
     this.maxPicTotal = 2000; //最多加载2000张图片
     //设置标题
     this.setData({
-      title: this.chapterList[obj.startChapterIndex].name.replace(/\s/g, ''),
-      chapterList: this.chapterList,
-      nowChapterIndex: this.nowChapterIndex
+      title: this.chapterList[obj.startChapterOrder - 1].name.replace(/\s/g, ''),
+      chapterList: this.chapterList.concat([]),
+      nowChapterIndex: this.nowChapterIndex,
+      comicTitle: this.comic.title
     });
     this.loadChapter(this.nowChapterIndex);
     //获取设备初始亮度
@@ -116,9 +119,9 @@ Page({
   },
   //章节跳转
   gotoChapter(e) {
-    var index = e.currentTarget.dataset.index;
-    this.nowChapterIndex = index;
-    this.loadChapter(index);
+    var order = e.currentTarget.dataset.order;
+    this.nowChapterIndex = order - 1;
+    this.loadChapter(order - 1);
     this.setData({
       nowMenu: 1
     });
@@ -375,6 +378,13 @@ Page({
       }, 30);
     }
     this.scrollTop = e.detail.scrollTop;
+  },
+  //更改目录顺序
+  changeOrder() {
+    this.setData({
+      reverseOrder: !this.data.reverseOrder,
+      chapterList: this.data.chapterList.concat([]).reverse()
+    });
   },
   //回到顶部
   scrollToTop() {
