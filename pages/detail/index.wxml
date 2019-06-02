@@ -1,6 +1,9 @@
 <!--index.wxml-->
 <view class="container">
-    <navigationBar holder='{{false}}' background='transparent' title='{{title}}'></navigationBar>
+    <navigationBar holder='{{false}}' background='transparent' title='{{title}}' external-classes='custom_nav'></navigationBar>
+    <view class='wx_share_w' style='height:{{navHeight}}px;top:{{systemInfo.statusBarHeight}}px;right:{{systemInfo.screenWidth-menuRect.left+5}}px'>
+      <button open-type='share' style='height:{{menuRect.height-3}}px' class='wx_share iconfont icon-wechat'><text>分享</text></button>
+    </view>
     <view class='top_w' style='padding-top:{{systemInfo.statusBarHeight+navHeight}}px'>
         <view class='cover_des_w'>
             <view class='cover_w'>
@@ -34,7 +37,6 @@
                     <view  wx:if='{{!liked}}' bindtap='like'><text class='iconfont icon-shoucang main_color'></text>收藏漫画</view>
                     <view wx:else bindtap='unLike'><text class='iconfont icon-shoucangdianjihou main_color'></text>已收藏</view>
                 </view>
-                <button open-type='share' class='wx_share iconfont icon-wechat'><text style='display:inline-block;margin-left:10rpx'>分享</text></button>
                 <view wx:if='{{canRead}}' class='conitnu_read' bindtap='continueRead'>
                     <text wx:if='{{historyNum> 0}}'>继续阅读</text>
                     <text wx:else>开始阅读</text>

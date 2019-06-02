@@ -34,8 +34,9 @@ Component({
   },
   data: {
     showBack: true,
-    statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+    systemInfo: app.globalData.systemInfo,
     navHeight: app.globalData.navHeight,
+    menuRect: app.globalData.menuRect,
     defaultFontSize: '',
     canSharedPath: ['pages/detail/index']
   },
