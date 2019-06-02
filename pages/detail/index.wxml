@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class="container">
     <navigationBar holder='{{false}}' background='transparent' title='{{title}}' external-classes='custom_nav'></navigationBar>
-    <view class='wx_share_w' style='height:{{navHeight}}px;top:{{systemInfo.statusBarHeight}}px;right:{{systemInfo.screenWidth-menuRect.left+5}}px'>
+    <view class='wx_share_w' style='height:{{navHeight}}px;top:{{systemInfo.statusBarHeight}}px;right:{{systemInfo.screenWidth - menuRect.left + 8}}px'>
       <button open-type='share' style='height:{{menuRect.height-3}}px' class='wx_share iconfont icon-wechat'><text>分享</text></button>
     </view>
     <view class='top_w' style='padding-top:{{systemInfo.statusBarHeight+navHeight}}px'>
@@ -50,7 +50,7 @@
             </view>
             <view class='dir_w'>
                 <view class='dir_top_w'>
-                  <view class='strong_title_color dir_title'>{{comic.status}}<text class='dir_count des_color'>共{{chapterList.length}}话</text></view>
+                  <view class='strong_title_color dir_title'>{{comic.status}}<text class='dir_count des_color'>共{{chapterList.length || '--'}}话</text></view>
                   <view class='order_w main_color' bindtap='changeOrder'><text class='iconfont icon-order'></text><text>{{reverseOrder ? '倒序' : '正序'}}</text></view>
                 </view>
                 <view wx:if='{{canRead}}' class='dir_item light_title_color {{item.c_order==historyNum ? "active" : ""}}' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-order='{{item.c_order}}' bindtap='gotoPicture'>{{item.name}}</view>

@@ -1,6 +1,6 @@
 .custom_nav {
   left: 0;
-  right: 160rpx;
+  right: 170rpx;
   width: auto !important;
 }
 
