@@ -82,6 +82,7 @@
 }
 
 .area, .publish_time, .author_w {
+    position: relative;
     margin-bottom: 6rpx;
     font-size: 28rpx;
     color: #fff;
@@ -159,11 +160,29 @@
     margin-right: 10rpx;
 }
 
+.wx_share {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12rpx 30rpx;
+  font-size: 24rpx;
+  line-height: 24rpx;
+  border-radius: 40rpx;
+  background: rgb(81, 195, 50);
+  color: #fff;
+  border-style: none !important;
+  outline-style: none !important;
+}
+
+.wx_share::after{
+  border: 1px solid transparent;
+}
+
 .conitnu_read {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 380rpx;
+    width: 280rpx;
     height: 100%;
     border-radius: 40rpx 0 0 40rpx;
     background: linear-gradient(rgba(250, 145, 68, 0.5), rgba(250, 145, 68, 1));

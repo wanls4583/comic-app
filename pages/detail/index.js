@@ -119,6 +119,10 @@ Page({
       blur: blur
     });
   },
+  //分享
+  share() {
+
+  },
   //继续阅读
   continueRead() {
     if (this.data.historyNum < 1) {
