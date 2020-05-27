@@ -25,7 +25,7 @@
                 <view class='area main_color' bindtap='gotoSubjectSelect'>{{aidMap[aidSelectMap[cItem.cid]||0]}}</view>
             </view>
             <!-- 各分类下的列表 -->
-            <pull-scroll-view bindscroll='onScroll' bindrefresh='onRefresh' bindscrolltolower='onLoadMore' lower-threshold='2000px' data-cid='{{cItem.cid}}' scroll-top='{{scrollTop[cItem.cid]}}' scroll-to-top='{{ifScrollToTop}}' stop-refresh='{{stopRefresh}}'>
+            <pull-scroll-view bindscroll='onScroll' bindrefresh='onRefresh' bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' scroll-top='{{scrollTop[cItem.cid]}}' scroll-to-top='{{ifScrollToTop}}' stop-refresh='{{stopRefresh}}'>
                 <view class='scroll_list_w'>
                     <block wx:for='{{pageArr}}' wx:for-item='page'>
                         <view class="item_wrap" style='min-height:{{page==swiperDataMap[cItem.cid].lastPage ? 0 : wrapHeight}}px' wx:if='{{swiperDataMap[cItem.cid].lastPage>=page}}' wx:key='{{page}}'>

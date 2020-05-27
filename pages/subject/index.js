@@ -38,7 +38,6 @@ Page({
     this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
     this.windowHeight = app.globalData.systemInfo.windowHeight;
     this.loading = {};
-    this.loaded = {};
     this.getCategory();
     this.getArea();
     this.setData({
@@ -93,7 +92,14 @@ Page({
   },
   //顶部下拉刷新
   onRefresh() {
+    if(this.refreshing) {
+      return;
+    }
     this.refreshing = true;
+    if(this.loading[this.data.nowCid]) {
+      this.loading[this.data.nowCid] = false;
+      this.requestTask && this.requestTask.abort();
+    }
     if (this.data.categoryList.length) {
       this.refreshCategory();
     } else {
@@ -118,9 +124,7 @@ Page({
   scrollCompute(e) {
     var self = this;
     var scrollTop = e.detail.scrollTop;
-    var scrollHeight = e.detail.scrollHeight;
     var cid = e.currentTarget.dataset.cid;
-    var swiperData = this.data.swiperDataMap[cid];
     _getItemHeight().then((itemHeight) => {
       var pageHeight = (this.data.pageSize / 3) * itemHeight;
       var nowPage = Math.ceil(scrollTop / pageHeight);
@@ -292,7 +296,7 @@ Page({
   loadNext(cid) {
     var swiperData = this.data.swiperDataMap[cid];
     var self = this;
-    if(!swiperData || this.loading[cid] || swiperData.totalPage > -1 && swiperData.lastPage >= swiperData.totalPage) { //最后一页了
+    if(!swiperData || swiperData.totalPage > -1 && swiperData.lastPage >= swiperData.totalPage) { //最后一页了
       return;
     }
     return this.getComicListByCategory(cid).then((data) => {
@@ -316,7 +320,8 @@ Page({
           bgImage: data.list[0][0].cover_url
         });
       }
-    });
+      self.loading[cid] = false;
+    }).catch(()=>{});
   },
   //获取所有分类
   getCategory() {
@@ -380,6 +385,9 @@ Page({
   //加载漫画列表
   getComicListByCategory(cid) {
     var self = this;
+    if(this.loading[cid]) {
+      return Promise.reject();
+    }
     this.loading[cid] = true;
     return new Promise((resolve, reject) => {
       var data = {
@@ -392,17 +400,22 @@ Page({
       if (self.data.swiperDataMap[cid].status) {
         data.status = self.data.swiperDataMap[cid].status;
       }
-      request({
+      self.requestTask = request({
         url: '/comic',
         data: data,
         success(res) {
           wx.stopPullDownRefresh();
           wx.hideLoading();
-          self.loading[cid] = false;
-          self.loaded[cid] = true;
+          if (self.refreshing) {
+            self.setData({
+              stopRefresh: true
+            });
+            self.refreshing = false;
+          }
           res.data.list.map((item) => {
             item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
           });
+          self.requestTask = null;
           resolve(res.data);
         },
         fail(err) {
@@ -415,6 +428,7 @@ Page({
             self.refreshing = false;
           }
           self.loading[cid] = false;
+          self.requestTask = null;
           reject(err);
         }
       });
