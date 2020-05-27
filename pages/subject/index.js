@@ -108,18 +108,19 @@ Page({
   },
   //滚动事件
   onScroll(e) {
-    //避免频繁计算
-    var time = 50;
-    //低端安卓机性能不太好
-    if (this.data.systemInfo.platform == 'android') {
-      time = 100;
-    }
-    if (!this.scrollTimer) {
-      this.scrollTimer = setTimeout(() => {
-        this.scrollCompute(e);
-        this.scrollTimer = null;
-      }, time);
-    }
+    // //避免频繁计算
+    // var time = 50;
+    // //低端安卓机性能不太好
+    // if (this.data.systemInfo.platform == 'android') {
+    //   time = 100;
+    // }
+    // if (!this.scrollTimer) {
+    //   this.scrollTimer = setTimeout(() => {
+    //     this.scrollCompute(e);
+    //     this.scrollTimer = null;
+    //   }, time);
+    // }
+    this.scrollCompute(e);
   },
   scrollCompute(e) {
     var self = this;
@@ -385,6 +386,7 @@ Page({
   //加载漫画列表
   getComicListByCategory(cid) {
     var self = this;
+    var swiperData = self.data.swiperDataMap[cid];
     if(this.loading[cid]) {
       return Promise.reject();
     }
@@ -392,13 +394,13 @@ Page({
     return new Promise((resolve, reject) => {
       var data = {
         cid: cid,
-        page: self.data.swiperDataMap[cid].lastPage + 1,
+        page: swiperData.lastPage + 1,
         pageSize: self.data.pageSize,
-        sort: self.data.swiperDataMap[cid].sort,
+        sort: swiperData.sort,
         aid: self.data.aidSelectMap[cid] || 0
       }
-      if (self.data.swiperDataMap[cid].status) {
-        data.status = self.data.swiperDataMap[cid].status;
+      if (swiperData.status) {
+        data.status = swiperData.status;
       }
       self.requestTask = request({
         url: '/comic',

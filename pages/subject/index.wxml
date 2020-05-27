@@ -30,6 +30,7 @@
                     <block wx:for='{{pageArr}}' wx:for-item='page'>
                         <view class="item_wrap" style='min-height:{{page==swiperDataMap[cItem.cid].lastPage ? 0 : wrapHeight}}px' wx:if='{{swiperDataMap[cItem.cid].lastPage>=page}}' wx:key='{{page}}'>
                             <block wx:if='{{page>=swiperDataMap[cItem.cid].nowPage-1 && page<=swiperDataMap[cItem.cid].nowPage+1}}'>
+                                <!-- <view style="width: 100%">{{page}}</view> -->
                                 <block wx:for='{{swiperDataMap[cItem.cid].list}}' wx:for-item='itemList' wx:key='{{index}}' wx:if='{{index==page-1}}'>
                                     <view wx:for='{{itemList}}'  wx:for-item='comicItem' wx:key='{{comicItem.comicid}}'  class='comic_item' data-comic='{{comicItem}}' bindtap='gotoDetail'>
                                         <view class='comic_item_img'>
