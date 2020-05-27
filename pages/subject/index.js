@@ -353,12 +353,7 @@ Page({
       fail(err) {
         console.log(err);
         wx.hideLoading();
-        if (self.refreshing) {
-          self.setData({
-            stopRefresh: true
-          });
-          self.refreshing = false;
-        }
+        self.stopRefreshing();
       }
     });
   },
@@ -408,12 +403,7 @@ Page({
         success(res) {
           wx.stopPullDownRefresh();
           wx.hideLoading();
-          if (self.refreshing) {
-            self.setData({
-              stopRefresh: true
-            });
-            self.refreshing = false;
-          }
+          self.stopRefreshing();
           res.data.list.map((item) => {
             item.lastupdatetime = util.formatTime(item.update_time, 'yyyy/MM/dd').slice(2);
           });
@@ -423,17 +413,20 @@ Page({
         fail(err) {
           console.log(err);
           wx.hideLoading();
-          if (self.refreshing) {
-            self.setData({
-              stopRefresh: true
-            });
-            self.refreshing = false;
-          }
+          self.stopRefreshing();
           self.loading[cid] = false;
           self.requestTask = null;
           reject(err);
         }
       });
     })
+  },
+  stopRefreshing() {
+    if (this.refreshing) {
+      this.setData({
+        stopRefresh: true
+      });
+      this.refreshing = false;
+    }
   }
 })
