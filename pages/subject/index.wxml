@@ -25,27 +25,31 @@
                 <view class='area main_color' bindtap='gotoSubjectSelect'>{{aidMap[aidSelectMap[cItem.cid]||0]}}</view>
             </view>
             <!-- 各分类下的列表 -->
-            <block wx:for='{{swiperDataMap[cItem.cid].viewArr}}' wx:for-item='vItem' wx:key='{{vItem}}' wx:if='{{vItem==swiperDataMap[cItem.cid].nowView}}'>
-                <pull-scroll-view  wx:key='pull_scroll_{{vItem}}' bindscroll='onScroll' bindrefresh='onRefresh' bindscrolltolower='onLoadMore' lower-threshold='3000px' data-cid='{{cItem.cid}}' scroll-top='{{scrollTop[cItem.cid]}}' scroll-to-top='{{ifScrollToTop}}' stop-refresh='{{stopRefresh}}'>
-                    <view class='scroll_list_w'>
-                        <block wx:for='{{swiperDataMap[cItem.cid].renderData}}' wx:for-item='rItem' wx:for-index='rIndex' wx:key='{{rIndex}}' wx:if='{{rIndex >= vItem*viewSize && rIndex < (vItem+1)*viewSize+overlappingPage}}'>
-                            <view class='comic_item' wx:for='{{rItem}}' wx:key='{{comicItem.comicid}}' wx:for-item='comicItem' data-comic='{{comicItem}}' bindtap='gotoDetail'>
-                                <view class='comic_item_img'>
-                                    <image src='{{comicItem.showpicurlb}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
-                                </view>
-                                <view class='comic_item_bottom_w'>
-                                    <view class='comic_item_title title_color'>{{comicItem.title}}</view>
-                                    <view class='comic_item_new des_color'>{{comicItem.last_part_name}}</view>
-                                </view>
-                            </view>
-                        </block>
-                    </view>
-                    <view wx:if='{{swiperDataMap[cItem.cid].totalPage > -1 && swiperDataMap[cItem.cid].totalPage <= swiperDataMap[cItem.cid].endPage+1}}' class='loading_tip des_color nomore'>没有更多了~</view>
-                    <view wx:elif='{{swiperDataMap[cItem.cid].totalPage > -1}}' class='loading_tip des_color'>
-                        <text>正在加载中...</text>
-                    </view>
-                </pull-scroll-view>
-            </block>
+            <pull-scroll-view bindscroll='onScroll' bindrefresh='onRefresh' bindscrolltolower='onLoadMore' lower-threshold='2000px' data-cid='{{cItem.cid}}' scroll-top='{{scrollTop[cItem.cid]}}' scroll-to-top='{{ifScrollToTop}}' stop-refresh='{{stopRefresh}}'>
+                <view class='scroll_list_w'>
+                    <block wx:for='{{pageArr}}' wx:for-item='page'>
+                        <view class="item_wrap" style='min-height:{{page==swiperDataMap[cItem.cid].lastPage ? 0 : wrapHeight}}px' wx:if='{{swiperDataMap[cItem.cid].lastPage>=page}}' wx:key='{{page}}'>
+                            <block wx:if='{{page>=swiperDataMap[cItem.cid].nowPage-1 && page<=swiperDataMap[cItem.cid].nowPage+1}}'>
+                                <block wx:for='{{swiperDataMap[cItem.cid].list}}' wx:for-item='itemList' wx:key='{{index}}' wx:if='{{index==page-1}}'>
+                                    <view wx:for='{{itemList}}'  wx:for-item='comicItem' wx:key='{{comicItem.comicid}}'  class='comic_item' data-comic='{{comicItem}}' bindtap='gotoDetail'>
+                                        <view class='comic_item_img'>
+                                            <image src='{{comicItem.showpicurlb}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
+                                        </view>
+                                        <view class='comic_item_bottom_w'>
+                                            <view class='comic_item_title title_color'>{{comicItem.title}}</view>
+                                            <view class='comic_item_new des_color'>{{comicItem.last_part_name}}</view>
+                                        </view>
+                                    </view>
+                                </block>
+                            </block>
+                        </view>
+                    </block>
+                </view>
+                <view wx:if='{{swiperDataMap[cItem.cid].totalPage>-1 && swiperDataMap[cItem.cid].totalPage<=swiperDataMap[cItem.cid].lastPage}}' class='loading_tip des_color nomore'>没有更多了~</view>
+                <view wx:elif='{{swiperDataMap[cItem.cid].totalPage>-1}}' class='loading_tip des_color'>
+                    <text>正在加载中...</text>
+                </view>
+            </pull-scroll-view>
         </view>
     </view>
     <cover-view wx:if='{{stopSwiper}}' class='list_swiper_cover'></cover-view>
