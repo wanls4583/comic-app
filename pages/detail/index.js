@@ -13,9 +13,9 @@ Page({
     nowTab: 0,
     liked: false,
     logined: false,
-    menuRect: app.globalData.menuRect,
+    menuRect: null,
     systemInfo: app.globalData.systemInfo,
-    navHeight: app.globalData.navHeight,
+    navHeight: 0,
     expand: false,
     title: '',
     blur: 0,
@@ -66,6 +66,12 @@ Page({
       self.setData({
         logined: false
       });
+    });
+    app.getDeviceInfo((deviceInfo)=>{
+        this.setData({
+          navHeight: deviceInfo.navHeight,
+          menuRect: deviceInfo.menuRect
+        });
     });
     //获取章节观看记录
     wx.getStorage({

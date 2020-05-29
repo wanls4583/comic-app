@@ -12,19 +12,28 @@ Page({
         currentBannerIndex: 0, //当前轮播图索引号
         banner: [], //轮播图
         systemInfo: app.globalData.systemInfo,
-        navHeight: app.globalData.navHeight,
-        menuRect: app.globalData.menuRect,
+        navHeight: 0,
+        menuRect: null,
         searchOpacity: 0,
         showScrollBtn: false,
         ifScrollToTop: false,
         stopRefresh: false,
-        topHeight: app.globalData.navHeight * 1.5
+        topHeight: 0
     },
     onLoad: function() {
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
         this.getSwitch();
         this.getRecommend();
+    },
+    onShow() {
+        app.getDeviceInfo((deviceInfo)=>{
+            this.setData({
+                menuRect: deviceInfo.menuRect,
+                navHeight: deviceInfo.navHeight,
+                topHeight: deviceInfo.navHeight * 1.5
+            });
+        });
     },
     //顶部下拉刷新
     onRefresh() {

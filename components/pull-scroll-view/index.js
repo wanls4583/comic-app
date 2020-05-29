@@ -91,20 +91,36 @@ Component({
         },
         topHeight: {
             type: Number,
-            value: app.globalData.navHeight * 1.5
+            value: 60,
+            observer: function(newVal, oldVal) {
+                if(this.properties.fullScreen) {
+                    newVal += this.data.statusBarHeight;
+                }
+                this.properties.topHeight = newVal;
+                this.setData({
+                    animation: false
+                },()=>{
+                    this.setData({
+                        _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
+                    },()=>{
+                        this.setData({
+                            animation: true
+                        });
+                    });
+                });
+            }
         }
     },
     data: {
         systemInfo: app.globalData.systemInfo,
         statusBarHeight: app.globalData.systemInfo.statusBarHeight,
-        navHeight: app.globalData.navHeight,
         _scrollTop: 0,
         animation: true,
         finished: false
     },
     lifetimes: {
         attached() {
-            if(this.properties.fullScreen) {
+            if(this.properties.topHeight == 60 && this.properties.fullScreen) {
                 this.properties.topHeight += this.data.statusBarHeight;
             }
             this.setData({
@@ -122,7 +138,7 @@ Component({
         }
     },
     attached: function(option) {
-        if(this.properties.fullScreen) {
+        if(this.properties.topHeight == 60 && this.properties.fullScreen) {
             this.properties.topHeight += this.data.statusBarHeight;
         }
         this.setData({

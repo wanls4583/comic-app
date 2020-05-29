@@ -35,8 +35,8 @@ Component({
   data: {
     showBack: true,
     systemInfo: app.globalData.systemInfo,
-    navHeight: app.globalData.navHeight,
-    menuRect: app.globalData.menuRect,
+    navHeight: 0,
+    menuRect: {left: 0},
     defaultFontSize: '',
     canSharedPath: ['pages/detail/index']
   },
@@ -55,6 +55,12 @@ Component({
           defaultFontSize: '30rpx'
         })
       }
+      app.getDeviceInfo((deviceInfo)=>{
+          this.setData({
+            navHeight: deviceInfo.navHeight,
+            menuRect: deviceInfo.menuRect
+          });
+      });
     }
   },
   attached: function(option) {
@@ -71,6 +77,12 @@ Component({
         defaultFontSize: '30rpx'
       })
     }
+    app.getDeviceInfo((deviceInfo)=>{
+      this.setData({
+        navHeight: deviceInfo.navHeight,
+        menuRect: deviceInfo.menuRect
+      });
+  });
   },
   methods: {
     back() {

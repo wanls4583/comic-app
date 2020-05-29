@@ -14,7 +14,7 @@ Page({
     systemInfo: app.globalData.systemInfo,
     showBootomBtn: true,
     statusBarHeight: app.globalData.systemInfo.statusBarHeight,
-    navHeight: app.globalData.navHeight,
+    navHeight: 0,
     title: '',
     showTitle: true,
     chapterList: [],
@@ -64,6 +64,13 @@ Page({
   },
   onUnload() {
     clearTimeout(this.loadingTimer);
+  },
+  onShow() {
+    app.getDeviceInfo((deviceInfo)=>{
+        this.setData({
+            navHeight: deviceInfo.navHeight
+        });
+    });
   },
   onShareAppMessage: function(res) {
     return {

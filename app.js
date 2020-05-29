@@ -19,12 +19,32 @@ App({
     this.updateCheck();
   },
   setGlobalData() {
-    var menuRect = wx.getMenuButtonBoundingClientRect();
     var systemInfo = wx.getSystemInfoSync();
     this.globalData.systemInfo = systemInfo;
-    this.globalData.navHeight = menuRect.height + (menuRect.top - (systemInfo.statusBarHeight < menuRect.top ? systemInfo.statusBarHeight : 0)) * 2;
-    this.globalData.menuRect = menuRect;
-    console.log(systemInfo, menuRect);
+    _setDeviceInfo.bind(this)();
+    setTimeout(()=>{
+      this.setedDeviceInfo = true;
+      _setDeviceInfo.bind(this)();
+    }, 500);
+    function _setDeviceInfo() {
+      var menuRect = wx.getMenuButtonBoundingClientRect();
+      this.globalData.navHeight = menuRect.height + (menuRect.top - (systemInfo.statusBarHeight < menuRect.top ? systemInfo.statusBarHeight : 0)) * 2;
+      this.globalData.menuRect = menuRect;
+    }
+  },
+  getDeviceInfo(cb) {
+    cb({
+      navHeight: this.globalData.navHeight,
+      menuRect: this.globalData.menuRect
+    });
+    if(!this.setedDeviceInfo) {
+      setTimeout(()=>{
+        cb({
+          navHeight: this.globalData.navHeight,
+          menuRect: this.globalData.menuRect
+        });
+      }, 600);
+    }
   },
   //版本检测
   updateCheck() {

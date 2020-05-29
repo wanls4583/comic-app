@@ -13,9 +13,9 @@ Page({
         page: 0,
         pageSize: 27,
         totalPage: -1,
-        menuRect: app.globalData.menuRect,
+        menuRect: null,
         systemInfo: app.globalData.systemInfo,
-        navHeight: app.globalData.navHeight,
+        navHeight: 0,
         canRead: false,
         stopRefresh: false
     },
@@ -51,6 +51,12 @@ Page({
         });
         this.setData({
             canRead: app.canRead
+        });
+        app.getDeviceInfo((deviceInfo)=>{
+            this.setData({
+              navHeight: deviceInfo.navHeight,
+              menuRect: deviceInfo.menuRect
+            });
         });
     },
     onShareAppMessage: function (res) {

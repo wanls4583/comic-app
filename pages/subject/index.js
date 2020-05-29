@@ -24,8 +24,8 @@ Page({
     animationDuration: 300,
     stopSwiper: false,
     systemInfo: app.globalData.systemInfo,
-    menuRect: app.globalData.menuRect,
-    navHeight: app.globalData.navHeight,
+    menuRect: null,
+    navHeight: 0,
     bgImage: '',
     showScrollBtn: false,
     scrollAnimation: false,
@@ -89,6 +89,12 @@ Page({
         this.refreshCategory();
       }
     }
+    app.getDeviceInfo((deviceInfo)=>{
+        this.setData({
+            navHeight: deviceInfo.navHeight,
+            menuRect: deviceInfo.menuRect
+        });
+    });
   },
   //顶部下拉刷新
   onRefresh() {

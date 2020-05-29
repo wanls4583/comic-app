@@ -22,8 +22,8 @@ Page({
         scrollTop: 0,
         overlappingPage: 5,
         systemInfo: app.globalData.systemInfo,
-        navHeight: app.globalData.navHeight,
-        menuRect: app.globalData.menuRect,
+        navHeight: 0,
+        menuRect: null,
         showScrollBtn: false,
         scrollAnimation: false,
         stopRefresh: false,
@@ -37,6 +37,14 @@ Page({
         });
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
+    },
+    onShow() {
+        app.getDeviceInfo((deviceInfo)=>{
+            this.setData({
+                navHeight: deviceInfo.navHeight,
+                menuRect: deviceInfo.menuRect
+            });
+        });
     },
     onShareAppMessage: function (res) {
       return {
