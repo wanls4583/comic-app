@@ -19,14 +19,14 @@
             <view class='clear_history des_color iconfont icon-shanchu' bindtap='clearHistory'></view>
         </view>
         <view class='history_item_w'>
-            <view wx:for='{{history}}' wx:key='{{index}}' class='history_item bg_color light_title_color' data-text='{{item}}' bindtap='selectHistory'>{{item}}</view>
+            <view wx:for='{{history}}' wx:key='index' class='history_item bg_color light_title_color' data-text='{{item}}' bindtap='selectHistory'>{{item}}</view>
         </view>
     </view>
-    <block wx:if="{{viewArr.length}}" wx:for='{{viewArr}}' wx:for-item="vItem" wx:for-index="vIndex" wx:key='{{vItem}}'>
+    <block wx:if="{{viewArr.length}}" wx:for='{{viewArr}}' wx:for-item="vItem" wx:for-index="vIndex" wx:key='vItem'>
         <view wx:if='{{vItem==nowView}}' class='comic_scroll' style='top:{{systemInfo.statusBarHeight+navHeight}}px;'>
             <pull-scroll-view bindscroll='onScroll' bindrefresh='onRefresh' bindscrolltolower='loadMore' lower-threshold='1400rpx' scroll-top='{{scrollTop}}' scroll-to-top='{{ifScrllToTop}}' stop-refresh='{{stopRefresh}}'>
-                <block wx:if='{{pIndex >= vItem*viewSize && pIndex < (vItem+1)*viewSize+overlappingPage}}' wx:for='{{comicList}}' wx:for-item="pItem" wx:for-index="pIndex" wx:key='{{pIndex}}'>
-                    <view class='comic_item' wx:for='{{pItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
+                <block wx:if='{{pIndex >= vItem*viewSize && pIndex < (vItem+1)*viewSize+overlappingPage}}' wx:for='{{comicList}}' wx:for-item="pItem" wx:for-index="pIndex" wx:key='pIndex'>
+                    <view class='comic_item' wx:for='{{pItem}}' wx:key='comicid' data-comic='{{item}}' bindtap='gotoDetail'>
                         <view class='comic_item_img' style='background:url({{item.cover_url}}) no-repeat center;background-size:cover'></view>
                         <view class='comic_item_bottom_w'>
                             <view class='comic_item_title title_color'>{{item.title}}</view>

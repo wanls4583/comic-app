@@ -4,7 +4,7 @@
     <view class='column_w'>
         <view class='category_label title_color'>全部分类</view>
         <view class='category_list_w'>
-            <block wx:for='{{categoryList}}' wx:key='{{item.cid}}'>
+            <block wx:for='{{categoryList}}' wx:key='cid'>
                 <view class='item title_color {{nowCid==item.cid ? "active" : ""}}' data-category='{{item}}' bindtap='slectCategory'>{{item.name}}</view>
             </block>
         </view>
@@ -12,7 +12,7 @@
     <view class='column_w'>
         <view class='area_label title_color'>地区</view>
         <view class='area_list_w'>
-            <block wx:for='{{areaList}}' wx:key='{{item.aid}}'>
+            <block wx:for='{{areaList}}' wx:key='aid'>
                 <view class='item title_color {{nowAid==item.aid ? "active" : ""}}' data-area='{{item}}' bindtap='selectArea'>{{item.name}}</view>
             </block>
         </view>

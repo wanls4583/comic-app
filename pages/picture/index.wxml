@@ -6,8 +6,8 @@
         <!-- <view style='visibility:{{topLoadingTip ? "visible" : "hidden"}}' class='top_loading' bindtap='onPreChapter'>{{topLoadingTip}}</view> -->
         <view class='image_horizontal_scroll_w' bindtouchmove='hideMenu'>
             <view class='image_w' style='width:{{imgScale*100+"%"}};'>
-                <block wx:for='{{pics}}' wx:key='{{index}}' wx:for-item='pItem' wx:for-index='pIndex'>
-                    <block wx:for='{{pItem}}' wx:key='{{item.url}}'>
+                <block wx:for='{{pics}}' wx:key='index' wx:for-item='pItem' wx:for-index='pIndex'>
+                    <block wx:for='{{pItem}}' wx:key='url'>
                         <block wx:if='{{item.url}}'>
                             <image wx:if='{{pIndex==0 && index<3}}' bindload='onImgLoad' binderror='onImgError' src='{{item.url}}' style='width:100%;height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{index==0 || item.chapterid!= pics[index-1].chapterid ? "chapter_"+item.chapterid : "pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
                             <image wx:else src='{{item.url}}' style='width:100%;height:auto;' class='{{"chapter_"+item.chapterid}}' id='{{index==0 || item.chapterid!= pics[index-1].chapterid ? "chapter_"+item.chapterid : "pic_"+index}}' lazy-load='{{true}}' mode='widthFix' data-index='{{index}}' bindtap='clickToScale'></image>
@@ -56,7 +56,7 @@
           <view class='order_w main_color' bindtap='changeOrder'><text class='iconfont icon-order'></text><text>{{reverseOrder ? '倒序' : '正序'}}</text></view>
         </view>
         <scroll-view scroll-y class='catalog_scroll_w' style='margin-top:{{statusBarHeight}}px'>
-            <view class='catalog_item' wx:for='{{chapterList}}' wx:key='{{item.id}}' data-order='{{item.c_order}}' style='color:{{nowChapterIndex==item.c_order-1 ? "#fa9144" : "#fff"}}' bindtap='gotoChapter'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
+            <view class='catalog_item' wx:for='{{chapterList}}' wx:key='id' data-order='{{item.c_order}}' style='color:{{nowChapterIndex==item.c_order-1 ? "#fa9144" : "#fff"}}' bindtap='gotoChapter'>{{item.name || '第'+(chapterList.length-index)+'章'}}</view>
         </scroll-view>
     </view>
     <view class='scroll_top {{showBootomBtn?"active":""}}' bindtap='scrollToTop'><text class='iconfont icon-top'></text></view>

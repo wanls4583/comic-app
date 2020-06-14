@@ -12,7 +12,7 @@
             <view class='top_w'>
                 <!-- 轮播图 -->
                 <swiper class='banner_w' style='height:{{170+systemInfo.statusBarHeight+navHeight}}px' circular='{{true}}' autoplay='{{true}}' interval='{{5000}}' duration="{{500}}" bindchange="bannerChang">
-                    <swiper-item wx:for="{{banner}}" wx:for-item='homeItem' wx:key='{{homeItem.comicid}}'>
+                    <swiper-item wx:for="{{banner}}" wx:for-item='homeItem' wx:key='comicid'>
                         <view class='banner_item' style='background:url({{homeItem.showconver}}) no-repeat center;background-size:cover' data-comic='{{homeItem}}' bindtap='gotoDetail'>
                             <view class='banner_bottom'>
                                 <view>{{homeItem.title}}</view>
@@ -26,7 +26,7 @@
                 </swiper>
             </view>
             <!-- 各分类推荐列表 -->
-            <block wx:if='{{homeCItem.category.cid}}' wx:for="{{recommend}}" wx:for-item="homeCItem" wx:key='{{homeCItem.category.cid}}'>
+            <block wx:if='{{homeCItem.category.cid}}' wx:for="{{recommend}}" wx:for-index="index" wx:for-item="homeCItem" wx:key='index'>
                 <view class='column_w'>
                     <view class='category_title_w'>
                         <view class='left_w'>
@@ -35,7 +35,7 @@
                     </view>
                     <view wx:if="{{homeCItem.list.length > 6}}" class='comic_item_w comic_item_w_10'>
                         <scroll-view class='comic_item_scroll' scroll-x>
-                            <view class='comic_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
+                            <view class='comic_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='comicid' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
                                 <view class='comic_item_img'>
                                     <image src='{{homeClistItem.cover_url}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
                                 </view>
@@ -50,7 +50,7 @@
                         </view>
                     </view>
                     <view wx:elif="{{homeCItem.list.length > 4}}" class='comic_item_w_6'>
-                        <view class='comic_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
+                        <view class='comic_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='comicid' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
                             <view class='comic_item_img'>
                                 <image src='{{homeClistItem.cover_url}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
                             </view>
@@ -64,7 +64,7 @@
                         </view>
                     </view>
                     <view wx:else class='comic_item_w' class='comic_item_w_4'>
-                        <view class='comic_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='{{homeClistItem.comicid}}' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
+                        <view class='comic_item' wx:for="{{homeCItem.list}}" wx:for-item='homeClistItem' wx:key='comicid' data-comic='{{homeClistItem}}' bindtap='gotoDetail'>
                             <view class='comic_item_img'>
                                 <image src='{{homeClistItem.cover_url_big}}' lazy-load='{{true}}' mode='aspectFill' style='width:100%;height:100%'></image>
                             </view>

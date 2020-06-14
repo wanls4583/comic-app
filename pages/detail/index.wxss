@@ -24,6 +24,7 @@
   border-radius: 40rpx;
   background: rgb(81, 195, 50);
   color: #fff;
+  white-space: nowrap;
   border-style: none !important;
   outline-style: none !important;
 }

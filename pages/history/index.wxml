@@ -15,8 +15,8 @@
             <button wx:if="{{!logined}}" class='login_btn' open-type="getUserInfo" bindgetuserinfo="getUserInfo">请先登录</button>
             <pull-scroll-view wx:else bindscrolltolower='onLoadMore' bindrefresh='onRefresh' lower-threshold='3000px' stop-refresh='{{stopRefresh}}'>
                 <view style='min-height:100%;margin-top:1px;'>
-                    <block wx:for='{{favoriteList}}' wx:for-item='pageItem' wx:for-index='pageIndex' wx:key='{{pageIndex}}'>
-                        <view class='comic_item' wx:for='{{pageItem}}' wx:key='{{item.comicid}}' data-comic='{{item}}' bindtap='gotoDetail'>
+                    <block wx:for='{{favoriteList}}' wx:for-item='pageItem' wx:for-index='pageIndex' wx:key='pageIndex'>
+                        <view class='comic_item' wx:for='{{pageItem}}' wx:key='comicid' data-comic='{{item}}' bindtap='gotoDetail'>
                             <view class='comic_item_img' style='background:url({{item.cover_url}}) no-repeat center;background-size:cover'></view>
                             <view class='comic_item_bottom_w'>
                                 <view class='comic_item_title title_color'>{{item.title}}</view>
@@ -33,7 +33,7 @@
         <swiper-item wx:if='{{canRead}}' class='swiper_item'>
             <scroll-view wx:if='{{comicHistory.length}}' class='comic_scroll' scroll-y>
                 <view style='min-height:100%;margin-top:1px;'>
-                    <view class='comic_item' wx:for='{{comicHistory}}' wx:key='{{item.comicid}}' data-comic='{{item.comic}}' bindtap='gotoDetail'>
+                    <view class='comic_item' wx:for='{{comicHistory}}' wx:key='comicid' data-comic='{{item.comic}}' bindtap='gotoDetail'>
                         <view class='comic_item_img' style='background:url({{item.comic.cover_url}}) no-repeat center;background-size:cover'></view>
                         <view class='comic_item_bottom_w'>
                             <view class='comic_item_title title_color'>{{item.comic.title}}</view>
