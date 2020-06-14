@@ -30,7 +30,7 @@
                         <view class='comic_item_img' style='background:url({{item.cover_url}}) no-repeat center;background-size:cover'></view>
                         <view class='comic_item_bottom_w'>
                             <view class='comic_item_title title_color'>{{item.title}}</view>
-                            <view class='comic_item_new des_color'>{{item.last_part_name}}</view>
+                            <view class='comic_item_new des_color'>{{item.last_part_name||''}}</view>
                         </view>
                     </view>
                 </block>

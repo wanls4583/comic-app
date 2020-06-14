@@ -41,7 +41,7 @@
                                 </view>
                                 <view class='comic_item_bottom_w'>
                                     <view class='comic_item_title title_color'>{{homeClistItem.title}}</view>
-                                    <view class='comic_item_new des_color'>{{homeClistItem.last_part_name}}</view>
+                                    <view class='comic_item_new des_color'>{{homeClistItem.last_part_name||''}}</view>
                                 </view>
                             </view>
                         </scroll-view>
@@ -56,7 +56,7 @@
                             </view>
                             <view class='comic_item_bottom_w'>
                                 <view class='comic_item_title title_color'>{{homeClistItem.title}}</view>
-                                <view class='comic_item_new des_color'>{{homeClistItem.last_part_name}}</view>
+                                <view class='comic_item_new des_color'>{{homeClistItem.last_part_name||''}}</view>
                             </view>
                         </view>
                         <view class='read_more_w'>
@@ -70,7 +70,7 @@
                             </view>
                             <view class='comic_item_bottom_w'>
                                 <view class='comic_item_title title_color'>{{homeClistItem.title}}</view>
-                                <view class='comic_item_new des_color'>{{homeClistItem.last_part_name}}</view>
+                                <view class='comic_item_new des_color'>{{homeClistItem.last_part_name||''}}</view>
                             </view>
                         </view>
                         <view class='read_more_w'>

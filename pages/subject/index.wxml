@@ -38,7 +38,7 @@
                                         </view>
                                         <view class='comic_item_bottom_w'>
                                             <view class='comic_item_title title_color'>{{comicItem.title}}</view>
-                                            <view class='comic_item_new des_color'>{{comicItem.last_part_name}}</view>
+                                            <view class='comic_item_new des_color'>{{comicItem.last_part_name||''}}</view>
                                         </view>
                                     </view>
                                 </block>

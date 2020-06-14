@@ -37,7 +37,7 @@
                         <view class='comic_item_img' style='background:url({{item.comic.cover_url}}) no-repeat center;background-size:cover'></view>
                         <view class='comic_item_bottom_w'>
                             <view class='comic_item_title title_color'>{{item.comic.title}}</view>
-                            <view class='comic_item_new des_color'>{{item.comic.last_part_name}}</view>
+                            <view class='comic_item_new des_color'>{{item.comic.last_part_name||''}}</view>
                         </view>
                     </view>
                     <view class='loading_tip des_color nomore'>没有更多了~</view>
