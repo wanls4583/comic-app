@@ -47,7 +47,7 @@
                     </block>
                 </view>
                 <view wx:if='{{swiperDataMap[cItem.cid].totalPage>-1 && swiperDataMap[cItem.cid].totalPage<=swiperDataMap[cItem.cid].lastPage}}' class='loading_tip des_color nomore'>没有更多了~</view>
-                <view wx:elif='{{swiperDataMap[cItem.cid].totalPage>-1}}' class='loading_tip des_color'>
+                <view wx:elif='{{swiperDataMap[cItem.cid].totalPage>0}}' class='loading_tip des_color'>
                     <text>正在加载中...</text>
                 </view>
             </pull-scroll-view>

@@ -7,27 +7,26 @@ Page({
     data: {
         searchKey: '',
         comicList: [],
-        total: -1,
         totalPage: -1,
-        page: 1,
-        pageSize: 27,
+        lastPage: 1,
         showPlace: false,
         showHistory: true,
         autoFocus: false,
         history: [],
         viewArr: [],
-        nowView: 0,
-        viewSize: 40, //scroll-view中最多同时存在40页
-        pageSize: 3 * 3 * 3, //一页的数量
+        pageSize: 3 * 3 * 5, //一页的数量
         scrollTop: 0,
-        overlappingPage: 5,
         systemInfo: app.globalData.systemInfo,
         navHeight: 0,
         menuRect: null,
         showScrollBtn: false,
         scrollAnimation: false,
         stopRefresh: false,
-        ifScrllToTop: false
+        ifScrllToTop: false,
+        pageArr: [],
+        wrapHeight: 0,
+        lastPage: 0,
+        nowPage: 1
     },
     onLoad: function() {
         var history = wx.getStorageSync('search_history') || [];
@@ -37,79 +36,79 @@ Page({
         });
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
+        this.setData({
+            wrapHeight: this.itemHeight * (this.data.pageSize / 3)
+        });
+        var tmp = [];
+        for (var i = 1; i <= 500; i++) {
+            tmp.push(i);
+        }
+        this.setData({
+            pageArr: tmp
+        });
+        this.getComicList();
     },
     onShow() {
-        app.getDeviceInfo((deviceInfo)=>{
+        app.getDeviceInfo((deviceInfo) => {
             this.setData({
                 navHeight: deviceInfo.navHeight,
                 menuRect: deviceInfo.menuRect
             });
         });
     },
-    onShareAppMessage: function (res) {
-      return {
-        title: 'M画大全',
-        path: '/pages/index/index'
-      }
+    onShareAppMessage: function(res) {
+        return {
+            title: 'M画大全',
+            path: '/pages/index/index'
+        }
     },
     onRefresh() {
-        this.data.page = 1;
-        this.data.total = -1;
+        this.setData({
+            totalPage: -1,
+            nowPage: 1,
+            lastPage: 0
+        })
         this.refreshing = true;
         this.getComicList();
     },
     //滚动事件
     onScroll(e) {
         //避免频繁计算
-        if (!this.scrollTimer) {
-            this.scrollTimer = setTimeout(() => {
-                this.scrollCompute(e);
-                this.scrollTimer = null;
-            }, 50);
-        }
+        this.scrollCompute(e);
 
     },
     scrollCompute(e) {
-        if (e.detail.scrollTop > this.data.systemInfo.screenHeight / 2) {
-            !this.data.showScrollBtn && this.setData({
-                showScrollBtn: true
-            });
-        } else if(this.data.showScrollBtn) {
-            this.setData({
-                showScrollBtn: false
-            });
-        }
-        this.scrollTop = e.detail.scrollTop;
-        if (this.viewRending) {
-            return;
-        }
-        this.viewHeight = this.viewHeight || this.data.pageSize / 3 * (this.data.viewSize + this.data.overlappingPage) * this.itemHeight;
-        this.nextViewScrollTop = this.nextViewScrollTop || this.data.overlappingPage * this.itemHeight * (this.data.pageSize / 3) + this.data.navHeight + this.data.systemInfo.statusBarHeight - this.windowHeight;
-        this.preViewScrollTop = this.preViewScrollTop || this.itemHeight * (this.data.pageSize / 3) * this.data.viewSize + 3 * this.itemHeight;
-        if (e.detail.scrollHeight + 3 * this.itemHeight >= this.viewHeight && e.detail.scrollHeight - e.detail.scrollTop <= this.windowHeight + 50 && this.data.nowView < this.data.viewArr.length - 1) {
-            this.viewRending = true;
-            this.setData({
-                nowView: this.data.nowView + 1
-            }, () => {
+        var self = this;
+        var scrollTop = e.detail.scrollTop;
+        var cid = e.currentTarget.dataset.cid;
+        _getItemHeight().then((itemHeight) => {
+            var pageHeight = (this.data.pageSize / 3) * itemHeight;
+            var nowPage = Math.ceil(scrollTop / pageHeight);
+            if (this.data.nowPage != nowPage) {
                 this.setData({
-                    scrollTop: this.nextViewScrollTop
-                }, () => {
-                    setTimeout(() => {
-                        this.viewRending = false;
-                    }, 1000);
+                    [`nowPage`]: nowPage
                 });
-            });
-        } else if (e.detail.scrollTop < 3 * this.itemHeight && this.data.nowView > 0) {
-            this.viewRending = true;
-            this.setData({
-                nowView: this.data.nowView - 1
-            }, () => {
-                this.setData({
-                    scrollTop: this.preViewScrollTop
-                }, () => {
-                    setTimeout(() => {
-                        this.viewRending = false;
-                    }, 1000);
+            }
+        });
+        //获取item的高度
+        function _getItemHeight() {
+            if (self.hasGetItemHeight) {
+                return Promise.resolve(self.itemHeight);
+            }
+            return new Promise((resolve) => {
+                var query = wx.createSelectorQuery()
+                query.select('.category_item').boundingClientRect()
+                query.exec(function(rect) {
+                    if (rect && rect[0]) {
+                        self.itemHeight = rect[0].height;
+                        if (!self.data.wrapHeight) {
+                            self.setData({
+                                wrapHeight: self.itemHeight * (self.data.pageSize / 3)
+                            });
+                            self.hasGetItemHeight = true;
+                        }
+                    }
+                    resolve(self.itemHeight);
                 });
             });
         }
@@ -126,11 +125,9 @@ Page({
         var text = e.currentTarget.dataset.text;
         this.setData({
             searchKey: text,
-            viewArr: [],
             comicList: [],
-            total: -1,
             totalPage: -1,
-            page: 1,
+            lastPage: 0,
             showPlace: false,
             showHistory: false
         });
@@ -167,9 +164,9 @@ Page({
             viewArr: [],
             searchKey: e.detail.value,
             comicList: [],
-            total: -1,
             totalPage: -1,
-            page: 1,
+            lastPage: 0,
+            nowPage: 1,
             showHistory: false,
         });
         if (this.data.searchKey && this.data.history.indexOf(this.data.searchKey) == -1) {
@@ -226,7 +223,7 @@ Page({
         this.viewRending = true;
         this.setData({
             ifScrllToTop: true,
-            nowView: 0,
+            nowPage: 1,
         }, () => {
             setTimeout(() => {
                 this.viewRending = false;
@@ -235,72 +232,46 @@ Page({
     },
     //加载更多
     loadMore() {
-        if (!this.refreshing && (this.data.nowView + 1) * this.data.viewSize + this.data.overlappingPage + 1 >= this.data.comicList.length) {
+        if (!this.refreshing && this.data.lastPage  < this.data.totalPage) {
             this.getComicList();
         }
     },
     //加载列表
     getComicList() {
         var self = this;
+        if(this.loading) {
+            return;
+        }
+        this.loading = true;
         request({
-            url: '/comic?search=' + this.data.searchKey + '&page=' + this.data.page + '&size=' + this.data.pageSize,
+            url: '/comic?search=' + this.data.searchKey + '&page=' + (this.data.lastPage + 1) + '&size=' + this.data.pageSize,
             success(res) {
                 wx.stopPullDownRefresh();
                 wx.hideLoading();
-                if (self.data.total <= 0) {
+                if (self.data.totalPage <= 0) {
                     //总页数
                     var totalPage = Math.ceil(res.data.size / self.data.pageSize);
-                    //视图数组
-                    var viewArr = [];
-                    //计算视图的个数
-                    for (var i = 0, len = Math.ceil(res.data.size / self.data.pageSize / self.data.viewSize); i < len; i++) {
-                        viewArr.push(i);
-                    };
                     self.setData({
                         totalPage: totalPage,
-                        viewArr: viewArr,
-                        nowView: 0,
-                        total: res.data.size,
                         comicList: []
                     });
-                    if(self.refreshing) {
-                        self.setData({
-                            stopRefresh: true
-                        });
-                        self.refreshing = false;
-                    }
                 }
-                if (res.data.list.length) {
+                self.setData({
+                    lastPage: self.data.lastPage + 1,
+                    [`comicList[${self.data.lastPage}]`]: res.data.list || []
+                });
+                self.loading = false;
+                if (self.refreshing) {
                     self.setData({
-                        page: self.data.page,
-                        [`comicList[${self.data.page-1}]`]: res.data.list
-                    }, () => {
-                        if (!self.hasGetScrollHeight) {
-                            setTimeout(() => {
-                                var query = wx.createSelectorQuery()
-                                query.select('.comic_scroll').boundingClientRect()
-                                query.exec(function(rect) {
-                                    if (rect && rect[0]) {
-                                        self.windowHeight = rect[0].height;
-                                    }
-                                });
-                                var query = wx.createSelectorQuery()
-                                query.select('.item').boundingClientRect()
-                                query.exec(function(rect) {
-                                    if (rect && rect[0]) {
-                                        self.itemHeight = rect[0].height;
-                                    }
-                                });
-                            }, 500);
-                            self.hasGetScrollHeight = true;
-                        }
+                        stopRefresh: true
                     });
-                    self.data.page++;
+                    self.refreshing = false;
                 }
             },
             fail(err) {
                 console.log(err);
-                if(self.refreshing) {
+                self.loading = false;
+                if (self.refreshing) {
                     self.setData({
                         stopRefresh: true
                     });

@@ -20,7 +20,6 @@ Page({
     aidMap: [], //存储所有地区
     scrollTop: [], //列表对应的滚动距离
     viewSize: 40, //scroll-view中最多同时存在40页
-    overlappingPage: 5, //前后视图交叉的页数
     animationDuration: 300,
     stopSwiper: false,
     systemInfo: app.globalData.systemInfo,
