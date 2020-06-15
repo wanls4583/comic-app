@@ -248,7 +248,7 @@ Page({
         }
         this.loading = true;
         request({
-            url: '/comic?search=' + this.data.searchKey + '&page=' + (this.data.lastPage + 1) + '&size=' + this.data.pageSize,
+            url: '/comic?search=' + this.data.searchKey + '&page=' + (this.data.lastPage + 1) + '&pageSize=' + this.data.pageSize,
             success(res) {
                 wx.stopPullDownRefresh();
                 wx.hideLoading();
