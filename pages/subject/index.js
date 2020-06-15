@@ -67,6 +67,7 @@ Page({
   onShow() {
     var cid = wx.getStorageSync('nowCid');
     var aid = wx.getStorageSync('nowAid');
+    this.stopRequestTask();
     //地区更改
     if (!isNaN(parseInt(aid)) && this.data.nowAid != aid) {
       this.setData({
@@ -101,10 +102,7 @@ Page({
       return;
     }
     this.refreshing = true;
-    if(this.loading[this.data.nowCid]) {
-      this.loading[this.data.nowCid] = false;
-      this.requestTask && this.requestTask.abort();
-    }
+    this.stopRequestTask();
     if (this.data.categoryList.length) {
       this.refreshCategory();
     } else {
@@ -173,13 +171,14 @@ Page({
   //渲染swiper-item，每次只渲染三个
   renderSwiper(cid) {
     var scrollTop = [];
+    if(this.loading[this.data.nowCid]) {
+      return;
+    }
     if (!this.data.swiperDataMap[cid] || this.data.swiperDataMap[cid].total < 0) {
-      if (!this.refreshing) {
-        wx.showLoading({
-          title: '加载中',
-          mask: true
-        });
-      }
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      });
       if(!this.data.swiperDataMap[cid]) {
         var obj = {
           scrollTop: 0,
@@ -231,13 +230,16 @@ Page({
   },
   selectCategory(e) {
     var cid = e.currentTarget.dataset.category.cid;
-    this.renderSwiper(cid);
+    if(this.data.nowCid != cid) {
+      this.renderSwiper(cid);
+    }
   },
   selectSort(e) {
     var status = e.currentTarget.dataset.status;
     var sort = e.currentTarget.dataset.sort;
     var cid = e.currentTarget.dataset.cid;
     var swiperData = this.data.swiperDataMap[cid];
+    this.stopRequestTask();
     if (status) {
       if (status != swiperData.status) {
         this.setData({
@@ -270,14 +272,9 @@ Page({
   },
   //滚动到顶部
   scrollToTop() {
-    this.viewRending = true;
     this.setData({
       ifScrollToTop: true,
-      [`swiperDataMap[${this.data.nowCid}].nowView`]: 0
-    }, () => {
-      setTimeout(() => {
-        this.viewRending = false;
-      }, 1000);
+      [`swiperDataMap[${this.data.nowCid}].nowPage`]: 1
     });
   },
   //刷新分类列表
@@ -293,6 +290,7 @@ Page({
       status: swiperData.status,
       lastPage: 0
     };
+    this.stopRequestTask();
     this.setData({
       [`swiperDataMap[${this.data.nowCid}]`]: obj
     });
@@ -313,7 +311,7 @@ Page({
         //总页数
         var totalPage = Math.ceil(swiperData.total / this.data.pageSize);
         this.setData({
-          [`swiperDataMap[${cid}].totalPage`]: totalPage,
+          [`swiperDataMap[${cid}].totalPage`]: totalPage
         });
       }
       this.setData({
@@ -328,6 +326,13 @@ Page({
       }
       self.loading[cid] = false;
     }).catch(()=>{});
+  },
+  //停止正在加载的请求
+  stopRequestTask() {
+    if(this.loading[this.data.nowCid]) {
+      this.loading[this.data.nowCid] = false;
+      this.requestTask && this.requestTask.abort();
+    }
   },
   //获取所有分类
   getCategory() {
