@@ -175,10 +175,6 @@ Page({
       return;
     }
     if (!this.data.swiperDataMap[cid] || this.data.swiperDataMap[cid].total < 0) {
-      wx.showLoading({
-        title: '加载中',
-        mask: true
-      });
       if(!this.data.swiperDataMap[cid]) {
         var obj = {
           scrollTop: 0,
