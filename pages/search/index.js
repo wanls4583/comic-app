@@ -81,6 +81,15 @@ Page({
         var self = this;
         var scrollTop = e.detail.scrollTop;
         var cid = e.currentTarget.dataset.cid;
+        if (scrollTop > this.data.systemInfo.screenHeight / 2) {
+            !this.data.showScrollBtn && this.setData({
+                showScrollBtn: true
+            });
+        } else if (this.data.showScrollBtn) {
+            this.setData({
+                showScrollBtn: false
+            });
+        }
         _getItemHeight().then((itemHeight) => {
             var pageHeight = (this.data.pageSize / 3) * itemHeight;
             var nowPage = Math.ceil(scrollTop / pageHeight);
@@ -220,14 +229,9 @@ Page({
     },
     //滚动到顶部
     scrollToTop() {
-        this.viewRending = true;
         this.setData({
             ifScrllToTop: true,
             nowPage: 1,
-        }, () => {
-            setTimeout(() => {
-                this.viewRending = false;
-            }, 1000);
         });
     },
     //加载更多
