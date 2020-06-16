@@ -1,7 +1,7 @@
 <!--index.wxml-->
 <view class='container bg_color'>
-    <navigationBar holder='{{false}}' background='rgba(250, 145, 68,{{searchOpacity}})' external-classes='custom_nav'></navigationBar>
-    <view class='search_w' style='top:{{systemInfo.statusBarHeight}}px;height:{{navHeight}}px;right:{{systemInfo.screenWidth-menuRect.left}}px'>
+    <navigationBar wx:if="{{canRead}}" holder='{{false}}' background='rgba(250, 145, 68,{{searchOpacity}})' external-classes='custom_nav'></navigationBar>
+    <view hidden="{{!canRead}}" class='search_w' style='top:{{systemInfo.statusBarHeight}}px;height:{{navHeight}}px;right:{{systemInfo.screenWidth-menuRect.left}}px'>
         <view class='search' style='height:{{menuRect.height}}px' bindtap='gotoSearch'>
             <view class='iconfont icon-seekicon'></view>
             <text>搜索漫画</text>
@@ -28,7 +28,7 @@
             <!-- 各分类推荐列表 -->
             <block wx:if='{{homeCItem.category.cid}}' wx:for="{{recommend}}" wx:for-index="index" wx:for-item="homeCItem" wx:key='index'>
                 <view class='column_w'>
-                    <view class='category_title_w'>
+                    <view hidden="{{!canRead}}" class='category_title_w'>
                         <view class='left_w'>
                             <text class='category_title strong_title_color'>{{homeCItem.category.name}}</text>
                         </view>
@@ -45,7 +45,7 @@
                                 </view>
                             </view>
                         </scroll-view>
-                        <view class='read_more_w'>
+                        <view class='read_more_w' hidden="{{!canRead}}">
                             <view class='read_more title_color bg_color' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
                         </view>
                     </view>
@@ -59,7 +59,7 @@
                                 <view class='comic_item_new des_color'>{{homeClistItem.last_part_name||''}}</view>
                             </view>
                         </view>
-                        <view class='read_more_w'>
+                        <view class='read_more_w' hidden="{{!canRead}}">
                             <view class='read_more title_color bg_color' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
                         </view>
                     </view>
@@ -73,7 +73,7 @@
                                 <view class='comic_item_new des_color'>{{homeClistItem.last_part_name||''}}</view>
                             </view>
                         </view>
-                        <view class='read_more_w'>
+                        <view class='read_more_w' hidden="{{!canRead}}">
                             <view class='read_more title_color bg_color' data-category='{{homeCItem.category}}' bindtap='slectCategory'></view>
                         </view>
                     </view>

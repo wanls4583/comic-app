@@ -102,6 +102,7 @@ scroll-view {
     width: 224rpx;
     height: 410rpx;
     margin-left: 20rpx;
+    vertical-align: top;
 }
 
 .comic_item_img {

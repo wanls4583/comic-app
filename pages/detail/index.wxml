@@ -32,12 +32,12 @@
     </view>
     <scroll-view scroll-y class='bottom_w' style='margin-top:{{systemInfo.statusBarHeight+navHeight}}px' bindscroll='onScroll'>
         <view class='bottom_body_w'>
-            <view class='btn_group_w'>
+            <view class='btn_group_w' hidden='{{!canRead}}'>
                 <view class='like strong_title_color'>
                     <view  wx:if='{{!liked}}' bindtap='like'><text class='iconfont icon-shoucang main_color'></text>收藏漫画</view>
                     <view wx:else bindtap='unLike'><text class='iconfont icon-shoucangdianjihou main_color'></text>已收藏</view>
                 </view>
-                <view wx:if='{{canRead}}' class='conitnu_read' bindtap='continueRead'>
+                <view class='conitnu_read' bindtap='continueRead'>
                     <text wx:if='{{historyNum> 0}}'>继续阅读</text>
                     <text wx:else>开始阅读</text>
                 </view>
@@ -48,12 +48,12 @@
             <view class='detail_w'>
                 <view class='detail light_title_color {{expand || !canRead ? "expand" : ""}}' bindtap='toggleExpand'>{{comic.content}}<view wx:if='{{canRead}}' class='iconfont icon-zhankai des_color'></view></view>
             </view>
-            <view class='dir_w'>
+            <view class='dir_w' hidden='{{!canRead}}'>
                 <view class='dir_top_w'>
                   <view class='strong_title_color dir_title'>{{comic.status}}<text class='dir_count des_color'>共{{chapterList.length || '--'}}话</text></view>
                   <view class='order_w main_color' bindtap='changeOrder'><text class='iconfont icon-order'></text><text>{{reverseOrder ? '倒序' : '正序'}}</text></view>
                 </view>
-                <view wx:if='{{canRead}}' class='dir_item light_title_color {{item.c_order==historyNum ? "active" : ""}}' wx:for='{{chapterList}}' wx:key='id' data-order='{{item.c_order}}' bindtap='gotoPicture'>{{item.name}}</view>
+                <view class='dir_item light_title_color {{item.c_order==historyNum ? "active" : ""}}' wx:for='{{chapterList}}' wx:key='id' data-order='{{item.c_order}}' bindtap='gotoPicture'>{{item.name}}</view>
             </view>
         </view>
     </scroll-view>

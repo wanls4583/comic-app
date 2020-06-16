@@ -18,22 +18,26 @@ Page({
         showScrollBtn: false,
         ifScrollToTop: false,
         stopRefresh: false,
-        topHeight: 0
+        topHeight: 0,
+        canRead: false
     },
-    onLoad: function() {
+    onLoad() {
+        wx.hideTabBar()
         this.itemHeight = 205 * app.globalData.systemInfo.screenWidth / 375;
         this.windowHeight = app.globalData.systemInfo.windowHeight;
-        this.getSwitch();
         this.getRecommend();
     },
     onShow() {
         app.getDeviceInfo((deviceInfo)=>{
-            this.setData({
-                menuRect: deviceInfo.menuRect,
-                navHeight: deviceInfo.navHeight,
-                topHeight: deviceInfo.navHeight * 1.5
-            });
+            if(this.data.navHeight != deviceInfo.navHeight) {
+                this.setData({
+                    menuRect: deviceInfo.menuRect,
+                    navHeight: deviceInfo.navHeight,
+                    topHeight: deviceInfo.navHeight * 1.5
+                });
+            }
         });
+        this.getSwitch();
     },
     //顶部下拉刷新
     onRefresh() {
@@ -160,12 +164,24 @@ Page({
     getSwitch() {
         var self = this;
         // app.canRead = true;
+        // this.setData({
+        //     canRead: true
+        // });
+        // wx.showTabBar();
         // return;
         request({
             url: '/switch',
             success(res) {
                 if (res.statusCode == 200) {
                     app.canRead = res.data.switch;
+                    self.setData({
+                        canRead: app.canRead
+                    })
+                    if(app.canRead) {
+                        wx.showTabBar();
+                    } else {
+                        wx.hideTabBar();
+                    }
                 }
             }
         })
