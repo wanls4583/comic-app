@@ -1,3 +1,4 @@
+rem cnpm i -g uglify-es
 call uglifyjs ./pages/index/index.js -o ./pages/index/index.js -c -m
 call uglifyjs ./pages/detail/index.js -o ./pages/detail/index.js -c -m
 call uglifyjs ./pages/center/index.js -o ./pages/center/index.js -c -m
