@@ -24,7 +24,8 @@ Page({
     light: 0,
     switchChecked: true,
     reverseOrder: false,
-    comicTitle: ''
+    comicTitle: '',
+    canRead: false
   },
   init() {
     var obj = wx.getStorageSync('chapterList');
@@ -70,6 +71,9 @@ Page({
         this.setData({
             navHeight: deviceInfo.navHeight
         });
+    });
+    this.setData({
+      canRead: app.canRead
     });
   },
   onShareAppMessage: function(res) {
@@ -208,10 +212,12 @@ Page({
       });
     } else if (typeof pics == 'undefined') {
       var chapter = this.chapterList[chapterIndex];
-      wx.showLoading({
-        mask: true,
-        title: '加载中'
-      });
+      if(this.data.canRead) {
+        wx.showLoading({
+          mask: true,
+          title: '加载中'
+        });
+      }
       clearTimeout(this.loadingTimer);
       this.showLoading = true;
       this.requestTask && this.requestTask.abort();
