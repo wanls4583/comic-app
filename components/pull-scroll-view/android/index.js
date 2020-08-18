@@ -199,6 +199,9 @@ Component({
             });
         },
         refresh() {
+            if(this.refreshing) {
+                return;
+            }
             this.refreshing = true;
             this.triggerEvent('refresh');
         },

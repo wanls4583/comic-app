@@ -31,29 +31,9 @@ Component({
             observer: function(newVal, oldVal) {
                 //使下次能再触发observer
                 this.properties.scrollToTop = false;
-                this.getRect().then((res) => {
-                    if (!res) {
-                        return;
-                    }
-                    var animation = true;
-                    //滚动距离过大时不再使用过度动画
-                    if (res.scrollTop > app.globalData.systemInfo.screenHeight * 10) {
-                        animation = false;
-                    }
-                    this.setData({
-                        animation: animation
-                    }, () => {
-                        //滚动到顶部
-                        this.setData({
-                            _scrollTop: this.properties.topHeight + newVal
-                        }, () => {
-                            this.setData({
-                                animation: true
-                            });
-                        });
-                    });
+                this.setData({
+                    _scrollTop: 0
                 });
-
             }
         },
         stopRefresh: {
@@ -66,15 +46,10 @@ Component({
                     finished: true
                 });
                 clearTimeout(this.returnTimer);
-                clearTimeout(this.hideTipTimer);
                 //防止频繁刷新，导致画面闪烁
                 this.returnTimer = setTimeout(() => {
                     this.setData({
-                        _scrollTop: 0
-                    });
-                }, 500);
-                this.hideTipTimer = setTimeout(() => {
-                    this.setData({
+                        _translateY: -this.properties.topHeight,
                         finished: false
                     });
                     this.refreshing = false;
@@ -98,7 +73,8 @@ Component({
                 }
                 this.properties.topHeight = newVal;
                 this.setData({
-                    _topHeight: newVal
+                    _topHeight: newVal,
+                    _translateY: -newVal
                 });
             }
         }
@@ -106,18 +82,53 @@ Component({
     data: {
         systemInfo: app.globalData.systemInfo,
         statusBarHeight: app.globalData.systemInfo.statusBarHeight,
+        windowHeight: 0,
         _scrollTop: 0,
-        _topHeight: 60,
+        _topHeight: 0,
+        _translateY: 0,
         animation: true,
-        finished: false,
+        finished: false
     },
     lifetimes: {
         attached() {
-
+            if (this.properties.topHeight == 60 && this.properties.fullScreen) {
+                this.properties.topHeight += this.data.statusBarHeight;
+            }
+            this.setData({
+                animation: false
+            }, () => {
+                this.setData({
+                    _topHeight: this.properties.topHeight,
+                    _scrollTop: this.properties.scrollTop || 0,
+                    _translateY: -this.properties.topHeight,
+                    windowHeight: app.globalData.systemInfo.windowHeight
+                }, () => {
+                    this.setData({
+                        animation: true
+                    });
+                });
+            });
             this.hasAttached = true;
         }
     },
     attached: function(option) {
+        if (this.properties.topHeight == 60 && this.properties.fullScreen) {
+            this.properties.topHeight += this.data.statusBarHeight;
+        }
+        this.setData({
+            animation: false
+        }, () => {
+            this.setData({
+                _topHeight: this.properties.topHeight,
+                _scrollTop: this.properties.scrollTop || 0,
+                _translateY: -this.properties.topHeight,
+                windowHeight: app.globalData.systemInfo.windowHeight
+            }, () => {
+                this.setData({
+                    animation: true
+                });
+            });
+        });
         this.hasAttached = true;
     },
     methods: {
@@ -145,11 +156,21 @@ Component({
                 if (!res) {
                     return;
                 }
+                //时间太短，不触发更新
+                if (res.scrollTop <= -this.properties.topHeight && !(this.endTime - this.startTime < 200)) {
+                    this.refresh();
+                }
             });
         },
         refresh() {
+            if (this.refreshing) {
+                return;
+            }
             this.refreshing = true;
             this.triggerEvent('refresh');
+            this.setData({
+                _translateY: 0
+            });
         },
         getRect() {
             clearTimeout(this.rectTimer);
