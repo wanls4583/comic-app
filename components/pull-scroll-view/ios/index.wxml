@@ -5,7 +5,7 @@
                 <view wx:if='{{finished}}' class='loading_tip'><text class='iconfont icon-chenggong'></text>刷新完成</view>
                 <image wx:else class='loading_gif' src='/image/loading.gif'></image>
             </view>
-            <view class='content}'>
+            <view class='content'>
                 <slot></slot>
             </view>
         </view>

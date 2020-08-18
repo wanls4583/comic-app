@@ -82,7 +82,7 @@ Component({
     data: {
         systemInfo: app.globalData.systemInfo,
         statusBarHeight: app.globalData.systemInfo.statusBarHeight,
-        windowHeight: 0,
+        windowHeight: app.globalData.systemInfo.windowHeight,
         _scrollTop: 0,
         _topHeight: 0,
         _translateY: 0,
@@ -91,47 +91,24 @@ Component({
     },
     lifetimes: {
         attached() {
+            this.__attached();
+        }
+    },
+    attached: function(option) {
+        this.__attached();
+    },
+    methods: {
+        _attached() {
             if (this.properties.topHeight == 60 && this.properties.fullScreen) {
                 this.properties.topHeight += this.data.statusBarHeight;
             }
             this.setData({
-                animation: false
-            }, () => {
-                this.setData({
-                    _topHeight: this.properties.topHeight,
-                    _scrollTop: this.properties.scrollTop || 0,
-                    _translateY: -this.properties.topHeight,
-                    windowHeight: app.globalData.systemInfo.windowHeight
-                }, () => {
-                    this.setData({
-                        animation: true
-                    });
-                });
-            });
-            this.hasAttached = true;
-        }
-    },
-    attached: function(option) {
-        if (this.properties.topHeight == 60 && this.properties.fullScreen) {
-            this.properties.topHeight += this.data.statusBarHeight;
-        }
-        this.setData({
-            animation: false
-        }, () => {
-            this.setData({
                 _topHeight: this.properties.topHeight,
                 _scrollTop: this.properties.scrollTop || 0,
-                _translateY: -this.properties.topHeight,
-                windowHeight: app.globalData.systemInfo.windowHeight
-            }, () => {
-                this.setData({
-                    animation: true
-                });
+                _translateY: -this.properties.topHeight
             });
-        });
-        this.hasAttached = true;
-    },
-    methods: {
+            this.hasAttached = true;
+        },
         onScroll(e) {
             var scrollTop = e.detail.scrollTop;
             this.triggerEvent('scroll', e.detail);
