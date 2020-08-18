@@ -110,7 +110,6 @@ Component({
             this.hasAttached = true;
         },
         onScroll(e) {
-            var scrollTop = e.detail.scrollTop;
             this.triggerEvent('scroll', e.detail);
         },
         onScrolltolower(e) {

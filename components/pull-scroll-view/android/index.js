@@ -122,6 +122,7 @@ Component({
                     });
                 }
             }
+            this.triggerEvent('scroll', e.detail);
         },
         onScrolltolower(e) {
             this.triggerEvent('scrolltolower', e.detail);

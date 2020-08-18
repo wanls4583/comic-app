@@ -66,13 +66,13 @@ Component({
     },
     methods: {
         onScroll(e) {
-            this.triggerEvent('scroll', e);
+            this.triggerEvent('scroll', e.detail);
         },
         onScrolltolower(e) {
-            this.triggerEvent('scrolltolower', e);
+            this.triggerEvent('scrolltolower', e.detail);
         },
         onScrolltoupper(e) {
-            this.triggerEvent('scrolltoupper', e);
+            this.triggerEvent('scrolltoupper', e.detail);
         },
         onRefresh() {
             this.triggerEvent('refresh');
