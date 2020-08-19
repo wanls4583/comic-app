@@ -31,9 +31,7 @@ Component({
             observer: function(newVal, oldVal) {
                 //使下次能再触发observer
                 this.properties.scrollToTop = false;
-                this.setData({
-                    _scrollTop: this.properties.topHeight + newVal
-                });
+                this.toTop();
             }
         },
         stopRefresh: {
@@ -49,9 +47,7 @@ Component({
                 clearTimeout(this.hideTipTimer);
                 //防止频繁刷新，导致画面闪烁
                 this.returnTimer = setTimeout(() => {
-                    this.setData({
-                        _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
-                    });
+                    this.toTop();
                 }, 500);
                 this.hideTipTimer = setTimeout(() => {
                     this.setData({
@@ -79,19 +75,18 @@ Component({
                 this.properties.topHeight = newVal;
                 this.setData({
                     _topHeight: newVal,
-                    _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
                 });
+                this.toTop();
             }
         }
     },
     data: {
-        systemInfo: app.globalData.systemInfo,
-        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
-        windowHeight: app.globalData.systemInfo.windowHeight,
+        statusBarHeight: 0,
         _scrollTop: 0,
         _topHeight: 0,
         animation: true,
-        finished: false
+        finished: false,
+        minHeight: 0
     },
     lifetimes: {
         attached() {
@@ -103,13 +98,23 @@ Component({
     },
     methods: {
         _attached() {
+            var systemInfo = wx.getSystemInfoSync();
             if (this.properties.topHeight == 60 && this.properties.fullScreen) {
-                this.properties.topHeight += this.data.statusBarHeight;
+                this.properties.topHeight += systemInfo.statusBarHeight;
             }
             this.setData({
-                _topHeight: this.properties.topHeight,
-                _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
-            })
+                statusBarHeight: systemInfo.statusBarHeight
+            });
+            this.getRect().then((res) => {
+                this.setData({
+                    minHeight: res.height,
+                    _topHeight: this.properties.topHeight
+                }, () => {
+                    this.setData({
+                        _scrollTop: this.properties.scrollTop ? this.properties.scrollTop : this.properties.topHeight
+                    });
+                });
+            });
             this.hasAttached = true;
         },
         onScroll(e) {
@@ -117,9 +122,7 @@ Component({
             this.triggerEvent('scroll', e.detail);
             if (!this.touching && !this.refreshing && !this.gettingRect && !this.returnToTop) {
                 if (scrollTop < this.properties.topHeight) {
-                    this.setData({
-                        _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
-                    });
+                    this.toTop();
                 }
             }
             this.triggerEvent('scroll', e.detail);
@@ -148,10 +151,13 @@ Component({
                 if (res.scrollTop <= 0 && !(this.endTime - this.startTime < 200)) {
                     this.refresh();
                 } else if (res.scrollTop < this.data.topHeight) {
-                    this.setData({
-                        _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
-                    });
+                    this.toTop();
                 }
+            });
+        },
+        toTop() {
+            this.setData({
+                _scrollTop: this.data._scrollTop == this.properties.topHeight ? this.properties.topHeight + 1 : this.properties.topHeight
             });
         },
         refresh() {

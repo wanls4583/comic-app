@@ -80,32 +80,41 @@ Component({
         }
     },
     data: {
-        systemInfo: app.globalData.systemInfo,
-        statusBarHeight: app.globalData.systemInfo.statusBarHeight,
-        windowHeight: app.globalData.systemInfo.windowHeight,
+        statusBarHeight: 0,
         _scrollTop: 0,
         _topHeight: 0,
         _translateY: 0,
         animation: true,
-        finished: false
+        finished: false,
+        minHeight: 0
     },
     lifetimes: {
         attached() {
-            this.__attached();
+            this._attached();
         }
     },
     attached: function(option) {
-        this.__attached();
+        this._attached();
     },
     methods: {
         _attached() {
+            var systemInfo = wx.getSystemInfoSync();
             if (this.properties.topHeight == 60 && this.properties.fullScreen) {
-                this.properties.topHeight += this.data.statusBarHeight;
+                this.properties.topHeight += systemInfo.statusBarHeight;
             }
             this.setData({
+                statusBarHeight: systemInfo.statusBarHeight,
                 _topHeight: this.properties.topHeight,
-                _scrollTop: this.properties.scrollTop || 0,
                 _translateY: -this.properties.topHeight
+            });
+            this.getRect().then((res) => {
+                this.setData({
+                    minHeight: res.height + this.properties.topHeight
+                }, () => {
+                    this.setData({
+                        _scrollTop: this.properties.scrollTop || 0,
+                    });
+                });
             });
             this.hasAttached = true;
         },
